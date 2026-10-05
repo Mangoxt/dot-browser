@@ -2,6 +2,8 @@
 
 A real Windows desktop browser powered by Electron and Chromium, with an original, quiet interface. Websites live in independent **WebContentsViews**; React draws the browser interface. There are no webpage iframes, webview tags, simulated websites, or renderer-side filesystem APIs.
 
+[Download the Windows setup installer](https://github.com/Mangoxt/dot-browser/releases/latest) from GitHub Releases.
+
 ## Run
 
 Use Node.js 22.12 or newer and Windows 10/11 x64.
@@ -33,6 +35,8 @@ The setup installer uses `electron-updater` and public GitHub Releases. Before b
 Installed copies check on startup and every six hours, automatically download newer releases, then install the downloaded update when the app exits. Downloads do not close browsing windows. Dot stays closed after that installation. Portable builds do not use this installer update flow.
 
 For each release, increase the version in `package.json` and publish the setup executable, its blockmap and `latest.yml` together. `npm run package:setup` builds these files without publishing. `npm run release:setup` publishes them to the configured GitHub repository using a `GH_TOKEN` supplied in the environment. Never put a publishing token in the application or repository. The release workflow can perform this when a matching `v1.0.1` version tag is pushed.
+
+After committing your source changes, run `npm version patch` and `git push origin main --follow-tags` to create the next version tag and start the GitHub release workflow. The first release was uploaded from the validated local build while the Windows runner was queued.
 
 **Integration tests use hidden windows** to avoid stealing focus, temporary profiles outside the project, and a local HTTP fixture server. They write screenshots and a detailed audit under `test-results/`. The external-site audit uses the current network and does not bypass access restrictions. Running the normal application or development command intentionally opens a browser window.
 
