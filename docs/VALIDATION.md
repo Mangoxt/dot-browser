@@ -1,5 +1,7 @@
 # Validation
 
+The 1.0.1 credential migration update passed 45 unit tests and 26 local application flows. See [PASSWORD-IMPORT-AUDIT.md](PASSWORD-IMPORT-AUDIT.md) for scope and limitations.
+
 The automated audit runs against actual Electron processes and actual WebContentsViews. It uses a local HTTP server for reproducible navigation, downloads and permission flows. Test profiles are temporary and separate from real user data.
 
 The initial audit passed 18 application flows plus opening all nine requested external websites. The generated record is in `test-results/audit.md`; screenshots show dark/light themes and narrow-window chrome. Opening a site does not verify logging into accounts, protected media playback, payments, file upload or every feature of that site.

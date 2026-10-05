@@ -11,6 +11,13 @@ await mkdir(directory, { recursive: true });
 const userData = await mkdtemp(join(tmpdir(), 'dot-e2e-'));
 const downloadBody = Buffer.alloc(1024 * 1024, 'dot browser download test\n');
 const server = createServer((req, res) => {
+  if (req.url === '/login' || req.url === '/cross-login') {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(
+      `<title>Login fixture</title><form action="${req.url === '/cross-login' ? 'https://other.invalid/' : '/login'}"><input id="username" autocomplete="username"><input id="password" type="password"><button>Sign in</button></form><script>window.submitted=false;document.querySelector('form').onsubmit=e=>{e.preventDefault();window.submitted=true};</script>`,
+    );
+    return;
+  }
   if (req.url === '/download') {
     const offset = Number(req.headers.range?.match(/bytes=(\d+)/)?.[1] ?? 0);
     res.writeHead(offset ? 206 : 200, {
@@ -170,7 +177,8 @@ async function step(name, fn) {
     throw error;
   }
 }
-let normalTab, savedBookmarkId, workspaceId;
+let normalTab, savedBookmarkId, workspaceId, savedLoginId;
+const migratedPassword = 'fake,secret"with-quote';
 try {
   await launch();
   await step('First-run onboarding and production launch', async () => {
@@ -531,6 +539,115 @@ try {
       await modal.getByRole('button', { name: 'Close', exact: true }).click();
     },
   );
+  await step(
+    'Password CSV import encrypts secrets, manages entries and fills only matching login forms',
+    async () => {
+      const csvPath = join(userData, 'fake-passwords.csv');
+      await writeFile(
+        csvPath,
+        `name,url,username,password\nTest,${base}/login,test-user,"fake,secret""with-quote"\nOther,https://other.invalid/,other-user,"another-fake\nsecret"\n`,
+      );
+      await app.evaluate(({ dialog }, path) => {
+        dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [path] });
+      }, csvPath);
+      await page.getByRole('button', { name: 'Import browser', exact: true }).click();
+      const modal = page.getByRole('dialog', { name: 'Import browser data' });
+      await modal.locator('summary').click();
+      await modal.getByRole('button', { name: 'Import password CSV', exact: true }).click();
+      await expect(modal.locator('.import-preview')).toContainText('Passwords: 2');
+      assert.ok(!(await modal.textContent()).includes(migratedPassword));
+      await modal.getByRole('button', { name: 'Import', exact: true }).click();
+      await expect(modal.getByRole('status')).toContainText('2 passwords');
+      await modal.getByRole('button', { name: 'Close', exact: true }).click();
+      const list = await cmd({ type: 'login.list' });
+      savedLoginId = list.logins.find((login) => login.origin === base).id;
+      assert.ok(list.logins.every((login) => !('encrypted' in login) && !('password' in login)));
+      assert.ok(!JSON.stringify(await snap()).includes(migratedPassword));
+      await cmd({ type: 'tab.new', url: base + '/login' });
+      await waitState((s) => s.tabs.find((t) => t.id === s.activeId).title === 'Login fixture');
+      await page.getByRole('button', { name: 'Saved passwords', exact: true }).click();
+      const manager = page.getByRole('dialog', { name: 'Saved passwords' });
+      await manager.getByRole('button', { name: 'Show', exact: true }).first().click();
+      await expect(
+        manager.getByRole('textbox', { name: `Password for test-user at ${base}`, exact: true }),
+      ).toHaveValue(migratedPassword);
+      await manager.getByRole('button', { name: 'Hide', exact: true }).click();
+      await manager.getByRole('button', { name: 'Show', exact: true }).last().click();
+      await expect(
+        manager.getByRole('textbox', {
+          name: 'Password for other-user at https://other.invalid',
+          exact: true,
+        }),
+      ).toHaveValue('another-fake\nsecret');
+      await manager.getByRole('button', { name: 'Hide', exact: true }).click();
+      await manager.getByRole('button', { name: 'Fill on this site', exact: true }).first().click();
+      assert.deepEqual(
+        await webEval(
+          '({ user:document.querySelector("#username").value,password:document.querySelector("#password").value,submitted:window.submitted })',
+        ),
+        { user: 'test-user', password: migratedPassword, submitted: false },
+      );
+      const wrong = list.logins.find((login) => login.origin !== base);
+      const rejected = await page.evaluate(
+        (id) => window.dot.command({ type: 'login.action', action: 'fill', id }),
+        wrong.id,
+      );
+      assert.equal(rejected.ok, false);
+      await cmd({ type: 'tab.navigate', input: base + '/cross-login' });
+      await waitState(
+        (s) =>
+          s.tabs.find((t) => t.id === s.activeId).url === base + '/cross-login' &&
+          !s.tabs.find((t) => t.id === s.activeId).loading,
+      );
+      const cross = await page.evaluate(
+        (id) => window.dot.command({ type: 'login.action', action: 'fill', id }),
+        savedLoginId,
+      );
+      assert.equal(cross.ok, false);
+      assert.equal(await webEval('document.querySelector("#password").value'), '');
+      await cmd({ type: 'login.action', action: 'delete', id: wrong.id });
+      assert.equal((await cmd({ type: 'login.list' })).logins.length, 1);
+    },
+  );
+  await step('Exported cookie files restore cookies to the Chromium session', async () => {
+    const path = join(userData, 'fake-cookies.json');
+    await writeFile(
+      path,
+      JSON.stringify([
+        {
+          domain: '127.0.0.1',
+          name: 'imported-session',
+          value: 'fake-cookie',
+          path: '/',
+          secure: false,
+        },
+      ]),
+    );
+    await app.evaluate(({ dialog }, path) => {
+      dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [path] });
+    }, path);
+    const preview = await cmd({ type: 'import.file', kind: 'cookies' });
+    assert.equal(preview.preview.counts.cookies, 1);
+    assert.ok(!JSON.stringify(preview).includes('fake-cookie'));
+    assert.equal(
+      (await cmd({ type: 'import.apply', token: preview.preview.token })).report.counts.cookies,
+      1,
+    );
+    await cmd({ type: 'tab.navigate', input: base });
+    await waitState((s) => s.tabs.find((t) => t.id === s.activeId).title === 'First test page');
+    assert.ok((await webEval('document.cookie')).includes('imported-session=fake-cookie'));
+    const cancelled = await cmd({ type: 'import.file', kind: 'cookies' });
+    await cmd({ type: 'import.cancel' });
+    assert.equal(
+      (
+        await page.evaluate(
+          (token) => window.dot.command({ type: 'import.apply', token }),
+          cancelled.preview.token,
+        )
+      ).ok,
+      false,
+    );
+  });
   await step('Loading can be stopped and task manager reports real metadata', async () => {
     await cmd({ type: 'tab.new', url: base + '/slow' });
     await waitState((s) => s.tabs.find((t) => t.id === s.activeId).loading);
@@ -591,6 +708,9 @@ try {
   await step('Session restore survives a full application restart', async () => {
     const before = await snap();
     await app.close();
+    const stored = await readFile(join(userData, 'browser-data.json'), 'utf8');
+    assert.ok(!stored.includes('fake,secret'));
+    assert.ok(JSON.parse(stored).logins[0].encrypted);
     await launch();
     const after = await snap();
     assert.equal(after.tabs.length, before.tabs.length);
@@ -599,6 +719,10 @@ try {
     assert.equal(after.settings.onboarded, true);
     assert.equal(after.activeId, before.activeId);
     assert.equal(after.downloads[0].status, 'completed');
+    assert.equal(
+      (await cmd({ type: 'login.action', id: savedLoginId, action: 'reveal' })).password,
+      migratedPassword,
+    );
   });
   if (!process.env.DOT_SKIP_EXTERNAL)
     await step('Real website compatibility audit', async () => {

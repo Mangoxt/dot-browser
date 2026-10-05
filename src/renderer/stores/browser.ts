@@ -20,6 +20,7 @@ export type Overlay =
   | 'downloads'
   | 'onboarding'
   | 'import'
+  | 'passwords'
   | null;
 interface UIState {
   state: BrowserWindowState | null;

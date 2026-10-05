@@ -12,7 +12,7 @@ import {
 } from 'electron';
 import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile, stat } from 'node:fs/promises';
 import {
   BrowserData,
   BrowserTab,
@@ -29,9 +29,16 @@ import { Command, CommandResult } from '../shared/ipc';
 import { domainOf, isWebURL, recordVisit, resolveInput, safeFavicon } from '../shared/navigation';
 import { BrowserSession, SessionHost, originOf, rememberRule } from './session';
 import { Storage } from './storage';
-import { discoverProfiles, readProfile, type ImportedProfileData } from './profile-import';
+import { discoverProfiles, readProfile } from './profile-import';
 import type { ImportSource, ImportReport } from '../shared/import';
-import { bundleCounts } from './import-formats';
+import {
+  bundleCounts,
+  passwordCSV,
+  cookieFile,
+  tabFile,
+  type ImportBundle,
+} from './import-formats';
+import { encryptImportedLogins, decryptLogin, loginFillScript } from './login-vault';
 
 interface LiveTab {
   meta: BrowserTab;
@@ -77,7 +84,7 @@ export class BrowserController implements SessionHost {
   private memoryTimer: ReturnType<typeof setInterval>;
   private htmlFullscreen = false;
   private importSources = new Map<string, ImportSource>();
-  private importPreviews = new Map<string, ImportedProfileData>();
+  private importPreviews = new Map<string, ImportBundle>();
 
   constructor(
     readonly host: BrowserHost,
@@ -164,6 +171,7 @@ export class BrowserController implements SessionHost {
       if (!privateMode) host.persist();
     });
     this.window.on('closed', () => {
+      this.importPreviews.clear();
       for (const item of this.requests.values()) item.callback(false);
       this.requests.clear();
       clearInterval(this.memoryTimer);
@@ -931,7 +939,7 @@ export class BrowserController implements SessionHost {
       case 'import.preview': {
         const source = this.importSources.get(c.sourceId);
         if (!source) throw new Error('Choose a detected browser profile again');
-        const imported = readProfile(source, c.kinds);
+        const imported = { ...readProfile(source, c.kinds), cookies: [], passwords: [] };
         const token = randomUUID();
         this.importPreviews.set(token, imported);
         if (this.importPreviews.size > 5)
@@ -941,7 +949,52 @@ export class BrowserController implements SessionHost {
           preview: {
             token,
             source: `${source.browser} · ${source.profile}`,
-            counts: bundleCounts({ ...imported, cookies: [], passwords: [] }),
+            counts: bundleCounts(imported),
+            warnings: imported.warnings,
+          },
+        };
+      }
+      case 'import.file': {
+        if (this.privateMode) throw new Error('Import files in a normal window.');
+        const result = await dialog.showOpenDialog(this.window, {
+          title:
+            c.kind === 'passwords'
+              ? 'Import exported browser password CSV'
+              : 'Import exported browser data',
+          properties: ['openFile'],
+          filters: [
+            {
+              name: c.kind === 'passwords' ? 'Password CSV' : 'Exported data',
+              extensions: c.kind === 'passwords' ? ['csv'] : ['json', 'txt'],
+            },
+          ],
+        });
+        if (result.canceled || !result.filePaths[0]) return { ok: true };
+        const path = result.filePaths[0];
+        if ((await stat(path)).size > 20 * 1024 * 1024)
+          throw new Error('Choose an export smaller than 20 MB.');
+        const text = await readFile(path, 'utf8');
+        const imported =
+          c.kind === 'passwords'
+            ? passwordCSV(text)
+            : c.kind === 'cookies'
+              ? cookieFile(text)
+              : tabFile(text);
+        if (imported.passwords.length > 10000 || imported.cookies.length > 10000)
+          throw new Error('Import at most 10,000 passwords or cookies at a time.');
+        const token = randomUUID();
+        this.importPreviews.clear();
+        this.importPreviews.set(token, imported);
+        setTimeout(() => this.importPreviews.delete(token), 5 * 60 * 1000).unref();
+        return {
+          ok: true,
+          preview: {
+            token,
+            source:
+              c.kind === 'passwords'
+                ? 'Exported browser passwords'
+                : 'Exported browser cookies / tabs',
+            counts: bundleCounts(imported),
             warnings: imported.warnings,
           },
         };
@@ -950,6 +1003,26 @@ export class BrowserController implements SessionHost {
         const imported = this.importPreviews.get(c.token);
         if (!imported) throw new Error('Import preview expired; scan the profile again');
         this.importPreviews.delete(c.token);
+        const encryptedLogins = imported.passwords.length
+          ? await encryptImportedLogins(this.data.logins, imported.passwords)
+          : [];
+        for (const login of encryptedLogins) {
+          const index = this.data.logins.findIndex(
+            (item) => item.origin === login.origin && item.username === login.username,
+          );
+          if (index >= 0) this.data.logins[index] = login;
+          else this.data.logins.push(login);
+        }
+        let cookies = 0;
+        for (const cookie of imported.cookies) {
+          try {
+            await this.browserSession.session.cookies.set(cookie);
+            cookies++;
+          } catch {
+            /* Report rejected/unsupported cookie attributes without logging secret values. */
+          }
+        }
+        if (cookies) await this.browserSession.session.cookies.flushStore();
         const bookmarkUrls = new Set(this.data.bookmarks.map((item) => item.url));
         const newBookmarks = imported.bookmarks.filter((item) => {
           if (bookmarkUrls.has(item.url)) return false;
@@ -989,8 +1062,8 @@ export class BrowserController implements SessionHost {
           bookmarks: newBookmarks.length,
           history: newHistory.length,
           tabs: restoredTabs.length,
-          cookies: 0,
-          passwords: 0,
+          cookies,
+          passwords: encryptedLogins.length,
         };
         const report: ImportReport = {
           counts,
@@ -1001,6 +1074,9 @@ export class BrowserController implements SessionHost {
             newHistory.length,
           warnings: [
             ...imported.warnings,
+            ...(cookies < imported.cookies.length
+              ? [`${imported.cookies.length - cookies} cookies could not be imported.`]
+              : []),
             ...(imported.tabs.length > restoredTabs.length
               ? ['Some tabs were skipped to respect the browser tab limit.']
               : []),
@@ -1008,13 +1084,70 @@ export class BrowserController implements SessionHost {
         };
         this.changed();
         this.toast(
-          `Imported ${counts.bookmarks} bookmarks, ${counts.history} history entries and ${counts.tabs} tabs`,
+          `Imported ${counts.bookmarks} bookmarks, ${counts.history} history entries, ${counts.tabs} tabs, ${counts.passwords} passwords and ${counts.cookies} cookies`,
         );
         return { ok: true, report };
       }
       case 'import.cancel':
         this.importPreviews.clear();
         return { ok: true };
+      case 'login.list':
+        return {
+          ok: true,
+          logins: this.data.logins.map(({ encrypted: _encrypted, ...login }) => login),
+        };
+      case 'login.action': {
+        const login = this.data.logins.find((item) => item.id === c.id);
+        if (!login) throw new Error('Saved password no longer exists.');
+        if (c.action === 'delete') {
+          this.data.logins = this.data.logins.filter((item) => item.id !== c.id);
+          this.changed();
+          return { ok: true };
+        }
+        const tab = this.active();
+        if (
+          c.action === 'fill' &&
+          (!tab?.view || new URL(tab.view.webContents.getURL()).origin !== login.origin)
+        )
+          throw new Error('Open the matching site before filling this password.');
+        const password = await decryptLogin(login);
+        if (c.action === 'reveal') return { ok: true, password };
+        if (c.action === 'copy') {
+          await clipboard.writeText(password);
+          setTimeout(() => {
+            void (async () => {
+              if ((await clipboard.readText()) === password) await clipboard.clear();
+            })().catch(() => {});
+          }, 30000).unref();
+          this.toast('Password copied. Clipboard clears in 30 seconds.');
+          return { ok: true };
+        }
+        const wc = tab?.view?.webContents;
+        if (/[\r\n]/.test(password))
+          throw new Error(
+            'This password contains line breaks and cannot be filled into a single-line field. Use Copy instead.',
+          );
+        if (
+          !wc ||
+          wc.isDestroyed() ||
+          this.active() !== tab ||
+          new URL(wc.getURL()).origin !== login.origin
+        )
+          throw new Error('The page changed. Choose the password again.');
+        let filled: unknown;
+        try {
+          filled = await wc.mainFrame.executeJavaScript(
+            loginFillScript(login.origin, login.username, password),
+            true,
+          );
+        } catch {
+          throw new Error('Could not fill this login form.');
+        }
+        if (filled !== 'filled')
+          throw new Error('No single matching login form was found. Password was not filled.');
+        this.toast('Login filled. Submit the form when ready.');
+        return { ok: true };
+      }
       case 'folder.add':
         if (!this.data.folders.includes(c.name)) this.data.folders.push(c.name);
         break;

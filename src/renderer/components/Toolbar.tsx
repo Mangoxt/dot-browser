@@ -11,6 +11,7 @@ import {
   SlidersHorizontal,
   Download,
   UserRound,
+  KeyRound,
   MoreHorizontal,
   PanelLeft,
   PanelRight,
@@ -258,6 +259,7 @@ export function Toolbar() {
         label={state.private ? 'Private session' : 'Profile'}
         onClick={() => open('profile')}
       />
+      <IconButton icon={KeyRound} label="Saved passwords" onClick={() => open('passwords')} />
       <IconButton
         icon={MoreHorizontal}
         label="Browser menu"

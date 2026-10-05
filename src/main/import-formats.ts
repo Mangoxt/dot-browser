@@ -175,7 +175,12 @@ export function cookieFile(text: string): ImportBundle {
   const out = emptyBundle();
   let rows: unknown[];
   if (/^\s*(?:\{|\[)/.test(text)) {
-    const raw: unknown = JSON.parse(text);
+    let raw: unknown;
+    try {
+      raw = JSON.parse(text);
+    } catch {
+      throw new Error('Cookie export is not valid JSON.');
+    }
     rows = Array.isArray(raw) ? raw : (object(raw).cookies as unknown[]);
     if (!Array.isArray(rows)) throw new Error('Cookie JSON must contain an array of cookies');
   } else {
@@ -187,7 +192,8 @@ export function cookieFile(text: string): ImportBundle {
           .replace(/^#HttpOnly_/, '')
           .split('\t');
         return {
-          domain: subdomains === 'TRUE' && !domain.startsWith('.') ? `.${domain}` : domain,
+          domain:
+            subdomains === 'TRUE' && domain && !domain.startsWith('.') ? `.${domain}` : domain,
           path,
           secure: secure === 'TRUE',
           expirationDate: Number(expires),

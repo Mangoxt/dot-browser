@@ -26,7 +26,7 @@ npm run package
 npm run package:setup
 ```
 
-The portable executable is `release/Dot-Browser-1.0.0-portable.exe`; the Windows setup installer is `release/Dot-Browser-Setup-1.0.0.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
+The Windows setup installer is `release/Dot-Browser-Setup-1.0.1.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
 
 ### Automatic updates for installed copies
 
@@ -47,7 +47,8 @@ After committing your source changes, run `npm version patch` and `git push orig
 - Multiple persistent tabs, horizontal or vertical layouts, pinning, muting, audio indicators, drag ordering, duplication, recently closed tabs, tab context menus, groups, a keyboard command palette and cross-workspace tab search.
 - Workspaces with editable names, icons and colors, ordering, independent tabs and preservation of live pages when switching. Removing a workspace moves its tabs to another workspace.
 - Two live web tabs in side-by-side or stacked split view, independent navigation, selectable ratios, swapping and a draggable/keyboard-resizable divider. Split view requires two web tabs in the same workspace.
-- History with visit counts, local calendar groups, filtering, selection/deletion, opening and copying. Browser migration can detect Chrome, Edge, Brave and Firefox profiles and preview/import bookmarks, browsing history and open tabs. A Netscape HTML bookmark import/export option is also available. Profile passwords and cookies are not imported; source browsers protect credentials and some cookie databases with operating-system encryption.
+- History with visit counts, local calendar groups, filtering, selection/deletion, opening and copying. Browser migration can detect Chrome, Edge, Brave and Firefox profiles and preview/import bookmarks, browsing history and open tabs. A Netscape HTML bookmark import/export option is also available.
+- Password CSV import from Chrome, Edge, Brave and Firefox exports, encrypted storage with the operating-system account, search, reveal/hide, copy and delete. The toolbar's Saved passwords button fills a single matching login form after an explicit user action, checks the exact origin and form action, and does not submit the form. Exported cookie JSON and Netscape TXT files can also be imported; some sites still require a fresh login. Protected profile password/cookie databases are not decrypted directly.
 - Real downloads with progress, measured transfer speed, pause/resume/cancel, retry, open/reveal and persistent records. Automatic saves choose a unique filename. Interrupted downloads after restart can be retried; active transfers are not resumed automatically across application restarts.
 - Find in page, Chromium page zoom, developer tools, inspect element, source view, save complete HTML pages, native print dialogs, window controls and fullscreen. Chromium's media APIs handle supported picture-in-picture behavior.
 - New tab clock/date, editable/reorderable shortcuts, recent sites, quiet background choices and utility actions. A resizable side panel offers bookmarks, history, downloads and tabs.
@@ -71,6 +72,6 @@ The [WebContentsView](https://www.electronjs.org/docs/latest/api/web-contents-vi
 
 ## Deliberately unavailable
 
-Browser extensions, password storage, account sync and additional persistent user profiles are not presented as working features. Passwords are not collected by Dot. Additional profiles can be added by giving each profile its own Storage and `persist:` session partition; private windows already exercise separate ephemeral sessions.
+Browser extensions, account sync and additional persistent user profiles are not presented as working features. Automatic password capture and automatic page-load autofill are not implemented. Additional profiles can be added by giving each profile its own Storage and `persist:` session partition; private windows already exercise separate ephemeral sessions.
 
 Protected streaming, OAuth policies, bot challenges and other service-side restrictions may limit custom Electron clients. Do not assume that loading Spotify or YouTube proves protected media playback works. Native print/save dialogs, external-app launches, actual screen sharing, audio hardware, OS focus behavior and 125%/150% multi-monitor scaling require interactive hardware validation. Tests never launch external apps or execute downloaded programs.

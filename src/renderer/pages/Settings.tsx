@@ -549,15 +549,17 @@ export default function Settings() {
             </Row>
             <Row
               title="Passwords and autofill"
-              detail="No credentials are collected or stored by Dot."
+              detail="Import browser password CSV files, store them encrypted and fill login forms on matching sites."
             >
-              <span className="badge">Not enabled</span>
+              <button onClick={() => useBrowser.getState().open('passwords')}>
+                Manage passwords
+              </button>
             </Row>
             <Row
               title="Updates"
-              detail="No release server is configured. Install new builds manually."
+              detail="Updates download automatically from GitHub Releases and install when you quit Dot."
             >
-              <span className="badge">Manual</span>
+              <span className="badge">Automatic</span>
             </Row>
           </>
         )}

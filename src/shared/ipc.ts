@@ -1,5 +1,11 @@
 import { z } from 'zod';
-import { IMPORT_KINDS, type ImportSource, type ImportPreview, type ImportReport, type LoginSummary } from './import';
+import {
+  IMPORT_KINDS,
+  type ImportSource,
+  type ImportPreview,
+  type ImportReport,
+  type LoginSummary,
+} from './import';
 import {
   BrowserWindowState,
   BrowserSettings,
@@ -91,12 +97,20 @@ export const commandSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('bookmark.transfer'), action: z.enum(['import', 'export']) }),
   z.object({ type: z.literal('import.sources') }),
   z.object({ type: z.literal('import.folder') }),
-  z.object({ type: z.literal('import.preview'), sourceId: id, kinds: z.array(z.enum(IMPORT_KINDS)).min(1).max(5) }),
+  z.object({
+    type: z.literal('import.preview'),
+    sourceId: id,
+    kinds: z.array(z.enum(IMPORT_KINDS)).min(1).max(5),
+  }),
   z.object({ type: z.literal('import.file'), kind: z.enum(['passwords', 'cookies', 'tabs']) }),
   z.object({ type: z.literal('import.apply'), token: id }),
   z.object({ type: z.literal('import.cancel') }),
   z.object({ type: z.literal('login.list') }),
-  z.object({ type: z.literal('login.action'), id, action: z.enum(['copy', 'delete']) }),
+  z.object({
+    type: z.literal('login.action'),
+    id,
+    action: z.enum(['copy', 'delete', 'reveal', 'fill']),
+  }),
   z.object({ type: z.literal('folder.add'), name: z.string().min(1).max(60) }),
   z.object({ type: z.literal('history.delete'), ids: z.array(id) }),
   z.object({
@@ -155,6 +169,7 @@ export interface CommandResult {
   preview?: ImportPreview;
   report?: ImportReport;
   logins?: LoginSummary[];
+  password?: string;
 }
 export interface BrowserAPI {
   snapshot(): Promise<BrowserWindowState>;

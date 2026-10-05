@@ -24,6 +24,7 @@ import {
 import { bookmarkCurrent, command, openPage, patchSettings, useBrowser } from '../stores/browser';
 import { IconButton } from './common';
 import { DownloadList } from '../pages/Library';
+import { PasswordManager } from './PasswordManager';
 import type { Bookmark, Shortcut, Workspace, TabGroup } from '../../shared/models';
 import type { SiteInfo } from '../../shared/ipc';
 import { isWebURL, resolveInput } from '../../shared/navigation';
@@ -81,6 +82,7 @@ export function Overlays() {
     downloads: 'Downloads',
     onboarding: 'Welcome to Dot',
     import: 'Import browser data',
+    passwords: 'Saved passwords',
   };
   return (
     <div
@@ -128,6 +130,7 @@ export function Overlays() {
         )}
         {overlay === 'onboarding' && <Onboarding />}
         {overlay === 'import' && <ImportBrowserData />}
+        {overlay === 'passwords' && <PasswordManager />}
       </div>
     </div>
   );
@@ -150,6 +153,9 @@ function ImportBrowserData() {
         setSourceId(found[0]?.id ?? '');
       }
     });
+    return () => {
+      void command({ type: 'import.cancel' });
+    };
   }, []);
   const names: Record<ImportKind, string> = {
     bookmarks: 'Bookmarks',
@@ -194,14 +200,42 @@ function ImportBrowserData() {
       <details>
         <summary>Passwords and cookies</summary>
         <p>
-          Cookies and saved passwords are not included in this profile import. Passwords and many
-          browser cookies are protected by the source browser and operating system.
+          Export passwords as CSV from your previous browser's password manager, then import that
+          file here. Chrome, Edge, Brave and Firefox exports are supported. Imported passwords are
+          encrypted with your operating-system account and available from Saved passwords in the
+          toolbar.
         </p>
+        <p>
+          The exported CSV contains readable passwords. Delete it after importing if you no longer
+          need it.
+        </p>
+        <p>
+          Cookies can be imported from an exported JSON or Netscape TXT file. Some sites will still
+          require you to sign in again.
+        </p>
+        {(['passwords', 'cookies'] as const).map((kind) => (
+          <button
+            key={kind}
+            disabled={busy}
+            onClick={async () => {
+              setBusy(true);
+              setError('');
+              setMessage('');
+              setPreview(null);
+              const result = await command({ type: 'import.file', kind });
+              if (result.ok) setPreview(result.preview ?? null);
+              else setError(result.error ?? 'Could not read the exported file');
+              setBusy(false);
+            }}
+          >
+            {kind === 'passwords' ? 'Import password CSV' : 'Import cookie file'}
+          </button>
+        ))}
       </details>
       {preview && (
         <div className="import-preview">
           <strong>{preview.source}</strong>
-          {(['bookmarks', 'history', 'tabs'] as const).map((kind) => (
+          {(['bookmarks', 'history', 'tabs', 'passwords', 'cookies'] as const).map((kind) => (
             <span key={kind}>
               {names[kind]}: {preview.counts[kind]}
             </span>
@@ -242,9 +276,9 @@ function ImportBrowserData() {
             setError('');
             const result = await command({ type: 'import.apply', token: preview.token });
             if (result.ok && result.report) {
-              const { bookmarks, history, tabs } = result.report.counts;
+              const { bookmarks, history, tabs, passwords, cookies } = result.report.counts;
               setMessage(
-                `Imported ${bookmarks} bookmarks, ${history} history entries and ${tabs} tabs.`,
+                `Imported ${bookmarks} bookmarks, ${history} history entries and ${tabs} tabs. ${passwords} passwords and ${cookies} cookies imported. ${result.report.warnings.join(' ')}`,
               );
               setPreview(null);
             } else setError(result.error ?? 'Import failed');

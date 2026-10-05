@@ -2450,3 +2450,23 @@ form > label select {
     margin-top: 20px;
   }
 }
+
+.password-list {
+  max-height: 340px;
+  overflow: auto;
+}
+.password-entry {
+  display: grid;
+  gap: 8px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.password-entry strong,
+.password-entry span {
+  overflow-wrap: anywhere;
+}
+.password-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
