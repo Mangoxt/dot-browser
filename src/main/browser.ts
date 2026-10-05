@@ -29,7 +29,8 @@ import { Command, CommandResult } from '../shared/ipc';
 import { domainOf, isWebURL, recordVisit, resolveInput, safeFavicon } from '../shared/navigation';
 import { BrowserSession, SessionHost, originOf, rememberRule } from './session';
 import { Storage } from './storage';
-import { discoverProfiles, readProfile } from './profile-import';
+import { readProfile } from './profile-import';
+import { discoverProfiles } from './profile-discovery';
 import type { ImportSource, ImportReport } from '../shared/import';
 import {
   bundleCounts,
@@ -932,9 +933,33 @@ export class BrowserController implements SessionHost {
         await this.transferBookmarks(c.action);
         break;
       case 'import.sources': {
-        const sources = discoverProfiles();
+        const sources = await discoverProfiles();
         this.importSources = new Map(sources.map((source) => [source.id, source]));
         return { ok: true, sources: sources.map(({ path: _path, ...source }) => source) };
+      }
+      case 'import.folder': {
+        const result = await dialog.showOpenDialog(this.window, {
+          title: 'Choose browser profile or user data folder',
+          properties: ['openDirectory'],
+        });
+        if (result.canceled || !result.filePaths[0]) return { ok: true };
+        const found = await discoverProfiles([result.filePaths[0]]);
+        if (!found.length)
+          throw new Error(
+            'No compatible Chromium or Firefox profiles were found in this folder. Choose the profile or user data folder.',
+          );
+        const existing = new Set(
+          [...this.importSources.values()].map((source) => source.path?.toLowerCase()),
+        );
+        for (const source of found)
+          if (!existing.has(source.path?.toLowerCase())) {
+            this.importSources.set(source.id, source);
+            existing.add(source.path?.toLowerCase());
+          }
+        return {
+          ok: true,
+          sources: [...this.importSources.values()].map(({ path: _path, ...source }) => source),
+        };
       }
       case 'import.preview': {
         const source = this.importSources.get(c.sourceId);

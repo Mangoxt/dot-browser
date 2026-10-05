@@ -172,7 +172,11 @@ function ImportBrowserData() {
   };
   return (
     <div className="form-stack">
-      <p>Bring bookmarks, history and open tabs from a browser profile on this computer.</p>
+      <p>
+        Bring bookmarks, history and open tabs from Chromium-based or Firefox-based browsers. Every
+        discovered profile is listed separately. For portable browsers or a custom location, choose
+        the profile or user data folder.
+      </p>
       <label>
         Browser profile
         <select
@@ -190,7 +194,28 @@ function ImportBrowserData() {
           ))}
         </select>
       </label>
-      {!sources.length && <p>No Chrome, Edge, Brave or Firefox profiles were found.</p>}
+      {!sources.length && (
+        <p>No compatible profiles were found automatically. Choose a browser folder below.</p>
+      )}
+      <button
+        disabled={busy}
+        onClick={async () => {
+          setBusy(true);
+          setError('');
+          setPreview(null);
+          const result = await command({ type: 'import.folder' });
+          if (result.ok && result.sources) {
+            const found = result.sources;
+            setSources(found);
+            setSourceId((current) =>
+              found.some((source) => source.id === current) ? current : (found[0]?.id ?? ''),
+            );
+          } else if (!result.ok) setError(result.error ?? 'Could not read browser profiles');
+          setBusy(false);
+        }}
+      >
+        Choose browser folder
+      </button>
       {(['bookmarks', 'history', 'tabs'] as const).map((kind) => (
         <label className="checkbox-label" key={kind}>
           <input type="checkbox" checked={kinds.includes(kind)} onChange={() => toggle(kind)} />
@@ -201,9 +226,9 @@ function ImportBrowserData() {
         <summary>Passwords and cookies</summary>
         <p>
           Export passwords as CSV from your previous browser's password manager, then import that
-          file here. Chrome, Edge, Brave and Firefox exports are supported. Imported passwords are
-          encrypted with your operating-system account and available from Saved passwords in the
-          toolbar.
+          file here. Compatible Chromium-based and Firefox-based CSV exports are supported. Imported
+          passwords are encrypted with your operating-system account and available from Saved
+          passwords in the toolbar.
         </p>
         <p>
           The exported CSV contains readable passwords. Delete it after importing if you no longer

@@ -1,17 +1,10 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { homedir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 import { randomUUID } from 'node:crypto';
 import type { ImportSource } from '../shared/import';
 import type { Bookmark, HistoryEntry } from '../shared/models';
-import {
-  chromiumBookmarks,
-  chromiumSession,
-  firefoxSession,
-  object,
-  webURL,
-} from './import-formats';
+import { chromiumBookmarks, chromiumSession, firefoxSession, webURL } from './import-formats';
 
 export interface ImportedProfileData {
   bookmarks: Bookmark[];
@@ -19,103 +12,9 @@ export interface ImportedProfileData {
   tabs: { url: string; title: string; pinned: boolean }[];
   warnings: string[];
 }
-const home = homedir();
-function profileRoots() {
-  if (process.platform === 'win32')
-    return [
-      ['Chrome', join(process.env.LOCALAPPDATA ?? '', 'Google/Chrome/User Data')],
-      ['Edge', join(process.env.LOCALAPPDATA ?? '', 'Microsoft/Edge/User Data')],
-      ['Brave', join(process.env.LOCALAPPDATA ?? '', 'BraveSoftware/Brave-Browser/User Data')],
-    ];
-  if (process.platform === 'darwin')
-    return [
-      ['Chrome', join(home, 'Library/Application Support/Google/Chrome')],
-      ['Edge', join(home, 'Library/Application Support/Microsoft Edge')],
-      ['Brave', join(home, 'Library/Application Support/BraveSoftware/Brave-Browser')],
-    ];
-  return [
-    ['Chrome', join(home, '.config/google-chrome')],
-    ['Edge', join(home, '.config/microsoft-edge')],
-    ['Brave', join(home, '.config/BraveSoftware/Brave-Browser')],
-  ];
-}
-function profileLabel(name: string) {
-  return name === 'Default' ? 'Default profile' : name.replace(/^Profile /, 'Profile ');
-}
-function firefoxRoots(): string[] {
-  const base =
-    process.platform === 'win32'
-      ? join(process.env.APPDATA ?? '', 'Mozilla/Firefox')
-      : process.platform === 'darwin'
-        ? join(home, 'Library/Application Support/Firefox')
-        : join(home, '.mozilla/firefox');
-  const ini = join(base, 'profiles.ini');
-  if (!existsSync(ini)) return [];
-  const results: string[] = [];
-  let path = '',
-    absolute = false;
-  const add = () => {
-    if (!path) return;
-    const folder = absolute ? resolve(path) : resolve(base, path);
-    if (existsSync(join(folder, 'places.sqlite'))) results.push(folder);
-    path = '';
-    absolute = false;
-  };
-  for (const line of readFileSync(ini, 'utf8').split(/\r?\n/)) {
-    if (/^\s*\[Profile\d+\]/i.test(line)) {
-      add();
-      continue;
-    }
-    const match = line.match(/^\s*(Path|IsRelative)\s*=\s*(.*)\s*$/i);
-    if (match) {
-      if (match[1].toLowerCase() === 'path') path = match[2];
-      else absolute = match[2] === '0';
-    }
-  }
-  add();
-  return results;
-}
-export function discoverProfiles(): ImportSource[] {
-  const sources: ImportSource[] = [];
-  for (const [browser, root] of profileRoots()) {
-    const localState = join(root, 'Local State');
-    if (!existsSync(localState)) continue;
-    let names = ['Default'];
-    try {
-      const raw = object(JSON.parse(readFileSync(localState, 'utf8')));
-      const info = object(object(raw.profile).info_cache);
-      const detected = Object.keys(info).filter((name) =>
-        existsSync(join(root, name, 'Bookmarks')),
-      );
-      if (detected.length) names = detected;
-    } catch {
-      /* A damaged profile list should not hide the browser's default profile. */
-    }
-    for (const name of names) {
-      if (!existsSync(join(root, name, 'Bookmarks'))) continue;
-      sources.push({ id: randomUUID(), browser, profile: profileLabel(name), family: 'chromium' });
-    }
-  }
-  firefoxRoots().forEach((path, index) =>
-    sources.push({
-      id: randomUUID(),
-      browser: 'Firefox',
-      profile: `Profile ${index + 1}`,
-      family: 'firefox',
-      path,
-    }),
-  );
-  return sources;
-}
 function sourcePath(source: ImportSource): string {
-  if (source.family === 'firefox' && source.path) return source.path;
-  const root = profileRoots().find(([name]) => name === source.browser)?.[1];
-  if (!root) throw new Error('Browser profile is no longer available');
-  const base = source.profile === 'Default profile' ? 'Default' : source.profile;
-  const path = join(root, base);
-  if (!existsSync(join(path, 'Bookmarks')))
-    throw new Error('Browser profile is no longer available');
-  return path;
+  if (source.path && existsSync(source.path)) return source.path;
+  throw new Error('Browser profile is no longer available');
 }
 function queryDb(
   path: string,
@@ -153,7 +52,7 @@ export function readProfile(source: ImportSource, kinds: string[]): ImportedProf
             url,
             title: String(row.title || new URL(url).hostname).slice(0, 500),
             favicon: '',
-            folder: `Firefox / ${String(row.folder || 'Bookmarks').slice(0, 100)}`,
+            folder: `${source.browser} / ${String(row.folder || 'Bookmarks').slice(0, 100)}`,
             createdAt: Math.max(0, Number(row.dateAdded) / 1000) || Date.now(),
           },
         ];

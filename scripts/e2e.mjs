@@ -121,6 +121,32 @@ await writeFile(
   ]),
 );
 delete env.DOT_DEV_URL;
+const customProfiles = join(userData, 'portable-browser', 'User Data');
+for (const folder of ['Default', 'Profile 8']) {
+  await mkdir(join(customProfiles, folder), { recursive: true });
+  await writeFile(
+    join(customProfiles, folder, 'Preferences'),
+    JSON.stringify({ profile: { name: folder === 'Default' ? 'Personal' : 'Work' } }),
+  );
+  await writeFile(
+    join(customProfiles, folder, 'Bookmarks'),
+    JSON.stringify({
+      roots: {
+        bookmark_bar: {
+          type: 'folder',
+          name: 'Portable',
+          children: [
+            {
+              type: 'url',
+              name: `Portable ${folder}`,
+              url: `${base}/portable-${folder.replace(/ /g, '-')}`,
+            },
+          ],
+        },
+      },
+    }),
+  );
+}
 delete env.ELECTRON_RUN_AS_NODE;
 async function launch() {
   app = await electron.launch({ args: ['.'], env, timeout: 30000 });
@@ -536,6 +562,35 @@ try {
       assert.equal(duplicate.report.counts.bookmarks, 0);
       assert.equal(duplicate.report.counts.history, 0);
       assert.equal(duplicate.report.skipped, 2);
+      await modal.getByRole('button', { name: 'Close', exact: true }).click();
+    },
+  );
+  await step(
+    'Custom browser folders discover all portable profiles and import the selected profile',
+    async () => {
+      await app.evaluate(({ dialog }, path) => {
+        dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [path] });
+      }, customProfiles);
+      await page.getByRole('button', { name: 'Import browser', exact: true }).click();
+      const modal = page.getByRole('dialog', { name: 'Import browser data' });
+      await modal.getByRole('button', { name: 'Choose browser folder', exact: true }).click();
+      const selector = modal.getByRole('combobox', { name: 'Browser profile' });
+      await expect(selector).toContainText('Personal (Default)');
+      await expect(selector).toContainText('Work (Profile 8)');
+      const value = await selector
+        .locator('option')
+        .filter({ hasText: 'Work (Profile 8)' })
+        .getAttribute('value');
+      await selector.selectOption(value);
+      await modal.getByRole('checkbox', { name: 'Browsing history', exact: true }).uncheck();
+      await modal.getByRole('checkbox', { name: 'Open tabs', exact: true }).uncheck();
+      await modal.getByRole('button', { name: 'Preview', exact: true }).click();
+      await expect(modal.locator('.import-preview')).toContainText('Bookmarks: 1');
+      await modal.getByRole('button', { name: 'Import', exact: true }).click();
+      await expect(modal.getByRole('status')).toContainText('Imported 1 bookmarks');
+      assert.ok((await snap()).bookmarks.some((item) => item.title === 'Portable Profile 8'));
+      await modal.getByRole('button', { name: 'Choose browser folder', exact: true }).click();
+      assert.equal(await selector.locator('option').count(), 3);
       await modal.getByRole('button', { name: 'Close', exact: true }).click();
     },
   );

@@ -1,5 +1,7 @@
 # Validation
 
+The 1.0.2 profile discovery update passed 50 unit tests and 27 local application flows. See [PROFILE-DISCOVERY-AUDIT.md](PROFILE-DISCOVERY-AUDIT.md) for scope and limitations.
+
 The 1.0.1 credential migration update passed 45 unit tests and 26 local application flows. See [PASSWORD-IMPORT-AUDIT.md](PASSWORD-IMPORT-AUDIT.md) for scope and limitations.
 
 The automated audit runs against actual Electron processes and actual WebContentsViews. It uses a local HTTP server for reproducible navigation, downloads and permission flows. Test profiles are temporary and separate from real user data.
