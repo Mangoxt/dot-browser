@@ -1,0 +1,13 @@
+{
+  "appId": "com.dot.browser",
+  "productName": "Dot Browser",
+  "publish": null,
+  "directories": { "output": "release" },
+  "files": ["dist/**/*", "assets/**/*", "package.json", "LICENSE", "README.md"],
+  "win": {
+    "target": "portable",
+    "icon": "assets/dot.ico",
+    "artifactName": "Dot-Browser-${version}-portable.exe"
+  },
+  "asar": true
+}

@@ -1,0 +1,52 @@
+{
+  "name": "dot-browser",
+  "productName": "Dot Browser",
+  "version": "1.0.0",
+  "description": "A considered space for the web. A real Chromium desktop browser.",
+  "author": "Dot Browser",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mangoxt/dot-browser.git"
+  },
+  "license": "MIT",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "vite build && node scripts/build.mjs",
+    "start": "electron .",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src tests scripts",
+    "test": "vitest run",
+    "test:e2e": "node scripts/e2e.mjs",
+    "test:dev": "node scripts/dev-check.mjs",
+    "package": "npm run build && electron-builder --win portable --config electron-builder.json --publish never",
+    "package:setup": "npm run build && electron-builder --win nsis --config electron-builder.setup.cjs --publish never",
+    "release:setup": "npm run build && electron-builder --win nsis --config electron-builder.setup.cjs --publish always"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9",
+    "lucide-react": "^0.577.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zod": "^4.3.6",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "electron": "^44.5.1",
+    "electron-builder": "^26.0.12",
+    "esbuild": "^0.28.2",
+    "eslint": "^9.39.0",
+    "globals": "^17.3.0",
+    "prettier": "^3.9.9",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
+}

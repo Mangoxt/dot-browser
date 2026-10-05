@@ -1,0 +1,18 @@
+{
+  "extends": "./electron-builder.json",
+  "win": {
+    "target": "nsis",
+    "icon": "assets/dot.ico",
+    "artifactName": "Dot-Browser-Setup-${version}.exe"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowElevation": true,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "runAfterFinish": false,
+    "shortcutName": "Dot Browser"
+  }
+}
