@@ -30,6 +30,8 @@ import { domainOf, isWebURL, recordVisit, resolveInput, safeFavicon } from '../s
 import { BrowserSession, SessionHost, originOf, rememberRule } from './session';
 import { Storage } from './storage';
 import { readProfile } from './profile-import';
+import { readingScript } from './reading';
+import { readingSchema } from '../shared/reading';
 import { discoverProfiles } from './profile-discovery';
 import type { ImportSource, ImportReport } from '../shared/import';
 import {
@@ -310,7 +312,7 @@ export class BrowserController implements SessionHost {
   ui(type: string) {
     if (!this.window.isDestroyed()) {
       this.layoutState.overlay =
-        ['omnibox', 'palette', 'split', 'group', 'clear'].includes(type) ||
+        ['omnibox', 'palette', 'split', 'group', 'clear', 'tabsearch', 'reader'].includes(type) ||
         (type === 'bookmark' && isWebURL(this.active()?.meta.url ?? ''));
       this.layout();
       this.window.webContents.focus();
@@ -1303,6 +1305,18 @@ export class BrowserController implements SessionHost {
       case 'zoom':
         this.zoom(this.tab(), c.value);
         break;
+      case 'reader.extract': {
+        const tab = this.active(),
+          wc = tab?.view?.webContents;
+        if (!wc || !isWebURL(wc.getURL())) throw new Error('Open a webpage to use reading view.');
+        const url = wc.getURL();
+        const article = readingSchema.parse(await wc.executeJavaScript(readingScript));
+        if (wc.isDestroyed() || this.active() !== tab || wc.getURL() !== url)
+          throw new Error('The page changed. Open reading view again.');
+        if (!article.blocks.length)
+          throw new Error('No readable article text was found on this page.');
+        return { ok: true, article: { ...article, url } };
+      }
       case 'page':
         await this.pageAction(c.action);
         break;
@@ -1345,6 +1359,22 @@ export class BrowserController implements SessionHost {
     const t = this.tab(),
       wc = t.view?.webContents;
     if (!wc) throw new Error('Open a webpage first');
+    if (action === 'pdf') {
+      const originalURL = wc.getURL();
+      const selected = await dialog.showSaveDialog(this.window, {
+        defaultPath: `${t.meta.title.replace(/[<>:"/\\|?*]/g, '_').slice(0, 80) || 'page'}.pdf`,
+        filters: [{ name: 'PDF document', extensions: ['pdf'] }],
+      });
+      if (selected.canceled || !selected.filePath) return;
+      if (wc.isDestroyed() || this.active() !== t || wc.getURL() !== originalURL)
+        throw new Error('The page changed. Choose Save as PDF again.');
+      const pdf = await wc.printToPDF({ printBackground: true, preferCSSPageSize: true });
+      if (wc.isDestroyed() || wc.getURL() !== originalURL)
+        throw new Error('The page changed while preparing the PDF. Try again.');
+      await writeFile(selected.filePath, pdf);
+      this.toast('Page saved as PDF.');
+      return;
+    }
     if (action === 'print')
       wc.print({}, (success, reason) => {
         if (!success && !reason.includes('cancel')) this.toast(`Print failed: ${reason}`);
@@ -1499,6 +1529,19 @@ export class BrowserController implements SessionHost {
         ],
       },
       { label: 'Find in page', accelerator: 'Ctrl+F', enabled: !!wc, click: () => this.ui('find') },
+      { label: 'Search tabs', accelerator: 'Ctrl+Shift+A', click: () => this.ui('tabsearch') },
+      {
+        label: 'Reading view',
+        accelerator: 'Ctrl+Shift+M',
+        enabled: !!wc,
+        click: () => this.ui('reader'),
+      },
+      {
+        label: 'Save as PDF…',
+        accelerator: 'Ctrl+Shift+S',
+        enabled: !!wc,
+        click: () => this.run({ type: 'page', action: 'pdf' }),
+      },
       {
         label: 'Print…',
         accelerator: 'Ctrl+P',
@@ -1608,6 +1651,8 @@ export class BrowserController implements SessionHost {
     const action = (action: Extract<Command, { type: 'tab.action' }>['action']) =>
       this.run({ type: 'tab.action', action });
     if (ctrl && key === 'l') this.ui('omnibox');
+    else if (ctrl && shift && key === 'a') this.ui('tabsearch');
+    else if (ctrl && shift && key === 'm') this.ui('reader');
     else if (ctrl && key === 't') {
       if (shift) action('restore');
       else this.addTab();
@@ -1634,7 +1679,7 @@ export class BrowserController implements SessionHost {
       const t = this.active();
       if (t) this.zoom(t, key === '0' ? 1 : t.meta.zoom + (key === '-' ? -0.1 : 0.1));
     } else if (ctrl && key === 'p') this.run({ type: 'page', action: 'print' });
-    else if (ctrl && key === 's') this.run({ type: 'page', action: 'save' });
+    else if (ctrl && key === 's') this.run({ type: 'page', action: shift ? 'pdf' : 'save' });
     else if (key === 'f12' || (ctrl && shift && key === 'i'))
       this.run({ type: 'page', action: 'devtools' });
     else if (key === 'f11') this.window.setFullScreen(!this.window.isFullScreen());

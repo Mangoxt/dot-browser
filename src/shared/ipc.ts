@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { ReadingArticle } from './reading';
 import {
   IMPORT_KINDS,
   type ImportSource,
@@ -144,7 +145,11 @@ export const commandSchema = z.discriminatedUnion('type', [
     next: z.boolean().optional(),
   }),
   z.object({ type: z.literal('zoom'), value: z.number().min(0.25).max(3) }),
-  z.object({ type: z.literal('page'), action: z.enum(['print', 'save', 'devtools', 'source']) }),
+  z.object({ type: z.literal('reader.extract') }),
+  z.object({
+    type: z.literal('page'),
+    action: z.enum(['print', 'save', 'pdf', 'devtools', 'source']),
+  }),
   z.object({
     type: z.literal('window'),
     action: z.enum(['new', 'private', 'minimize', 'maximize', 'close', 'fullscreen', 'exit']),
@@ -170,6 +175,7 @@ export interface CommandResult {
   report?: ImportReport;
   logins?: LoginSummary[];
   password?: string;
+  article?: ReadingArticle;
 }
 export interface BrowserAPI {
   snapshot(): Promise<BrowserWindowState>;

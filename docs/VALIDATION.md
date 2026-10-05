@@ -1,5 +1,7 @@
 # Validation
 
+The 1.0.4 usability update passed 52 unit tests and 31 local application flows, plus focused checks in the packaged app. See [USABILITY-AUDIT.md](USABILITY-AUDIT.md).
+
 The 1.0.3 locked-import hotfix passed 52 unit tests and 28 local application flows, including a real exclusive SQLite lock and large Chromium timestamps. See [LOCKED-IMPORT-AUDIT.md](LOCKED-IMPORT-AUDIT.md).
 
 The 1.0.2 profile discovery update passed 50 unit tests and 27 local application flows. See [PROFILE-DISCOVERY-AUDIT.md](PROFILE-DISCOVERY-AUDIT.md) for scope and limitations.

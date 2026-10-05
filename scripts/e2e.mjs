@@ -11,6 +11,13 @@ await mkdir(directory, { recursive: true });
 const userData = await mkdtemp(join(tmpdir(), 'dot-e2e-'));
 const downloadBody = Buffer.alloc(1024 * 1024, 'dot browser download test\n');
 const server = createServer((req, res) => {
+  if (req.url === '/article') {
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end(
+      '<title>Reading fixture</title><nav><p>Navigation noise</p></nav><article><h1>A calmer way to read</h1><h2>First section</h2><p>This is the first meaningful paragraph of the article, with enough text to make reading useful.</p><p>Literal &lt;img src=x onerror=alert(1)&gt; text stays readable, not executable.</p><form><p>Private form content must stay out of reading view</p><input id="article-input"></form><blockquote>A useful quote.</blockquote></article><aside><p>Sidebar noise</p></aside><script>window.readerMarker=Math.random()</script>',
+    );
+    return;
+  }
   if (req.url === '/login' || req.url === '/cross-login') {
     res.writeHead(200, { 'Content-Type': 'text/html' });
     res.end(
@@ -362,6 +369,70 @@ try {
     await cmd({ type: 'split', otherId: other, ratio: 0.6, swap: true });
     assert.equal((await snap()).split.ratio, 0.6);
     await cmd({ type: 'split', otherId: null });
+  });
+  await step(
+    'Tab search switches across workspaces using title, URL and keyboard navigation',
+    async () => {
+      const before = await snap();
+      const target = before.tabs.find((tab) => tab.id === normalTab);
+      await key('A', ['control', 'shift']);
+      const modal = page.getByRole('dialog', { name: 'Search tabs', exact: true });
+      const input = modal.getByRole('textbox', { name: 'Search open tabs' });
+      await input.fill(target.url);
+      await expect(modal.getByRole('option')).not.toHaveCount(0);
+      await input.press('Enter');
+      await waitState(
+        (state) =>
+          state.activeId === normalTab ||
+          state.tabs.find((tab) => tab.id === state.activeId).url === target.url,
+      );
+      await expect(modal).toHaveCount(0);
+    },
+  );
+  await step(
+    'Reading view extracts safe article text and leaves the original page intact',
+    async () => {
+      await cmd({ type: 'tab.new', url: base + '/article' });
+      await waitState(
+        (state) => state.tabs.find((tab) => tab.id === state.activeId).title === 'Reading fixture',
+      );
+      await webEval('document.querySelector("#article-input").value="unsaved form"');
+      const marker = await webEval('window.readerMarker');
+      await key('M', ['control', 'shift']);
+      const modal = page.getByRole('dialog', { name: 'Reading view', exact: true });
+      await expect(modal.locator('article')).toContainText('A calmer way to read');
+      await expect(modal.locator('article')).toContainText('<img src=x onerror=alert(1)>');
+      await expect(modal.locator('article')).not.toContainText('Navigation noise');
+      await expect(modal.locator('article')).not.toContainText('Sidebar noise');
+      await expect(modal.locator('article')).not.toContainText('Private form content');
+      assert.equal(await modal.locator('article img').count(), 0);
+      await modal.getByRole('button', { name: 'Larger reading text' }).click();
+      await expect(modal.locator('article')).toHaveCSS('font-size', '22px');
+      await page.screenshot({ path: join(directory, 'reading-view.png') });
+      await modal.getByRole('button', { name: 'Back to page', exact: true }).click();
+      assert.equal(await webEval('window.readerMarker'), marker);
+      assert.equal(await webEval('document.querySelector("#article-input").value'), 'unsaved form');
+    },
+  );
+  await step('Save as PDF writes a real Chromium PDF and cancellation writes nothing', async () => {
+    const path = join(directory, 'article.pdf');
+    await app.evaluate(({ dialog }, path) => {
+      dialog.showSaveDialog = async () => ({ canceled: false, filePath: path });
+    }, path);
+    await key('S', ['control', 'shift']);
+    await expect
+      .poll(async () => {
+        try {
+          return (await readFile(path)).subarray(0, 5).toString();
+        } catch {
+          return '';
+        }
+      })
+      .toBe('%PDF-');
+    await app.evaluate(({ dialog }) => {
+      dialog.showSaveDialog = async () => ({ canceled: true });
+    });
+    assert.equal((await cmd({ type: 'page', action: 'pdf' })).ok, true);
   });
   await step('Find in page and zoom control Chromium', async () => {
     await cmd({ type: 'tab.action', action: 'select', id: normalTab });

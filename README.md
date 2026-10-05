@@ -26,7 +26,7 @@ npm run package
 npm run package:setup
 ```
 
-The Windows setup installer is `release/Dot-Browser-Setup-1.0.3.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
+The Windows setup installer is `release/Dot-Browser-Setup-1.0.4.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
 
 ### Automatic updates for installed copies
 
@@ -41,6 +41,8 @@ After committing your source changes, run `npm version patch` and `git push orig
 **Integration tests use hidden windows** to avoid stealing focus, temporary profiles outside the project, and a local HTTP fixture server. They write screenshots and a detailed audit under `test-results/`. The external-site audit uses the current network and does not bypass access restrictions. Running the normal application or development command intentionally opens a browser window.
 
 ## What works
+
+- Search open tabs across workspaces by title, URL or workspace name with Ctrl+Shift+A; use arrow keys and Enter to switch. Reading view (Ctrl+Shift+M) displays extracted article text with adjustable type size and estimated reading time while preserving the original page. Save as PDF (Ctrl+Shift+S) writes a real Chromium PDF through a file picker. All three are available in the browser menu and command palette. Reading view depends on extractable page text and does not bypass service access restrictions.
 
 - Real Chromium navigation, redirects, back/forward, reload/stop, external-protocol confirmation, download responses, recoverable network errors and crashed-page recovery.
 - An omnibox with URL/domain/localhost/IP parsing, history/bookmark/open-tab/search suggestions, highlighted matches and keyboard selection. Google, Bing, DuckDuckGo, Brave, YouTube and GitHub keywords are included; custom engines can be added or edited.
@@ -77,4 +79,5 @@ For custom profile locations, select the profile directory or its parent user-da
 Browser extensions, account sync and additional persistent user profiles are not presented as working features. Automatic password capture and automatic page-load autofill are not implemented. Additional profiles can be added by giving each profile its own Storage and `persist:` session partition; private windows already exercise separate ephemeral sessions.
 
 Protected streaming, OAuth policies, bot challenges and other service-side restrictions may limit custom Electron clients. Do not assume that loading Spotify or YouTube proves protected media playback works. Native print/save dialogs, external-app launches, actual screen sharing, audio hardware, OS focus behavior and 125%/150% multi-monitor scaling require interactive hardware validation. Tests never launch external apps or execute downloaded programs.
+
 

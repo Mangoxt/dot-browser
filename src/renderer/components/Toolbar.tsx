@@ -12,6 +12,7 @@ import {
   Download,
   UserRound,
   KeyRound,
+  BookOpen,
   MoreHorizontal,
   PanelLeft,
   PanelRight,
@@ -235,6 +236,17 @@ export function Toolbar() {
         )}
       </div>
       <div className="toolbar-extras">
+        <IconButton
+          icon={Search}
+          label="Search tabs (Ctrl+Shift+A)"
+          onClick={() => open('tabsearch')}
+        />
+        <IconButton
+          icon={BookOpen}
+          label="Reading view (Ctrl+Shift+M)"
+          disabled={!isWebURL(tab.url)}
+          onClick={() => open('reader')}
+        />
         <IconButton
           icon={Columns2}
           label="Split view"

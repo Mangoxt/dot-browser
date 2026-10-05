@@ -21,6 +21,8 @@ export type Overlay =
   | 'onboarding'
   | 'import'
   | 'passwords'
+  | 'tabsearch'
+  | 'reader'
   | null;
 interface UIState {
   state: BrowserWindowState | null;

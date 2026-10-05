@@ -42,7 +42,7 @@ export default function App() {
       else if (event.type === 'escape') {
         open(null);
         set({ omnibox: false, find: false });
-      } else if (['palette', 'split', 'group', 'clear'].includes(event.type))
+      } else if (['palette', 'split', 'group', 'clear', 'tabsearch', 'reader'].includes(event.type))
         open(event.type as 'palette');
     });
     return () => {

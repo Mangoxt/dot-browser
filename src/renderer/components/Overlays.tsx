@@ -25,6 +25,7 @@ import { bookmarkCurrent, command, openPage, patchSettings, useBrowser } from '.
 import { IconButton } from './common';
 import { DownloadList } from '../pages/Library';
 import { PasswordManager } from './PasswordManager';
+import { ReadingView, TabSearch } from './Usability';
 import type { Bookmark, Shortcut, Workspace, TabGroup } from '../../shared/models';
 import type { SiteInfo } from '../../shared/ipc';
 import { isWebURL, resolveInput } from '../../shared/navigation';
@@ -83,6 +84,8 @@ export function Overlays() {
     onboarding: 'Welcome to Dot',
     import: 'Import browser data',
     passwords: 'Saved passwords',
+    tabsearch: 'Search tabs',
+    reader: 'Reading view',
   };
   return (
     <div
@@ -93,7 +96,7 @@ export function Overlays() {
     >
       <div
         ref={modal}
-        className={`modal ${overlay === 'palette' ? 'palette-modal' : ''}`}
+        className={`modal ${overlay === 'palette' ? 'palette-modal' : ''} ${overlay === 'reader' ? 'reader-modal' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-label={titles[overlay]}
@@ -131,6 +134,8 @@ export function Overlays() {
         {overlay === 'onboarding' && <Onboarding />}
         {overlay === 'import' && <ImportBrowserData />}
         {overlay === 'passwords' && <PasswordManager />}
+        {overlay === 'tabsearch' && <TabSearch />}
+        {overlay === 'reader' && <ReadingView />}
       </div>
     </div>
   );
@@ -972,6 +977,14 @@ function CommandPalette() {
       run: () => void command({ type: 'tab.action', action: 'restore' }),
     },
     { label: 'Bookmark page', icon: Star, run: bookmarkCurrent },
+    { label: 'Search open tabs', icon: Search, keys: 'Ctrl Shift A', run: () => open('tabsearch') },
+    { label: 'Reading view', icon: Layers, keys: 'Ctrl Shift M', run: () => open('reader') },
+    {
+      label: 'Save as PDF',
+      icon: Download,
+      keys: 'Ctrl Shift S',
+      run: () => void command({ type: 'page', action: 'pdf' }),
+    },
     ...[
       ['History', History],
       ['Bookmarks', Star],

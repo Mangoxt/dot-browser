@@ -2470,3 +2470,75 @@ form > label select {
   flex-wrap: wrap;
   gap: 8px;
 }
+
+.reader-modal {
+  width: min(820px, calc(100vw - 32px));
+}
+.reading-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.reading-controls span {
+  flex: 1;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.reading-view article {
+  font-family: Georgia, serif;
+  line-height: 1.8;
+  padding: 0 20px 20px;
+  overflow-wrap: anywhere;
+}
+.reading-view h1 {
+  font-size: 1.8em;
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+.reading-view h2 {
+  font-size: 1.3em;
+  margin: 26px 0 12px;
+}
+.reading-source {
+  color: var(--text-muted);
+  font: 12px system-ui;
+  margin-bottom: 30px;
+}
+.reading-view blockquote {
+  border-left: 3px solid var(--accent);
+  margin-left: 0;
+  padding-left: 18px;
+}
+.tab-search-results {
+  max-height: 350px;
+  overflow: auto;
+}
+.tab-search-results button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+}
+.tab-search-results button.selected {
+  background: var(--surface-hover);
+}
+.tab-search-results span {
+  display: grid;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+.tab-search-results strong,
+.tab-search-results small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tab-search-results small {
+  color: var(--text-muted);
+  font-size: 11px;
+}
