@@ -595,6 +595,66 @@ try {
     },
   );
   await step(
+    'Locked Chromium history preserves readable bookmarks and imports history after unlock',
+    async () => {
+      const root = join(userData, 'locked-source');
+      await mkdir(root, { recursive: true });
+      await writeFile(join(root, 'Preferences'), '{}');
+      await writeFile(
+        join(root, 'Bookmarks'),
+        JSON.stringify({
+          roots: {
+            bar: {
+              type: 'folder',
+              name: 'Available',
+              children: [
+                { type: 'url', name: 'Lock fixture bookmark', url: `${base}/locked-bookmark` },
+              ],
+            },
+          },
+        }),
+      );
+      const writer = new DatabaseSync(join(root, 'History'));
+      writer.exec(
+        `CREATE TABLE urls(url TEXT,title TEXT,visit_count INTEGER,last_visit_time INTEGER,hidden INTEGER); INSERT INTO urls VALUES('${base}/locked-history','Lock fixture history',1,13300000000000000,0); BEGIN EXCLUSIVE;`,
+      );
+      try {
+        await app.evaluate(({ dialog }, path) => {
+          dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [path] });
+        }, root);
+        const found = await cmd({ type: 'import.folder' });
+        const source = found.sources.find((item) => item.profile === 'locked-source');
+        const partial = await cmd({
+          type: 'import.preview',
+          sourceId: source.id,
+          kinds: ['bookmarks', 'history'],
+        });
+        assert.equal(partial.preview.counts.bookmarks, 1);
+        assert.equal(partial.preview.counts.history, 0);
+        assert.ok(partial.preview.warnings.join(' ').includes('locked'));
+        assert.equal(
+          (await cmd({ type: 'import.apply', token: partial.preview.token })).report.counts
+            .bookmarks,
+          1,
+        );
+        writer.exec('COMMIT');
+        const unlocked = await cmd({
+          type: 'import.preview',
+          sourceId: source.id,
+          kinds: ['history'],
+        });
+        assert.equal(unlocked.preview.counts.history, 1);
+        assert.equal(
+          (await cmd({ type: 'import.apply', token: unlocked.preview.token })).report.counts
+            .history,
+          1,
+        );
+      } finally {
+        writer.close();
+      }
+    },
+  );
+  await step(
     'Password CSV import encrypts secrets, manages entries and fills only matching login forms',
     async () => {
       const csvPath = join(userData, 'fake-passwords.csv');

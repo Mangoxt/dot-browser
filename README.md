@@ -26,7 +26,7 @@ npm run package
 npm run package:setup
 ```
 
-The Windows setup installer is `release/Dot-Browser-Setup-1.0.2.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
+The Windows setup installer is `release/Dot-Browser-Setup-1.0.3.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
 
 ### Automatic updates for installed copies
 
@@ -77,3 +77,4 @@ For custom profile locations, select the profile directory or its parent user-da
 Browser extensions, account sync and additional persistent user profiles are not presented as working features. Automatic password capture and automatic page-load autofill are not implemented. Additional profiles can be added by giving each profile its own Storage and `persist:` session partition; private windows already exercise separate ephemeral sessions.
 
 Protected streaming, OAuth policies, bot challenges and other service-side restrictions may limit custom Electron clients. Do not assume that loading Spotify or YouTube proves protected media playback works. Native print/save dialogs, external-app launches, actual screen sharing, audio hardware, OS focus behavior and 125%/150% multi-monitor scaling require interactive hardware validation. Tests never launch external apps or execute downloaded programs.
+

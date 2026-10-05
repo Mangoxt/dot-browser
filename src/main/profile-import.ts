@@ -24,7 +24,9 @@ function queryDb(
   if (!existsSync(path)) return [];
   const db = new DatabaseSync(path, { readOnly: true, timeout: 1500 });
   try {
-    return db.prepare(sql).all(...args) as Record<string, unknown>[];
+    const statement = db.prepare(sql);
+    statement.setReadBigInts(true);
+    return statement.all(...args) as Record<string, unknown>[];
   } finally {
     db.close();
   }
@@ -33,7 +35,7 @@ function chromeTime(value: unknown): number {
   const n = Number(value) / 1000 - 11644473600000;
   return Number.isFinite(n) && n > 0 && n <= Date.now() ? n : Date.now();
 }
-export function readProfile(source: ImportSource, kinds: string[]): ImportedProfileData {
+function readProfilePart(source: ImportSource, kinds: string[]): ImportedProfileData {
   const directory = sourcePath(source),
     data: ImportedProfileData = { bookmarks: [], history: [], tabs: [], warnings: [] };
   const firefox = source.family === 'firefox';
@@ -125,5 +127,35 @@ export function readProfile(source: ImportSource, kinds: string[]): ImportedProf
     data.warnings.push(
       'Cookies and passwords are protected by the source browser and operating system. Export these from the source browser to import them safely.',
     );
+  return data;
+}
+
+export function readProfile(source: ImportSource, kinds: string[]): ImportedProfileData {
+  sourcePath(source);
+  const data: ImportedProfileData = { bookmarks: [], history: [], tabs: [], warnings: [] };
+  const labels = { bookmarks: 'Bookmarks', history: 'Browsing history', tabs: 'Open tabs' };
+  for (const kind of ['bookmarks', 'history', 'tabs'] as const) {
+    if (!kinds.includes(kind)) continue;
+    try {
+      const part = readProfilePart(source, [kind]);
+      if (kind === 'bookmarks') data.bookmarks = part.bookmarks;
+      else if (kind === 'history') data.history = part.history;
+      else data.tabs = part.tabs;
+      data.warnings.push(...part.warnings);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : '';
+      data.warnings.push(
+        /(?:locked|busy)/i.test(message)
+          ? `${labels[kind]} is locked by ${source.browser}. Completely close ${source.browser}, including background processes, then preview again to import this category.`
+          : `${labels[kind]} could not be read from this profile. This category was skipped; try a different profile or an exported file.`,
+      );
+    }
+  }
+  if (kinds.some((kind) => ['cookies', 'passwords'].includes(kind)))
+    data.warnings.push(
+      'Export passwords as CSV and cookies as JSON/TXT from the source browser to import them.',
+    );
+  if (!data.bookmarks.length && !data.history.length && !data.tabs.length && data.warnings.length)
+    throw new Error(data.warnings.join(' '));
   return data;
 }
