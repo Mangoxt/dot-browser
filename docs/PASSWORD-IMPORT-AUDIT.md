@@ -13,3 +13,7 @@ Validated on Windows on 2026-10-06 using Electron 44.5.1. All application window
 Migration path: Bookmarks → Import browser → Passwords and cookies → Import password CSV → Import. Export the CSV from the previous browser's password manager first. CSV exports contain readable passwords; delete the exported file when it is no longer needed. Use the toolbar's Saved passwords button to manage or fill imported credentials.
 
 Source data for all tests was fabricated. No real user browser passwords or cookies were read or imported.
+
+The public [1.0.1 release](https://github.com/Mangoxt/dot-browser/releases/tag/v1.0.1) contains the setup, blockmap and latest.yml. Public API asset digests match local files, and the setup download returned HTTP 200. The installer is 115,181,947 bytes; SHA-256: `68603c2ea8465525548047f6c55610c114340bb4b8f77f676310686da0d7a680`.
+
+The packaged 1.0.1 application read the live GitHub feed in a hidden window. With the updater's current version simulated as 1.0.0, it offered 1.0.1 and downloaded an installer whose hash matched the published setup. Automatic installation was explicitly disabled in this temporary test, and no installer was executed. This verifies update discovery and download, not an actual installed 1.0.0-to-1.0.1 upgrade. The validated local build was uploaded manually after canceling the queued Windows Actions job to avoid duplicate publication.
