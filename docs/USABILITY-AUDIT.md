@@ -9,3 +9,5 @@ Validated on Windows on 2026-10-06 with Electron 44.5.1. TypeScript, ESLint and 
 The final reading layout was captured in test-results/reading-view-final.png and visually checked. New shortcuts are included in Settings and the command palette. The PDF feature saves the underlying webpage, not a separate PDF of the reading overlay.
 
 The 1.0.4 NSIS installer, blockmap and latest.yml were built successfully. The installer is unsigned and was not executed.
+
+The public [1.0.4 release](https://github.com/Mangoxt/dot-browser/releases/tag/v1.0.4) includes all three update assets, whose public API digests match local files. The setup download returned HTTP 200. Setup size: 115,192,419 bytes; SHA-256: `fb4ca9eb0def60d7bdc7f9fdc477c9b388e063efc3d06b3b303e81b474214ed3`. The packaged app read the live feed and reported local/remote version 1.0.4. The validated local build was published after canceling the redundant Actions job.
