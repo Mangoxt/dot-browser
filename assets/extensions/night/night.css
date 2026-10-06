@@ -1,4 +1,8 @@
-@media (prefers-color-scheme: dark), (prefers-color-scheme: light) {
-  html { filter: invert(.9) hue-rotate(180deg) !important; background: #fff !important; }
-  img, video, picture, canvas { filter: invert(1) hue-rotate(180deg) !important; }
+/* Native dark pages already have adjusted colors. Do not invert them twice. */
+@media (prefers-color-scheme: light) {
+  html:not([data-dot-light-exception]) { filter: invert(.9) hue-rotate(180deg) !important; background: #fff !important; }
+  html:not([data-dot-light-exception]) img,
+  html:not([data-dot-light-exception]) video,
+  html:not([data-dot-light-exception]) picture,
+  html:not([data-dot-light-exception]) canvas { filter: invert(1) hue-rotate(180deg) !important; }
 }

@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import {
   Home,
   Briefcase,
@@ -40,19 +41,19 @@ export function Sidebar() {
         </span>
         <IconButton
           icon={PanelLeftClose}
-          label="Collapse sidebar"
+          label={tr('Collapse sidebar')}
           onClick={() => patchSettings({ sidebar: false })}
         />
       </div>
       {state.private && (
         <div className="private-label">
           <Shield size={14} />
-          Private window
+          {tr('Private window')}
         </div>
       )}
       <div className="sidebar-section-label">
-        YOUR SPACES
-        <IconButton icon={Plus} label="Create workspace" onClick={() => open('workspace')} />
+        {tr('WORKSPACES')}
+        <IconButton icon={Plus} label={tr('Create workspace')} onClick={() => open('workspace')} />
       </div>
       <div className="workspaces">
         {state.workspaces.map((w, i) => {
@@ -82,8 +83,8 @@ export function Sidebar() {
               </button>
               <button
                 className="workspace-edit"
-                title={`Edit ${w.name}`}
-                aria-label={`Edit ${w.name}`}
+                title={tr('Edit {name}', { name: w.name })}
+                aria-label={tr('Edit {name}', { name: w.name })}
                 onClick={() => open('workspace', w)}
               >
                 <ChevronDown size={13} />
@@ -95,12 +96,14 @@ export function Sidebar() {
       <div className="sidebar-divider" />
       {state.settings.verticalTabs ? (
         <>
-          <div className="sidebar-section-label">{current.name.toUpperCase()} TABS</div>
+          <div className="sidebar-section-label">
+            {current.name.toUpperCase()} ·{tr('TABS')}
+          </div>
           <Tabs vertical />
         </>
       ) : (
         <div className="sidebar-favorites">
-          <div className="sidebar-section-label">FAVORITES</div>
+          <div className="sidebar-section-label">{tr('FAVORITES')}</div>
           {state.shortcuts.slice(0, 6).map((s) => (
             <button key={s.id} onClick={() => void command({ type: 'tab.new', url: s.url })}>
               <span className="shortcut-letter">{s.title[0]}</span>
@@ -112,27 +115,36 @@ export function Sidebar() {
       <div className="sidebar-bottom">
         <button className="command-launch" onClick={() => open('palette')}>
           <Command size={15} />
-          <span>Quick command</span>
-          <kbd>Ctrl K</kbd>
+          <span>{tr('Quick command')}</span>
+          <kbd>{tr('Ctrl K')}</kbd>
         </button>
         <div className="sidebar-utilities">
-          <IconButton icon={History} label="History (Ctrl+H)" onClick={() => openPage('history')} />
-          <IconButton icon={Star} label="Bookmarks" onClick={() => openPage('bookmarks')} />
+          <IconButton
+            icon={History}
+            label={tr('History (Ctrl+H)')}
+            onClick={() => openPage('history')}
+          />
+          <IconButton icon={Star} label={tr('Bookmarks')} onClick={() => openPage('bookmarks')} />
           <IconButton
             icon={Download}
-            label="Downloads (Ctrl+J)"
+            label={tr('Downloads (Ctrl+J)')}
             onClick={() => openPage('downloads')}
           />
-          <IconButton icon={Settings2} label="Settings" onClick={() => openPage('settings')} />
+          <IconButton
+            icon={Settings2}
+            label={tr('Settings')}
+            onClick={() => openPage('settings')}
+          />
         </div>
         <div className="sidebar-status">
-          <span className="status-dot" />A little space to focus.
+          <span className="status-dot" />
+          Dot Browser
         </div>
       </div>
       <div
         className="sidebar-resizer"
         role="separator"
-        aria-label="Resize sidebar"
+        aria-label={tr('Resize sidebar')}
         tabIndex={0}
         onKeyDown={(e) => {
           if (['ArrowLeft', 'ArrowRight'].includes(e.key))

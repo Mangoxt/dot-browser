@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { useEffect, useRef, useState } from 'react';
 import {
   ArrowLeft,
@@ -79,33 +80,33 @@ export function Toolbar() {
     <div className="toolbar">
       <IconButton
         icon={PanelLeft}
-        label="Toggle sidebar"
+        label={tr('Toggle sidebar')}
         active={state.settings.sidebar}
         onClick={() => patchSettings({ sidebar: !state.settings.sidebar })}
       />
       <div className="navigation-buttons">
         <IconButton
           icon={ArrowLeft}
-          label="Back (Alt+Left)"
+          label={tr('Back (Alt+Left)')}
           disabled={!tab.canGoBack}
           onClick={() => action('back')}
         />
         <IconButton
           icon={ArrowRight}
-          label="Forward (Alt+Right)"
+          label={tr('Forward (Alt+Right)')}
           disabled={!tab.canGoForward}
           onClick={() => action('forward')}
         />
         <IconButton
           icon={tab.loading ? X : RotateCw}
-          label={tab.loading ? 'Stop loading' : 'Reload (Ctrl+R)'}
+          label={tab.loading ? tr('Stop loading') : tr('Reload (Ctrl+R)')}
           onClick={() => action(tab.loading ? 'stop' : 'reload')}
         />
         {state.settings.showHome && (
           <IconButton
             icon={Home}
             className="home-control"
-            label="Home"
+            label={tr('Home')}
             onClick={() => void command({ type: 'tab.navigate', input: state.settings.home })}
           />
         )}
@@ -124,14 +125,18 @@ export function Toolbar() {
                 : ShieldAlert
               : SlidersHorizontal
           }
-          label="Site information"
+          label={tr('Site information')}
           disabled={!isWebURL(tab.url)}
           onClick={() => open('site')}
         />
         <input
           ref={ref}
-          aria-label="Address and search"
-          placeholder={`Search ${state.settings.engines.find((e) => e.id === state.settings.engine)?.name ?? 'the web'} or enter a URL`}
+          aria-label={tr('Address and search')}
+          placeholder={tr('Search {engine} or enter an address', {
+            engine:
+              state.settings.engines.find((e) => e.id === state.settings.engine)?.name ??
+              tr('the web'),
+          })}
           value={input}
           spellCheck={false}
           onChange={(e) => {
@@ -162,7 +167,7 @@ export function Toolbar() {
         {tab.zoom !== 1 && (
           <button
             className="zoom-pill"
-            title="Reset zoom"
+            title={tr('Reset zoom')}
             onClick={() => void command({ type: 'zoom', value: 1 })}
           >
             {Math.round(tab.zoom * 100)}%
@@ -170,13 +175,13 @@ export function Toolbar() {
         )}
         <IconButton
           icon={Star}
-          label={bookmarked ? 'Edit bookmark (Ctrl+D)' : 'Bookmark page (Ctrl+D)'}
+          label={bookmarked ? tr('Edit bookmark (Ctrl+D)') : tr('Bookmark page (Ctrl+D)')}
           active={bookmarked}
           disabled={!isWebURL(tab.url)}
           onClick={bookmarkCurrent}
         />
         {omnibox && (
-          <div className="suggestions" role="listbox" aria-label="Address suggestions">
+          <div className="suggestions" role="listbox" aria-label={tr('Address suggestions')}>
             <button
               role="option"
               aria-selected={index === 0}
@@ -186,9 +191,11 @@ export function Toolbar() {
             >
               <Search size={17} />
               <span>
-                <strong>{input || 'Where would you like to go?'}</strong>
+                <strong>{input || tr('Search or enter an address')}</strong>
                 <small>
-                  {input ? 'Search or navigate' : 'Type an address, a search, or an engine keyword'}
+                  {input
+                    ? tr('Search or navigate')
+                    : tr('Type an address, a search, or an engine keyword')}
                 </small>
               </span>
               <CornerDownLeft size={15} />
@@ -211,7 +218,7 @@ export function Toolbar() {
                   </small>
                 </span>
                 <small className="suggestion-kind">
-                  {s.kind === 'tab' ? 'Switch to tab' : s.kind}
+                  {s.kind === 'tab' ? tr('Switch to tab') : tr(s.kind)}
                 </small>
                 {s.kind === 'tab' && <ExternalLink size={13} />}
               </button>
@@ -219,41 +226,48 @@ export function Toolbar() {
             <div className="suggestion-footer">
               <span>
                 <kbd>↑</kbd>
-                <kbd>↓</kbd> to navigate
+                <kbd>↓</kbd>
+                {tr('to navigate')}
               </span>
               <span>
-                <kbd>enter</kbd> to open
+                <kbd>{tr('enter')}</kbd>
+                {tr('to open')}
               </span>
               <span>
-                <kbd>esc</kbd> to close
+                <kbd>{tr('esc')}</kbd>
+                {tr('to close')}
               </span>
             </div>
           </div>
         )}
       </div>
       <div className="download-indicator">
-        <IconButton icon={Download} label="Downloads (Ctrl+J)" onClick={() => open('downloads')} />
+        <IconButton
+          icon={Download}
+          label={tr('Downloads (Ctrl+J)')}
+          onClick={() => open('downloads')}
+        />
         {state.downloads.some((d) => d.status === 'progressing') && (
           <span className="activity-dot" />
         )}
       </div>
-      <IconButton icon={Puzzle} label="Extensions" onClick={() => open('extensions')} />
+      <IconButton icon={Puzzle} label={tr('Extensions')} onClick={() => open('extensions')} />
       <IconButton
         icon={MoreHorizontal}
-        label="Browser menu"
+        label={tr('Browser menu')}
         active={useBrowser.getState().overlay === 'browsermenu'}
         onClick={() => open(useBrowser.getState().overlay === 'browsermenu' ? null : 'browsermenu')}
       />
       {state.split && (
         <div className="split-toolbar">
-          <span>Split view</span>
+          <span>{tr('Split view')}</span>
           <button
             onClick={() => void command({ type: 'split', otherId: state.split!.right, swap: true })}
           >
-            Swap
+            {tr('Swap')}
           </button>
           <select
-            aria-label="Split layout"
+            aria-label={tr('Split layout')}
             value={state.split.direction}
             onChange={(e) =>
               void command({
@@ -263,11 +277,11 @@ export function Toolbar() {
               })
             }
           >
-            <option value="vertical">Side by side</option>
-            <option value="horizontal">Stacked</option>
+            <option value="vertical">{tr('Side by side')}</option>
+            <option value="horizontal">{tr('Stacked')}</option>
           </select>
           <select
-            aria-label="Split ratio"
+            aria-label={tr('Split ratio')}
             value={state.split.ratio}
             onChange={(e) =>
               void command({
@@ -283,7 +297,7 @@ export function Toolbar() {
           </select>
           <IconButton
             icon={X}
-            label="Exit split view"
+            label={tr('Exit split view')}
             onClick={() => void command({ type: 'split', otherId: null })}
           />
         </div>
@@ -308,7 +322,7 @@ export function BookmarkBar() {
       ))}
       <button onClick={() => openPage('bookmarks')}>
         <Star size={13} />
-        All bookmarks
+        {tr('All bookmarks')}
       </button>
     </div>
   );

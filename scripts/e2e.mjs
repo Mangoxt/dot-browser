@@ -219,7 +219,7 @@ try {
   await launch();
   await step('First-run onboarding and production launch', async () => {
     await page.getByRole('dialog', { name: 'Welcome to Dot' }).waitFor();
-    await page.getByRole('button', { name: 'Make yourself at home' }).click();
+    await page.getByRole('button', { name: 'Start browsing' }).click();
     await expect(page.getByRole('dialog')).toHaveCount(0);
     await cmd({ type: 'settings', patch: { askDownload: false, downloadPath: directory } });
   });
@@ -289,7 +289,7 @@ try {
       .locator('.settings-nav')
       .getByRole('button', { name: 'Appearance', exact: true })
       .click();
-    await page.getByLabel('theme', { exact: true }).selectOption('light');
+    await page.getByLabel('Theme', { exact: true }).selectOption('light');
     await expect(page.locator('.app')).toHaveClass(/light/);
     await page.getByRole('button', { name: 'green accent' }).click();
     await expect(page.locator('.app')).toHaveClass(/accent-green/);
@@ -619,7 +619,7 @@ try {
       await expect(modal.locator('.import-preview')).toContainText('Open tabs: 1');
       await modal.getByRole('button', { name: 'Import', exact: true }).click();
       await expect(modal.getByRole('status')).toContainText(
-        'Imported 1 bookmarks, 1 history entries and 1 tabs.',
+        'Imported: 1 bookmarks, 1 history entries, 1 tabs, 0 passwords and 0 cookies.',
       );
       const state = await snap();
       assert.ok(state.bookmarks.some((bookmark) => bookmark.url === `${base}/migration`));
@@ -664,7 +664,7 @@ try {
       await modal.getByRole('button', { name: 'Preview', exact: true }).click();
       await expect(modal.locator('.import-preview')).toContainText('Bookmarks: 1');
       await modal.getByRole('button', { name: 'Import', exact: true }).click();
-      await expect(modal.getByRole('status')).toContainText('Imported 1 bookmarks');
+      await expect(modal.getByRole('status')).toContainText('Imported: 1 bookmarks');
       assert.ok((await snap()).bookmarks.some((item) => item.title === 'Portable Profile 8'));
       await modal.getByRole('button', { name: 'Choose browser folder', exact: true }).click();
       assert.equal(await selector.locator('option').count(), 3);

@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { useEffect, useState } from 'react';
 import {
   BookOpen,
@@ -18,6 +19,7 @@ import {
   Trash2,
   Info,
   Sparkles,
+  Link,
   type LucideIcon,
 } from 'lucide-react';
 import type { ExtensionSummary } from '../../shared/extensions';
@@ -46,14 +48,14 @@ export function BrowserMenu() {
     disabled = false,
   ) => (
     <button
-      key={label}
+      key={tr(label)}
       className="browser-menu-item"
       onClick={action}
       disabled={disabled}
       autoFocus={label === 'New tab'}
     >
       <Icon size={17} />
-      <span>{label}</span>
+      <span>{tr(label)}</span>
       {shortcut && <kbd>{shortcut}</kbd>}
     </button>
   );
@@ -85,7 +87,21 @@ export function BrowserMenu() {
         {item(Puzzle, 'Extensions', overlay('extensions'))}
       </div>
       <details className="menu-tools">
-        <summary>Page tools</summary>
+        <summary>{tr('Page tools')}</summary>
+        {item(
+          Link,
+          'Copy page link',
+          () => run({ type: 'page', action: 'copyLink' }),
+          undefined,
+          !web,
+        )}
+        {item(
+          BookOpen,
+          'Read later',
+          () => run({ type: 'page', action: 'readLater' }),
+          undefined,
+          !web,
+        )}
         {item(BookOpen, 'Reading view', overlay('reader'), 'Ctrl Shift M', !web)}
         {item(Columns2, 'Split view', overlay('split'))}
         {item(PanelRight, panel ? 'Close side panel' : 'Bookmarks side panel', () => {
@@ -122,9 +138,9 @@ export function BrowserMenu() {
           !web,
         )}
         <div className="menu-zoom">
-          <span>Zoom</span>
+          <span>{tr('Zoom')}</span>
           <button
-            aria-label="Zoom out"
+            aria-label={tr('Zoom out')}
             disabled={tab.zoom <= 0.25}
             onClick={() =>
               void command({
@@ -135,11 +151,14 @@ export function BrowserMenu() {
           >
             −
           </button>
-          <button aria-label="Reset zoom" onClick={() => void command({ type: 'zoom', value: 1 })}>
+          <button
+            aria-label={tr('Reset zoom')}
+            onClick={() => void command({ type: 'zoom', value: 1 })}
+          >
             {Math.round(tab.zoom * 100)}%
           </button>
           <button
-            aria-label="Zoom in"
+            aria-label={tr('Zoom in')}
             disabled={tab.zoom >= 3}
             onClick={() =>
               void command({
@@ -211,40 +230,42 @@ export function Extensions() {
   return (
     <div className="extension-manager">
       <p className="muted">
-        Hazır eklentilerden seçin veya manifest.json içeren bir eklenti klasörü ekleyin. Chrome Web
-        Store'dan doğrudan kurulum desteklenmez; bazı Chrome eklentileri uyumlu olmayabilir.
+        {tr(
+          "Hazır eklentilerden seçin veya manifest.json içeren bir eklenti klasörü ekleyin. Chrome Web Store'dan doğrudan kurulum desteklenmez; bazı Chrome eklentileri uyumlu olmayabilir.",
+        )}
       </p>
       {state?.private && (
         <p className="modal-hint">
-          Eklentiler gizli pencerelerde çalışmaz. Yönetmek için normal pencereye geçin.
+          {tr('Eklentiler gizli pencerelerde çalışmaz. Yönetmek için normal pencereye geçin.')}
         </p>
       )}
       <button disabled={disabled} onClick={() => void run({ type: 'extension.install' })}>
         <Plus size={15} />
-        Klasörden eklenti ekle
+        {tr('Klasörden eklenti ekle')}
       </button>
-      <h3>Hazır eklentiler</h3>
+      <h3>{tr('Hazır eklentiler')}</h3>
       {builtins.map((builtin) => (
         <div className="extension-card" key={builtin.id}>
           <Puzzle size={22} />
           <div>
-            <strong>{builtin.name}</strong>
-            <p>{builtin.description}</p>
+            <strong>{tr(builtin.name)}</strong>
+            <p>{tr(builtin.description)}</p>
           </div>
           <button
             disabled={disabled || items.some((i) => i.builtin === builtin.id)}
             onClick={() => void run({ type: 'extension.install', builtin: builtin.id })}
           >
-            {items.some((i) => i.builtin === builtin.id) ? 'Eklendi' : 'Ekle'}
+            {items.some((i) => i.builtin === builtin.id) ? tr('Eklendi') : tr('Ekle')}
           </button>
         </div>
       ))}
       <h3>
-        Eklenen eklentiler <span className="badge">{items.length}</span>
+        {tr('Eklenen eklentiler')}
+        <span className="badge">{items.length}</span>
       </h3>
       {!items.length && (
         <p className="muted">
-          Henüz eklenti eklenmedi. Eklentiler yalnızca siz eklediğinizde etkinleşir.
+          {tr('Henüz eklenti eklenmedi. Eklentiler yalnızca siz eklediğinizde etkinleşir.')}
         </p>
       )}
       {items.map((item) => (
@@ -252,10 +273,10 @@ export function Extensions() {
           <Puzzle size={22} />
           <div>
             <strong>
-              {item.name} <small>{item.version}</small>
+              {item.builtin ? tr(item.name) : item.name} <small>{item.version}</small>
             </strong>
-            <p>{item.description}</p>
-            {item.error && <p role="alert">{item.error}</p>}
+            <p>{item.builtin ? tr(item.description) : item.description}</p>
+            {item.error && <p role="alert">{tr(item.error)}</p>}
             <label className="extension-toggle">
               <input
                 type="checkbox"
@@ -269,30 +290,31 @@ export function Extensions() {
                   })
                 }
               />{' '}
-              {item.enabled ? 'Etkin' : 'Kapalı'}
+              {item.enabled ? tr('Etkin') : tr('Kapalı')}
             </label>
           </div>
           <button
             disabled={disabled}
             onClick={() => void run({ type: 'extension.action', id: item.id, action: 'remove' })}
           >
-            Kaldır
+            {tr('Kaldır')}
           </button>
         </div>
       ))}
       {error && (
         <p role="alert" className="form-error">
-          {error}
+          {tr(error)}
         </p>
       )}
       {message && (
         <p role="status" className="modal-hint">
-          {message}
+          {tr(message)}
         </p>
       )}
       <p className="modal-hint">
-        Yalnızca güvendiğiniz eklentileri yükleyin; eklentiler ziyaret ettiğiniz sayfalara
-        erişebilir.
+        {tr(
+          'Yalnızca güvendiğiniz eklentileri yükleyin; eklentiler ziyaret ettiğiniz sayfalara erişebilir.',
+        )}
       </p>
     </div>
   );

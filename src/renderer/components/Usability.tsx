@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { useEffect, useState } from 'react';
 import type { ReadingArticle } from '../../shared/reading';
 import { command, useBrowser } from '../stores/browser';
@@ -21,8 +22,8 @@ export function TabSearch() {
     <div className="form-stack">
       <input
         autoFocus
-        aria-label="Search open tabs"
-        placeholder="Search title, address or workspace"
+        aria-label={tr('Search open tabs')}
+        placeholder={tr('Search title, address or workspace')}
         value={query}
         onChange={(event) => {
           setQuery(event.target.value);
@@ -50,7 +51,7 @@ export function TabSearch() {
         className="tab-search-results"
         id="tab-search-results"
         role="listbox"
-        aria-label="Open tabs"
+        aria-label={tr('Open tabs')}
       >
         {tabs.map((tab, position) => (
           <button
@@ -70,13 +71,15 @@ export function TabSearch() {
               </small>
             </span>
             <small>
-              {tab.suspended ? 'Sleeping' : tab.id === state?.activeId ? 'Current' : ''}
+              {tab.suspended ? tr('Sleeping') : tab.id === state?.activeId ? tr('Current') : ''}
             </small>
           </button>
         ))}
       </div>
-      {!tabs.length && <p>No open tabs match.</p>}
-      <p className="modal-hint">{tabs.length} tabs · ↑ ↓ to choose · Enter to switch</p>
+      {!tabs.length && <p>{tr('No open tabs match.')}</p>}
+      <p className="modal-hint">
+        {tr('{count} tabs · ↑ ↓ to choose · Enter to switch', { count: tabs.length })}
+      </p>
     </div>
   );
 }
@@ -100,31 +103,31 @@ export function ReadingView() {
   if (error)
     return (
       <div className="form-stack">
-        <p role="alert">{error}</p>
-        <button onClick={() => open(null)}>Back to page</button>
+        <p role="alert">{tr(error)}</p>
+        <button onClick={() => open(null)}>{tr('Back to page')}</button>
       </div>
     );
-  if (!article) return <p role="status">Preparing reading view…</p>;
+  if (!article) return <p role="status">{tr('Preparing reading view…')}</p>;
   const words = article.blocks.reduce((count, block) => count + block.text.split(/\s+/).length, 0);
   return (
     <div className="reading-view">
       <div className="reading-controls">
         <button
-          aria-label="Smaller reading text"
+          aria-label={tr('Smaller reading text')}
           disabled={size <= 16}
           onClick={() => setSize((value) => value - 2)}
         >
-          A−
+          {tr('A−')}
         </button>
         <button
-          aria-label="Larger reading text"
+          aria-label={tr('Larger reading text')}
           disabled={size >= 28}
           onClick={() => setSize((value) => value + 2)}
         >
-          A+
+          {tr('A+')}
         </button>
-        <span>About {Math.max(1, Math.ceil(words / 200))} min read</span>
-        <button onClick={() => open(null)}>Back to page</button>
+        <span>{tr('{count} min read', { count: Math.max(1, Math.ceil(words / 200)) })}</span>
+        <button onClick={() => open(null)}>{tr('Back to page')}</button>
       </div>
       <article style={{ fontSize: size }}>
         <h1>{article.title}</h1>

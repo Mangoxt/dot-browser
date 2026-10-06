@@ -34,6 +34,8 @@ export const ENGINES: SearchEngine[] = [
 ];
 export const settingsSchema = z.object({
   theme: z.enum(['dark', 'light', 'system']).default('dark'),
+  forceDarkPages: z.boolean().default(true),
+  darkSiteExceptions: z.array(z.string().url().max(8192)).max(500).default([]),
   accent: z.enum(['violet', 'blue', 'green', 'rose', 'amber']).default('violet'),
   compact: z.boolean().default(false),
   animations: z.boolean().default(true),

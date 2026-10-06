@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { useState } from 'react';
 import {
   History as HistoryIcon,
@@ -33,23 +34,23 @@ export function HistoryPage() {
   );
   return (
     <div className="internal-page">
-      <PageHeading eyebrow="YOUR TRAIL" title="History">
+      <PageHeading eyebrow={tr('BROWSING HISTORY')} title={tr('History')}>
         <button onClick={() => open('clear')}>
           <Trash2 size={15} />
-          Clear browsing data
+          {tr('Clear browsing data')}
         </button>
       </PageHeading>
       <div className="library-toolbar">
         <label className="filter-input">
           <Search size={16} />
           <input
-            aria-label="Search history"
-            placeholder="Search your history"
+            aria-label={tr('Search history')}
+            placeholder={tr('Search your history')}
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
         </label>
-        <span>{history.length} sites</span>
+        <span>{tr('{count} history entries', { count: history.length })}</span>
         {!!selected.length && (
           <button
             className="danger-text"
@@ -58,18 +59,18 @@ export function HistoryPage() {
               setSelected([]);
             }}
           >
-            Delete {selected.length} selected
+            {tr('Delete')} · {tr('{count} selected', { count: selected.length })}
           </button>
         )}
       </div>
       {!history.length && (
         <Empty
           icon={HistoryIcon}
-          title="A clean slate"
+          title={tr('No history yet')}
           detail={
             state.private
-              ? 'Your visits stay out of history in this private window.'
-              : 'The places you visit will appear here.'
+              ? tr('Your visits stay out of history in this private window.')
+              : tr('The places you visit will appear here.')
           }
         />
       )}
@@ -77,11 +78,11 @@ export function HistoryPage() {
         const items = history.filter((h) => historyGroup(h.timestamp) === group);
         return items.length ? (
           <section className="library-group" key={group}>
-            <h3>{group}</h3>
+            <h3>{tr(group)}</h3>
             {items.map((h) => (
               <div className="library-row" key={h.id}>
                 <input
-                  aria-label={`Select ${h.title}`}
+                  aria-label={tr('Select {name}', { name: h.title })}
                   type="checkbox"
                   checked={selected.includes(h.id)}
                   onChange={(e) =>
@@ -97,7 +98,7 @@ export function HistoryPage() {
                 >
                   <strong>{h.title}</strong>
                   <small>
-                    {domainOf(h.url)} · {h.visitCount} visit{h.visitCount === 1 ? '' : 's'}
+                    {domainOf(h.url)} · {tr('{count} visits', { count: h.visitCount })}
                   </small>
                 </button>
                 <time>
@@ -108,17 +109,17 @@ export function HistoryPage() {
                 </time>
                 <IconButton
                   icon={ExternalLink}
-                  label="Open in new tab"
+                  label={tr('Open in new tab')}
                   onClick={() => void command({ type: 'tab.new', url: h.url })}
                 />
                 <IconButton
                   icon={Copy}
-                  label="Copy URL"
+                  label={tr('Copy URL')}
                   onClick={() => void command({ type: 'clipboard', text: h.url })}
                 />
                 <IconButton
                   icon={Trash2}
-                  label="Delete history entry"
+                  label={tr('Delete history entry')}
                   onClick={() => void command({ type: 'history.delete', ids: [h.id] })}
                 />
               </div>
@@ -143,18 +144,18 @@ export function BookmarksPage() {
   );
   return (
     <div className="internal-page">
-      <PageHeading eyebrow="KEEP THE GOOD STUFF" title="Bookmarks">
+      <PageHeading eyebrow={tr('SAVED PAGES')} title={tr('Bookmarks')}>
         <button onClick={() => open('import')}>
           <Upload size={15} />
-          Import browser
+          {tr('Import browser')}
         </button>
         <button onClick={() => void command({ type: 'bookmark.transfer', action: 'import' })}>
           <Upload size={15} />
-          Import file
+          {tr('Import file')}
         </button>
         <button onClick={() => void command({ type: 'bookmark.transfer', action: 'export' })}>
           <ArrowDownToLine size={15} />
-          Export
+          {tr('Export')}
         </button>
         <button
           className="primary"
@@ -170,31 +171,33 @@ export function BookmarksPage() {
           }
         >
           <Plus size={15} />
-          Add bookmark
+          {tr('Add bookmark')}
         </button>
       </PageHeading>
       <div className="library-toolbar">
         <label className="filter-input">
           <Search size={16} />
           <input
-            aria-label="Search bookmarks"
-            placeholder="Search bookmarks"
+            aria-label={tr('Search bookmarks')}
+            placeholder={tr('Search bookmarks')}
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
         </label>
         <select
-          aria-label="Bookmark folder"
+          aria-label={tr('Bookmark folder')}
           value={folder}
           onChange={(e) => setFolder(e.target.value)}
         >
           {['All', ...state.folders].map((f) => (
-            <option key={f}>{f}</option>
+            <option key={f} value={f}>
+              {tr(f)}
+            </option>
           ))}
         </select>
         <button onClick={() => setAdding(!adding)}>
           <FolderPlus size={15} />
-          New folder
+          {tr('New folder')}
         </button>
       </div>
       {adding && (
@@ -211,25 +214,25 @@ export function BookmarksPage() {
         >
           <input
             autoFocus
-            placeholder="Folder name"
-            aria-label="Folder name"
+            placeholder={tr('Folder name')}
+            aria-label={tr('Folder name')}
             maxLength={60}
             value={newFolder}
             onChange={(e) => setNewFolder(e.target.value)}
           />
           <button type="submit" className="primary">
-            Create
+            {tr('Create')}
           </button>
           <button type="button" onClick={() => setAdding(false)}>
-            Cancel
+            {tr('Cancel')}
           </button>
         </form>
       )}
       {!bookmarks.length && (
         <Empty
           icon={Star}
-          title="Worth coming back to"
-          detail="Save a page with the star in your address bar, or add one here."
+          title={tr('No bookmarks yet')}
+          detail={tr('Save a page with the star in your address bar, or add one here.')}
         />
       )}
       <div className="bookmark-list">
@@ -263,13 +266,17 @@ export function BookmarksPage() {
             </button>
             <IconButton
               icon={ExternalLink}
-              label="Open bookmark in new tab"
+              label={tr('Open bookmark in new tab')}
               onClick={() => void command({ type: 'tab.new', url: b.url })}
             />
-            <IconButton icon={Pencil} label="Edit bookmark" onClick={() => open('bookmark', b)} />
+            <IconButton
+              icon={Pencil}
+              label={tr('Edit bookmark')}
+              onClick={() => open('bookmark', b)}
+            />
             <IconButton
               icon={Trash2}
-              label="Remove bookmark"
+              label={tr('Remove bookmark')}
               onClick={() => void command({ type: 'bookmark.remove', id: b.id })}
             />
           </div>
@@ -286,8 +293,8 @@ export function DownloadList({ compact = false }: { compact?: boolean }) {
       {!state.downloads.length && (
         <Empty
           icon={Download}
-          title="Nothing downloading"
-          detail="Your downloads will appear here."
+          title={tr('Nothing downloading')}
+          detail={tr('Your downloads will appear here.')}
         />
       )}
       {state.downloads.slice(0, compact ? 5 : undefined).map((d) => {
@@ -310,7 +317,7 @@ export function DownloadList({ compact = false }: { compact?: boolean }) {
               <small>
                 {d.status === 'completed'
                   ? `${bytes(d.total || d.received)} · ${domainOf(d.url)}`
-                  : `${d.status} · ${bytes(d.received)}${d.total ? ` of ${bytes(d.total)}` : ''}${d.speed ? ` · ${bytes(d.speed)}/s` : ''}`}
+                  : `${tr(d.status)} · ${bytes(d.received)}${d.total ? ` ${tr('of {total}', { total: bytes(d.total) })}` : ''}${d.speed ? ` · ${bytes(d.speed)}/s` : ''}`}
               </small>
               {live && <progress value={d.received} max={d.total || Math.max(1, d.received)} />}{' '}
               {!compact && d.path && <small className="download-path">{d.path}</small>}
@@ -320,22 +327,26 @@ export function DownloadList({ compact = false }: { compact?: boolean }) {
                 <>
                   <IconButton
                     icon={d.status === 'paused' ? Play : Pause}
-                    label={d.status === 'paused' ? 'Resume download' : 'Pause download'}
+                    label={d.status === 'paused' ? tr('Resume download') : tr('Pause download')}
                     onClick={() => action(d.status === 'paused' ? 'resume' : 'pause')}
                   />
-                  <IconButton icon={X} label="Cancel download" onClick={() => action('cancel')} />
+                  <IconButton
+                    icon={X}
+                    label={tr('Cancel download')}
+                    onClick={() => action('cancel')}
+                  />
                 </>
               )}
               {['cancelled', 'interrupted'].includes(d.status) && (
                 <IconButton
                   icon={RotateCw}
-                  label="Retry download"
+                  label={tr('Retry download')}
                   onClick={() => action('retry')}
                 />
               )}
               <IconButton
                 icon={FolderOpen}
-                label="Show in folder"
+                label={tr('Show in folder')}
                 disabled={!d.path || d.status !== 'completed'}
                 onClick={() => action('reveal')}
               />
@@ -349,12 +360,12 @@ export function DownloadList({ compact = false }: { compact?: boolean }) {
 export function DownloadsPage() {
   return (
     <div className="internal-page">
-      <PageHeading eyebrow="FROM THE WEB TO YOU" title="Downloads">
+      <PageHeading eyebrow={tr('FILES')} title={tr('Downloads')}>
         <button onClick={() => void command({ type: 'download', id: 'all', action: 'clear' })}>
           <Trash2 size={15} />
-          Clear completed
+          {tr('Clear completed')}
         </button>
-        <button onClick={() => openPage('settings#downloads')}>Download settings</button>
+        <button onClick={() => openPage('settings#downloads')}>{tr('Download settings')}</button>
       </PageHeading>
       <DownloadList />
     </div>

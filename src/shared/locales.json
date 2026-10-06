@@ -1,0 +1,2237 @@
+{
+  "General": ["General", "Genel", "Allgemein", "Général"],
+  "Appearance": ["Appearance", "Görünüm", "Darstellung", "Apparence"],
+  "Search engines": ["Search engines", "Arama motorları", "Suchmaschinen", "Moteurs de recherche"],
+  "Tabs & spaces": [
+    "Tabs & spaces",
+    "Sekmeler ve çalışma alanları",
+    "Tabs und Arbeitsbereiche",
+    "Onglets et espaces"
+  ],
+  "Privacy & security": [
+    "Privacy & security",
+    "Gizlilik ve güvenlik",
+    "Datenschutz und Sicherheit",
+    "Confidentialité et sécurité"
+  ],
+  "Downloads": ["Downloads", "İndirilenler", "Downloads", "Téléchargements"],
+  "On startup": ["On startup", "Başlangıç", "Beim Start", "Au démarrage"],
+  "Languages": ["Languages", "Diller", "Sprachen", "Langues"],
+  "Accessibility": ["Accessibility", "Erişilebilirlik", "Barrierefreiheit", "Accessibilité"],
+  "Keyboard shortcuts": [
+    "Keyboard shortcuts",
+    "Klavye kısayolları",
+    "Tastenkürzel",
+    "Raccourcis clavier"
+  ],
+  "Advanced": ["Advanced", "Gelişmiş", "Erweitert", "Avancé"],
+  "About Dot": ["About Dot", "Dot hakkında", "Über Dot", "À propos de Dot"],
+  "Settings": ["Settings", "Ayarlar", "Einstellungen", "Paramètres"],
+  "New tab": ["New tab", "Yeni sekme", "Neuer Tab", "Nouvel onglet"],
+  "New window": ["New window", "Yeni pencere", "Neues Fenster", "Nouvelle fenêtre"],
+  "Private window": ["Private window", "Gizli pencere", "Privates Fenster", "Fenêtre privée"],
+  "Private session": ["Private session", "Gizli oturum", "Private Sitzung", "Session privée"],
+  "Profile and import": [
+    "Profile and import",
+    "Profil ve veri aktarımı",
+    "Profil und Import",
+    "Profil et importation"
+  ],
+  "Reopen closed tab": [
+    "Reopen closed tab",
+    "Kapatılan sekmeyi aç",
+    "Geschlossenen Tab öffnen",
+    "Rouvrir l’onglet fermé"
+  ],
+  "Search tabs": ["Search tabs", "Sekmelerde ara", "Tabs durchsuchen", "Rechercher des onglets"],
+  "History": ["History", "Geçmiş", "Verlauf", "Historique"],
+  "Bookmarks": ["Bookmarks", "Yer imleri", "Lesezeichen", "Favoris"],
+  "Saved passwords": [
+    "Saved passwords",
+    "Kayıtlı parolalar",
+    "Gespeicherte Passwörter",
+    "Mots de passe enregistrés"
+  ],
+  "Extensions": ["Extensions", "Eklentiler", "Erweiterungen", "Extensions"],
+  "Page tools": ["Page tools", "Sayfa araçları", "Seitenwerkzeuge", "Outils de page"],
+  "Reading view": ["Reading view", "Okuma görünümü", "Leseansicht", "Mode lecture"],
+  "Split view": ["Split view", "Bölünmüş görünüm", "Geteilte Ansicht", "Vue partagée"],
+  "Close side panel": [
+    "Close side panel",
+    "Yan paneli kapat",
+    "Seitenleiste schließen",
+    "Fermer le panneau latéral"
+  ],
+  "Bookmarks side panel": [
+    "Bookmarks side panel",
+    "Yer imleri paneli",
+    "Lesezeichen-Seitenleiste",
+    "Panneau des favoris"
+  ],
+  "Find in page": ["Find in page", "Sayfada bul", "Auf Seite suchen", "Rechercher dans la page"],
+  "Save as PDF": [
+    "Save as PDF",
+    "PDF olarak kaydet",
+    "Als PDF speichern",
+    "Enregistrer au format PDF"
+  ],
+  "Print": ["Print", "Yazdır", "Drucken", "Imprimer"],
+  "Save page": ["Save page", "Sayfayı kaydet", "Seite speichern", "Enregistrer la page"],
+  "Pin tab": ["Pin tab", "Sekmeyi sabitle", "Tab anheften", "Épingler l’onglet"],
+  "Unpin tab": ["Unpin tab", "Sekmeyi ayır", "Tab lösen", "Désépingler l’onglet"],
+  "Mute tab": ["Mute tab", "Sekmeyi sessize al", "Tab stummschalten", "Couper le son de l’onglet"],
+  "Unmute tab": [
+    "Unmute tab",
+    "Sekmenin sesini aç",
+    "Tab-Ton einschalten",
+    "Réactiver le son de l’onglet"
+  ],
+  "Zoom": ["Zoom", "Yakınlaştırma", "Zoom", "Zoom"],
+  "Zoom in": ["Zoom in", "Yakınlaştır", "Vergrößern", "Agrandir"],
+  "Zoom out": ["Zoom out", "Uzaklaştır", "Verkleinern", "Réduire"],
+  "Reset zoom": [
+    "Reset zoom",
+    "Yakınlaştırmayı sıfırla",
+    "Zoom zurücksetzen",
+    "Réinitialiser le zoom"
+  ],
+  "Clear browsing data": [
+    "Clear browsing data",
+    "Tarama verilerini temizle",
+    "Browserdaten löschen",
+    "Effacer les données de navigation"
+  ],
+  "Browser menu": ["Browser menu", "Tarayıcı menüsü", "Browsermenü", "Menu du navigateur"],
+  "Copy page link": [
+    "Copy page link",
+    "Sayfa bağlantısını kopyala",
+    "Seitenlink kopieren",
+    "Copier le lien de la page"
+  ],
+  "Read later": ["Read later", "Sonra oku", "Später lesen", "Lire plus tard"],
+  "Link copied": ["Link copied", "Bağlantı kopyalandı", "Link kopiert", "Lien copié"],
+  "Saved to reading list": [
+    "Saved to reading list",
+    "Okuma listesine kaydedildi",
+    "In Leseliste gespeichert",
+    "Ajouté à la liste de lecture"
+  ],
+  "Home button": [
+    "Home button",
+    "Ana sayfa düğmesi",
+    "Startseiten-Schaltfläche",
+    "Bouton d’accueil"
+  ],
+  "Home page": ["Home page", "Ana sayfa", "Startseite", "Page d’accueil"],
+  "Show home button": [
+    "Show home button",
+    "Ana sayfa düğmesini göster",
+    "Startseiten-Schaltfläche anzeigen",
+    "Afficher le bouton d’accueil"
+  ],
+  "Home page, bookmarks and profile.": [
+    "Home page, bookmarks and profile.",
+    "Ana sayfa, yer imleri ve profil.",
+    "Startseite, Lesezeichen und Profil.",
+    "Page d’accueil, favoris et profil."
+  ],
+  "Show a shortcut to your home page.": [
+    "Show a shortcut to your home page.",
+    "Ana sayfana gitmek için bir düğme göster.",
+    "Eine Schaltfläche zur Startseite anzeigen.",
+    "Afficher un raccourci vers votre page d’accueil."
+  ],
+  "Bookmarks bar": ["Bookmarks bar", "Yer imleri çubuğu", "Lesezeichenleiste", "Barre des favoris"],
+  "Show bookmarks bar": [
+    "Show bookmarks bar",
+    "Yer imleri çubuğunu göster",
+    "Lesezeichenleiste anzeigen",
+    "Afficher la barre des favoris"
+  ],
+  "Local profile": ["Local profile", "Yerel profil", "Lokales Profil", "Profil local"],
+  "Bookmarks, settings and site data on this device.": [
+    "Bookmarks, settings and site data on this device.",
+    "Bu cihazdaki yer imleri, ayarlar ve site verileri.",
+    "Lesezeichen, Einstellungen und Websitedaten auf diesem Gerät.",
+    "Favoris, paramètres et données de sites sur cet appareil."
+  ],
+  "Manage session": ["Manage session", "Oturumu yönet", "Sitzung verwalten", "Gérer la session"],
+  "Theme": ["Theme", "Tema", "Design", "Thème"],
+  "Theme, colors and layout.": [
+    "Theme, colors and layout.",
+    "Tema, renkler ve düzen.",
+    "Design, Farben und Anordnung.",
+    "Thème, couleurs et disposition."
+  ],
+  "Dark": ["Dark", "Koyu", "Dunkel", "Sombre"],
+  "Light": ["Light", "Açık", "Hell", "Clair"],
+  "System": ["System", "Sistem", "System", "Système"],
+  "Follow system": ["Follow system", "Sisteme göre", "Systemeinstellung", "Suivre le système"],
+  "Accent color": ["Accent color", "Vurgu rengi", "Akzentfarbe", "Couleur d’accentuation"],
+  "Compact toolbar": [
+    "Compact toolbar",
+    "Kompakt araç çubuğu",
+    "Kompakte Symbolleiste",
+    "Barre d’outils compacte"
+  ],
+  "Sidebar": ["Sidebar", "Kenar çubuğu", "Seitenleiste", "Barre latérale"],
+  "Show sidebar": [
+    "Show sidebar",
+    "Kenar çubuğunu göster",
+    "Seitenleiste anzeigen",
+    "Afficher la barre latérale"
+  ],
+  "Animations": ["Animations", "Animasyonlar", "Animationen", "Animations"],
+  "Enable animations": [
+    "Enable animations",
+    "Animasyonları etkinleştir",
+    "Animationen aktivieren",
+    "Activer les animations"
+  ],
+  "New tab background": [
+    "New tab background",
+    "Yeni sekme arka planı",
+    "Hintergrund neuer Tabs",
+    "Arrière-plan des nouveaux onglets"
+  ],
+  "Orbital": ["Orbital", "Yörünge", "Orbital", "Orbital"],
+  "Minimal": ["Minimal", "Düz", "Schlicht", "Minimal"],
+  "Grid": ["Grid", "Izgara", "Raster", "Grille"],
+  "Glass intensity": ["Glass intensity", "Cam efekti", "Glaseffekt", "Effet de verre"],
+  "Corner radius": ["Corner radius", "Köşe yuvarlaklığı", "Eckenradius", "Arrondi des angles"],
+  "Dark webpages": ["Dark webpages", "Koyu web sayfaları", "Dunkle Webseiten", "Pages web sombres"],
+  "Force dark webpages": [
+    "Force dark webpages",
+    "Web sayfalarını koyulaştır",
+    "Dunkle Webseiten erzwingen",
+    "Forcer les pages web sombres"
+  ],
+  "Darken websites when the browser uses a dark theme. Images keep their colors.": [
+    "Darken websites when the browser uses a dark theme. Images keep their colors.",
+    "Koyu temada web sayfalarını da koyulaştır. Görseller kendi renklerini korur.",
+    "Webseiten bei dunklem Browserdesign abdunkeln. Bilder behalten ihre Farben.",
+    "Assombrir les sites avec le thème sombre. Les images conservent leurs couleurs."
+  ],
+  "Sites kept light": [
+    "Sites kept light",
+    "Açık renkte tutulan siteler",
+    "Hell dargestellte Websites",
+    "Sites conservés en clair"
+  ],
+  "Change this for a site from its address bar icon.": [
+    "Change this for a site from its address bar icon.",
+    "Site simgesinden o sitenin görünümünü değiştirebilirsin.",
+    "Über das Symbol in der Adressleiste pro Website ändern.",
+    "Modifiez ce réglage par site via son icône dans la barre d’adresse."
+  ],
+  "Remove exception": [
+    "Remove exception",
+    "İstisnayı kaldır",
+    "Ausnahme entfernen",
+    "Supprimer l’exception"
+  ],
+  "Keep this site light": [
+    "Keep this site light",
+    "Bu siteyi açık renkte tut",
+    "Diese Website hell darstellen",
+    "Conserver ce site en clair"
+  ],
+  "Default search engine": [
+    "Default search engine",
+    "Varsayılan arama motoru",
+    "Standardsuchmaschine",
+    "Moteur de recherche par défaut"
+  ],
+  "Type an engine keyword before your search to use it.": [
+    "Type an engine keyword before your search to use it.",
+    "Farklı bir motor için aramanın başına motorun kısayolunu yaz.",
+    "Zum Wechseln das Kürzel der Suchmaschine vor die Suche schreiben.",
+    "Pour changer de moteur, saisissez son mot-clé avant la recherche."
+  ],
+  "Add search engine": [
+    "Add search engine",
+    "Arama motoru ekle",
+    "Suchmaschine hinzufügen",
+    "Ajouter un moteur de recherche"
+  ],
+  "Name": ["Name", "Ad", "Name", "Nom"],
+  "Keyword": ["Keyword", "Kısayol", "Kürzel", "Mot-clé"],
+  "HTTPS search URL · use %s for the query": [
+    "HTTPS search URL · use %s for the query",
+    "HTTPS arama adresi · sorgu için %s kullan",
+    "HTTPS-Suchadresse · %s für die Suchanfrage",
+    "Adresse HTTPS de recherche · %s pour la requête"
+  ],
+  "Engine name": ["Engine name", "Arama motorunun adı", "Name der Suchmaschine", "Nom du moteur"],
+  "Engine keyword": [
+    "Engine keyword",
+    "Arama motoru kısayolu",
+    "Suchmaschinenkürzel",
+    "Mot-clé du moteur"
+  ],
+  "Engine URL template": [
+    "Engine URL template",
+    "Arama adresi şablonu",
+    "Suchadressenvorlage",
+    "Modèle d’adresse de recherche"
+  ],
+  "Save engine": [
+    "Save engine",
+    "Arama motorunu kaydet",
+    "Suchmaschine speichern",
+    "Enregistrer le moteur"
+  ],
+  "Vertical tabs": ["Vertical tabs", "Dikey sekmeler", "Vertikale Tabs", "Onglets verticaux"],
+  "Show tabs in the sidebar.": [
+    "Show tabs in the sidebar.",
+    "Sekmeleri kenar çubuğunda göster.",
+    "Tabs in der Seitenleiste anzeigen.",
+    "Afficher les onglets dans la barre latérale."
+  ],
+  "Memory saver": [
+    "Memory saver",
+    "Bellek tasarrufu",
+    "Speichersparmodus",
+    "Économiseur de mémoire"
+  ],
+  "Suspend inactive, silent tabs after 20 minutes (Balanced) or 5 minutes (Aggressive). Pages reload when reselected.": [
+    "Suspend inactive, silent tabs after 20 minutes (Balanced) or 5 minutes (Aggressive). Pages reload when reselected.",
+    "Sessiz ve kullanılmayan sekmeler Dengeli modda 20, Yüksek modda 5 dakika sonra uyutulur. Seçildiğinde yeniden yüklenir.",
+    "Inaktive, lautlose Tabs nach 20 Minuten (Ausgewogen) oder 5 Minuten (Stark) pausieren. Beim Auswählen neu laden.",
+    "Mettre en veille les onglets inactifs et silencieux après 20 minutes (Équilibré) ou 5 minutes (Intensif). Ils se rechargent à la sélection."
+  ],
+  "Off": ["Off", "Kapalı", "Aus", "Désactivé"],
+  "Balanced": ["Balanced", "Dengeli", "Ausgewogen", "Équilibré"],
+  "Aggressive": ["Aggressive", "Yüksek", "Stark", "Intensif"],
+  "Strict": ["Strict", "Sıkı", "Streng", "Strict"],
+  "Workspaces": ["Workspaces", "Çalışma alanları", "Arbeitsbereiche", "Espaces de travail"],
+  "Separate your tabs by what you are doing.": [
+    "Separate your tabs by what you are doing.",
+    "Sekmeleri çalışma alanlarına ayır.",
+    "Tabs nach Tätigkeit in Arbeitsbereiche aufteilen.",
+    "Regrouper les onglets par activité."
+  ],
+  "New workspace": ["New workspace", "Yeni çalışma alanı", "Neuer Arbeitsbereich", "Nouvel espace"],
+  "Tab groups": ["Tab groups", "Sekme grupları", "Tab-Gruppen", "Groupes d’onglets"],
+  "Use the tab context menu to create and organize groups.": [
+    "Use the tab context menu to create and organize groups.",
+    "Grupları oluşturmak ve düzenlemek için sekmeye sağ tıkla.",
+    "Zum Erstellen und Verwalten von Gruppen auf einen Tab rechtsklicken.",
+    "Faites un clic droit sur un onglet pour créer et organiser des groupes."
+  ],
+  "Create group": ["Create group", "Grup oluştur", "Gruppe erstellen", "Créer un groupe"],
+  "Site permissions and browsing data.": [
+    "Site permissions and browsing data.",
+    "Site izinleri ve tarama verileri.",
+    "Websiteberechtigungen und Browserdaten.",
+    "Autorisations des sites et données de navigation."
+  ],
+  "History, site data, cache and restore records.": [
+    "History, site data, cache and restore records.",
+    "Geçmiş, site verileri, önbellek ve oturum kayıtları.",
+    "Verlauf, Websitedaten, Cache und Sitzungsdaten.",
+    "Historique, données de sites, cache et sessions enregistrées."
+  ],
+  "Choose data to clear": [
+    "Choose data to clear",
+    "Temizlenecek verileri seç",
+    "Zu löschende Daten wählen",
+    "Choisir les données à effacer"
+  ],
+  "Request blocking": [
+    "Request blocking",
+    "İstek engelleme",
+    "Anfragen blockieren",
+    "Blocage des requêtes"
+  ],
+  "Uses your domain list. Balanced blocks subresources; Strict also blocks navigation. This is basic filtering, not comprehensive tracking protection.": [
+    "Uses your domain list. Balanced blocks subresources; Strict also blocks navigation. This is basic filtering, not comprehensive tracking protection.",
+    "Alan adı listene göre engeller. Dengeli mod sayfa kaynaklarını, Sıkı mod siteye geçişi de engeller. Temel filtreleme sağlar.",
+    "Verwendet Ihre Domainliste. Ausgewogen blockiert Seitenressourcen, Streng auch die Navigation. Dies ist eine einfache Filterung.",
+    "Utilise votre liste de domaines. Équilibré bloque les ressources, Strict bloque aussi la navigation. Il s’agit d’un filtrage de base."
+  ],
+  "Blocked domains": [
+    "Blocked domains",
+    "Engellenen alan adları",
+    "Blockierte Domains",
+    "Domaines bloqués"
+  ],
+  "One domain per line, without https://.": [
+    "One domain per line, without https://.",
+    "Her satıra https:// olmadan bir alan adı yaz.",
+    "Eine Domain pro Zeile, ohne https://.",
+    "Un domaine par ligne, sans https://."
+  ],
+  "Allowed popup origins": [
+    "Allowed popup origins",
+    "Açılır pencereye izin verilen siteler",
+    "Erlaubte Popup-Websites",
+    "Sites autorisés à ouvrir des fenêtres"
+  ],
+  "One full origin per line, such as https://example.com.": [
+    "One full origin per line, such as https://example.com.",
+    "Her satıra https://example.com gibi bir site adresi yaz.",
+    "Eine vollständige Herkunft pro Zeile, etwa https://example.com.",
+    "Une origine complète par ligne, comme https://example.com."
+  ],
+  "Popup allowlist": [
+    "Popup allowlist",
+    "Açılır pencere izinleri",
+    "Popup-Ausnahmen",
+    "Exceptions de fenêtres contextuelles"
+  ],
+  "Saved site permissions": [
+    "Saved site permissions",
+    "Kayıtlı site izinleri",
+    "Gespeicherte Websiteberechtigungen",
+    "Autorisations enregistrées"
+  ],
+  "You haven’t saved any permission decisions.": [
+    "You haven’t saved any permission decisions.",
+    "Henüz kayıtlı bir site izni yok.",
+    "Noch keine Berechtigungen gespeichert.",
+    "Aucune autorisation enregistrée."
+  ],
+  "Reset": ["Reset", "Sıfırla", "Zurücksetzen", "Réinitialiser"],
+  "Ask where to save each file": [
+    "Ask where to save each file",
+    "Her dosyanın kaydedileceği yeri sor",
+    "Speicherort für jede Datei erfragen",
+    "Demander où enregistrer chaque fichier"
+  ],
+  "Ask where to save downloads": [
+    "Ask where to save downloads",
+    "İndirme konumunu sor",
+    "Download-Speicherort erfragen",
+    "Demander l’emplacement des téléchargements"
+  ],
+  "Download folder": [
+    "Download folder",
+    "İndirme klasörü",
+    "Downloadordner",
+    "Dossier de téléchargement"
+  ],
+  "Your system Downloads folder": [
+    "Your system Downloads folder",
+    "Sistemin İndirilenler klasörü",
+    "Downloadordner des Systems",
+    "Dossier Téléchargements du système"
+  ],
+  "Change folder": ["Change folder", "Klasörü değiştir", "Ordner ändern", "Changer de dossier"],
+  "Download history": [
+    "Download history",
+    "İndirme geçmişi",
+    "Downloadverlauf",
+    "Historique des téléchargements"
+  ],
+  "Open downloads": [
+    "Open downloads",
+    "İndirilenleri aç",
+    "Downloads öffnen",
+    "Ouvrir les téléchargements"
+  ],
+  "When Dot starts": [
+    "When Dot starts",
+    "Dot açıldığında",
+    "Beim Start von Dot",
+    "Au démarrage de Dot"
+  ],
+  "Open a new tab": [
+    "Open a new tab",
+    "Yeni sekme aç",
+    "Neuen Tab öffnen",
+    "Ouvrir un nouvel onglet"
+  ],
+  "Continue where I left off": [
+    "Continue where I left off",
+    "Kaldığım yerden devam et",
+    "Letzte Sitzung fortsetzen",
+    "Reprendre la dernière session"
+  ],
+  "Open specific pages": [
+    "Open specific pages",
+    "Belirli sayfaları aç",
+    "Bestimmte Seiten öffnen",
+    "Ouvrir des pages spécifiques"
+  ],
+  "Startup pages": ["Startup pages", "Başlangıç sayfaları", "Startseiten", "Pages de démarrage"],
+  "One URL per line.": [
+    "One URL per line.",
+    "Her satıra bir adres yaz.",
+    "Eine Adresse pro Zeile.",
+    "Une adresse par ligne."
+  ],
+  "Normal windows are recovered after an unexpected shutdown. Private tabs are never saved.": [
+    "Normal windows are recovered after an unexpected shutdown. Private tabs are never saved.",
+    "Beklenmedik kapanışta normal pencereler geri yüklenir. Gizli sekmeler kaydedilmez.",
+    "Normale Fenster werden nach unerwartetem Beenden wiederhergestellt. Private Tabs werden nie gespeichert.",
+    "Les fenêtres normales sont restaurées après un arrêt inattendu. Les onglets privés ne sont jamais enregistrés."
+  ],
+  "Browser language": [
+    "Browser language",
+    "Tarayıcı dili",
+    "Browsersprache",
+    "Langue du navigateur"
+  ],
+  "Changes menus, settings, dialogs, dates and times immediately.": [
+    "Changes menus, settings, dialogs, dates and times immediately.",
+    "Menüler, ayarlar, pencereler, tarih ve saat hemen değişir.",
+    "Ändert Menüs, Einstellungen, Dialoge, Datum und Uhrzeit sofort.",
+    "Modifie immédiatement les menus, paramètres, dialogues, dates et heures."
+  ],
+  "Webpage languages and spell checking follow Chromium and your operating system.": [
+    "Webpage languages and spell checking follow Chromium and your operating system.",
+    "Web sitelerinin dili ve yazım denetimi Chromium ile işletim sisteminin ayarlarını kullanır.",
+    "Webseitensprachen und Rechtschreibprüfung folgen Chromium und dem Betriebssystem.",
+    "Les langues des sites et la correction orthographique suivent Chromium et le système."
+  ],
+  "Interface text size": [
+    "Interface text size",
+    "Arayüz yazı boyutu",
+    "Textgröße der Oberfläche",
+    "Taille du texte de l’interface"
+  ],
+  "Motion": ["Motion", "Hareket", "Bewegung", "Mouvement"],
+  "Enable interface animations": [
+    "Enable interface animations",
+    "Arayüz animasyonlarını etkinleştir",
+    "Oberflächenanimationen aktivieren",
+    "Activer les animations de l’interface"
+  ],
+  "Dot respects your system’s reduced motion preference. All controls support keyboard focus.": [
+    "Dot respects your system’s reduced motion preference. All controls support keyboard focus.",
+    "Sistemin hareketi azalt ayarı uygulanır. Denetimler klavyeyle kullanılabilir.",
+    "Dot berücksichtigt reduzierte Bewegung im System. Alle Bedienelemente sind per Tastatur erreichbar.",
+    "Dot respecte la réduction des animations du système. Les commandes sont accessibles au clavier."
+  ],
+  "Browser task manager": [
+    "Browser task manager",
+    "Tarayıcı görev yöneticisi",
+    "Browser-Taskmanager",
+    "Gestionnaire des tâches du navigateur"
+  ],
+  "Live process IDs and tab lifecycle status. Memory totals are not estimated.": [
+    "Live process IDs and tab lifecycle status. Memory totals are not estimated.",
+    "İşlem kimlikleri ve sekme durumu gösterilir.",
+    "Zeigt Prozess-IDs und den Tab-Status.",
+    "Affiche les identifiants des processus et l’état des onglets."
+  ],
+  "Open task manager": [
+    "Open task manager",
+    "Görev yöneticisini aç",
+    "Taskmanager öffnen",
+    "Ouvrir le gestionnaire des tâches"
+  ],
+  "Manage installed extensions or add one from a folder.": [
+    "Manage installed extensions or add one from a folder.",
+    "Eklentileri yönet veya bir klasörden ekle.",
+    "Installierte Erweiterungen verwalten oder aus einem Ordner hinzufügen.",
+    "Gérer les extensions ou en ajouter depuis un dossier."
+  ],
+  "Manage extensions": [
+    "Manage extensions",
+    "Eklentileri yönet",
+    "Erweiterungen verwalten",
+    "Gérer les extensions"
+  ],
+  "Passwords and autofill": [
+    "Passwords and autofill",
+    "Parolalar ve otomatik doldurma",
+    "Passwörter und automatisches Ausfüllen",
+    "Mots de passe et saisie automatique"
+  ],
+  "Import browser password CSV files, store them encrypted and fill login forms on matching sites.": [
+    "Import browser password CSV files, store them encrypted and fill login forms on matching sites.",
+    "CSV dosyasından parolaları aktar, şifreli sakla ve ilgili sitedeki giriş formunu doldur.",
+    "Passwörter aus CSV importieren, verschlüsselt speichern und auf passenden Websites ausfüllen.",
+    "Importer les mots de passe CSV, les conserver chiffrés et remplir les formulaires des sites correspondants."
+  ],
+  "Manage passwords": [
+    "Manage passwords",
+    "Parolaları yönet",
+    "Passwörter verwalten",
+    "Gérer les mots de passe"
+  ],
+  "Updates": ["Updates", "Güncellemeler", "Updates", "Mises à jour"],
+  "Updates download automatically from GitHub Releases and install when you quit Dot.": [
+    "Updates download automatically from GitHub Releases and install when you quit Dot.",
+    "Güncellemeler GitHub Releases üzerinden otomatik indirilir ve Dot’u kapattığında kurulur.",
+    "Updates werden automatisch von GitHub Releases geladen und beim Beenden von Dot installiert.",
+    "Les mises à jour sont téléchargées depuis GitHub Releases et installées à la fermeture de Dot."
+  ],
+  "Automatic": ["Automatic", "Otomatik", "Automatisch", "Automatique"],
+  "Cancel": ["Cancel", "İptal", "Abbrechen", "Annuler"],
+  "Close": ["Close", "Kapat", "Schließen", "Fermer"],
+  "Save": ["Save", "Kaydet", "Speichern", "Enregistrer"],
+  "Done": ["Done", "Tamam", "Fertig", "Terminé"],
+  "Delete": ["Delete", "Sil", "Löschen", "Supprimer"],
+  "Remove": ["Remove", "Kaldır", "Entfernen", "Retirer"],
+  "Create": ["Create", "Oluştur", "Erstellen", "Créer"],
+  "Search": ["Search", "Ara", "Suchen", "Rechercher"],
+  "Home": ["Home", "Ana sayfa", "Startseite", "Accueil"],
+  "Work": ["Work", "İş", "Arbeit", "Travail"],
+  "Study": ["Study", "Çalışma", "Lernen", "Études"],
+  "Music": ["Music", "Müzik", "Musik", "Musique"],
+  "Gaming": ["Gaming", "Oyun", "Gaming", "Jeux"],
+  "Color": ["Color", "Renk", "Farbe", "Couleur"],
+  "Icon": ["Icon", "Simge", "Symbol", "Icône"],
+  "URL": ["URL", "Adres", "Adresse", "Adresse"],
+  "Website": ["Website", "Web sitesi", "Website", "Site web"],
+  "Personal": ["Personal", "Kişisel", "Persönlich", "Personnel"],
+  "Favorites": ["Favorites", "Favoriler", "Favoriten", "Favoris"],
+  "Reading list": ["Reading list", "Okuma listesi", "Leseliste", "Liste de lecture"],
+  "All": ["All", "Tümü", "Alle", "Tous"],
+  "All bookmarks": ["All bookmarks", "Tüm yer imleri", "Alle Lesezeichen", "Tous les favoris"],
+  "Edit {name}": ["Edit {name}", "{name} düzenle", "{name} bearbeiten", "Modifier {name}"],
+  "Remove {name}": ["Remove {name}", "{name} kaldır", "{name} entfernen", "Retirer {name}"],
+  "Close {name}": ["Close {name}", "{name} kapat", "{name} schließen", "Fermer {name}"],
+  "Search {engine} or enter an address": [
+    "Search {engine} or enter an address",
+    "{engine} ile ara veya adres yaz",
+    "Mit {engine} suchen oder Adresse eingeben",
+    "Rechercher avec {engine} ou saisir une adresse"
+  ],
+  "the web": ["the web", "web", "dem Web", "le web"],
+  "Quick command": ["Quick command", "Hızlı komut", "Schnellbefehl", "Commande rapide"],
+  "Search commands or tabs": [
+    "Search commands or tabs",
+    "Komut veya sekme ara",
+    "Befehle oder Tabs suchen",
+    "Rechercher des commandes ou des onglets"
+  ],
+  "Search commands and tabs": [
+    "Search commands and tabs",
+    "Komut ve sekmelerde ara",
+    "Befehle und Tabs durchsuchen",
+    "Rechercher des commandes et des onglets"
+  ],
+  "No commands or tabs match.": [
+    "No commands or tabs match.",
+    "Eşleşen komut veya sekme yok.",
+    "Keine passenden Befehle oder Tabs.",
+    "Aucune commande ni aucun onglet correspondant."
+  ],
+  "DOT QUICK COMMAND": ["DOT QUICK COMMAND", "HIZLI KOMUT", "SCHNELLBEFEHL", "COMMANDE RAPIDE"],
+  "New tab (Ctrl+T)": [
+    "New tab (Ctrl+T)",
+    "Yeni sekme (Ctrl+T)",
+    "Neuer Tab (Ctrl+T)",
+    "Nouvel onglet (Ctrl+T)"
+  ],
+  "Close tab": ["Close tab", "Sekmeyi kapat", "Tab schließen", "Fermer l’onglet"],
+  "Close tab (Ctrl+W)": [
+    "Close tab (Ctrl+W)",
+    "Sekmeyi kapat (Ctrl+W)",
+    "Tab schließen (Ctrl+W)",
+    "Fermer l’onglet (Ctrl+W)"
+  ],
+  "Duplicate tab": ["Duplicate tab", "Sekmeyi çoğalt", "Tab duplizieren", "Dupliquer l’onglet"],
+  "Bookmark page": [
+    "Bookmark page",
+    "Sayfayı yer imlerine ekle",
+    "Seite als Lesezeichen speichern",
+    "Ajouter la page aux favoris"
+  ],
+  "Search open tabs": [
+    "Search open tabs",
+    "Açık sekmelerde ara",
+    "Offene Tabs durchsuchen",
+    "Rechercher dans les onglets ouverts"
+  ],
+  "Toggle sidebar": [
+    "Toggle sidebar",
+    "Kenar çubuğunu aç/kapat",
+    "Seitenleiste umschalten",
+    "Afficher/masquer la barre latérale"
+  ],
+  "Toggle vertical tabs": [
+    "Toggle vertical tabs",
+    "Dikey sekmeleri aç/kapat",
+    "Vertikale Tabs umschalten",
+    "Activer/désactiver les onglets verticaux"
+  ],
+  "Developer tools": [
+    "Developer tools",
+    "Geliştirici araçları",
+    "Entwicklerwerkzeuge",
+    "Outils de développement"
+  ],
+  "Dark theme": ["Dark theme", "Koyu tema", "Dunkles Design", "Thème sombre"],
+  "Light theme": ["Light theme", "Açık tema", "Helles Design", "Thème clair"],
+  "Switch workspace · {name}": [
+    "Switch workspace · {name}",
+    "Çalışma alanına geç · {name}",
+    "Arbeitsbereich wechseln · {name}",
+    "Changer d’espace · {name}"
+  ],
+  "Bookmark": ["Bookmark", "Yer imi", "Lesezeichen", "Favori"],
+  "Shortcut": ["Shortcut", "Kısayol", "Verknüpfung", "Raccourci"],
+  "Workspace": ["Workspace", "Çalışma alanı", "Arbeitsbereich", "Espace de travail"],
+  "Tab group": ["Tab group", "Sekme grubu", "Tab-Gruppe", "Groupe d’onglets"],
+  "Site information": [
+    "Site information",
+    "Site bilgileri",
+    "Websiteinformationen",
+    "Informations du site"
+  ],
+  "Your session": ["Your session", "Oturumun", "Ihre Sitzung", "Votre session"],
+  "Welcome to Dot": [
+    "Welcome to Dot",
+    "Dot’a hoş geldin",
+    "Willkommen bei Dot",
+    "Bienvenue dans Dot"
+  ],
+  "Import browser data": [
+    "Import browser data",
+    "Tarayıcı verilerini aktar",
+    "Browserdaten importieren",
+    "Importer les données du navigateur"
+  ],
+  "View all downloads": [
+    "View all downloads",
+    "Tüm indirilenleri gör",
+    "Alle Downloads anzeigen",
+    "Afficher tous les téléchargements"
+  ],
+  "Choose your theme and search engine.": [
+    "Choose your theme and search engine.",
+    "Tema ve arama motorunu seç.",
+    "Design und Suchmaschine wählen.",
+    "Choisissez votre thème et votre moteur de recherche."
+  ],
+  "Start browsing": ["Start browsing", "Taramaya başla", "Browser starten", "Commencer à naviguer"],
+  "Initial theme": ["Initial theme", "Başlangıç teması", "Anfängliches Design", "Thème initial"],
+  "Initial search engine": [
+    "Initial search engine",
+    "Başlangıç arama motoru",
+    "Anfängliche Suchmaschine",
+    "Moteur de recherche initial"
+  ],
+  "Use vertical tabs": [
+    "Use vertical tabs",
+    "Dikey sekmeleri kullan",
+    "Vertikale Tabs verwenden",
+    "Utiliser les onglets verticaux"
+  ],
+  "Skip": ["Skip", "Atla", "Überspringen", "Passer"],
+  "WORKSPACES": ["WORKSPACES", "ÇALIŞMA ALANLARI", "ARBEITSBEREICHE", "ESPACES DE TRAVAIL"],
+  "FAVORITES": ["FAVORITES", "FAVORİLER", "FAVORITEN", "FAVORIS"],
+  "TABS": ["TABS", "SEKMELER", "TABS", "ONGLETS"],
+  "Collapse sidebar": [
+    "Collapse sidebar",
+    "Kenar çubuğunu daralt",
+    "Seitenleiste einklappen",
+    "Réduire la barre latérale"
+  ],
+  "Create workspace": [
+    "Create workspace",
+    "Çalışma alanı oluştur",
+    "Arbeitsbereich erstellen",
+    "Créer un espace de travail"
+  ],
+  "Resize sidebar": [
+    "Resize sidebar",
+    "Kenar çubuğunu boyutlandır",
+    "Seitenleiste skalieren",
+    "Redimensionner la barre latérale"
+  ],
+  "History (Ctrl+H)": [
+    "History (Ctrl+H)",
+    "Geçmiş (Ctrl+H)",
+    "Verlauf (Ctrl+H)",
+    "Historique (Ctrl+H)"
+  ],
+  "Downloads (Ctrl+J)": [
+    "Downloads (Ctrl+J)",
+    "İndirilenler (Ctrl+J)",
+    "Downloads (Ctrl+J)",
+    "Téléchargements (Ctrl+J)"
+  ],
+  "Browser tabs": ["Browser tabs", "Tarayıcı sekmeleri", "Browser-Tabs", "Onglets du navigateur"],
+  "Search tabs (Ctrl+K)": [
+    "Search tabs (Ctrl+K)",
+    "Sekmelerde ara (Ctrl+K)",
+    "Tabs suchen (Ctrl+K)",
+    "Rechercher des onglets (Ctrl+K)"
+  ],
+  "Address and search": [
+    "Address and search",
+    "Adres ve arama",
+    "Adresse und Suche",
+    "Adresse et recherche"
+  ],
+  "Address suggestions": [
+    "Address suggestions",
+    "Adres önerileri",
+    "Adressvorschläge",
+    "Suggestions d’adresses"
+  ],
+  "Back (Alt+Left)": [
+    "Back (Alt+Left)",
+    "Geri (Alt+Sol)",
+    "Zurück (Alt+Links)",
+    "Retour (Alt+Gauche)"
+  ],
+  "Forward (Alt+Right)": [
+    "Forward (Alt+Right)",
+    "İleri (Alt+Sağ)",
+    "Vorwärts (Alt+Rechts)",
+    "Suivant (Alt+Droite)"
+  ],
+  "Stop loading": ["Stop loading", "Yüklemeyi durdur", "Laden stoppen", "Arrêter le chargement"],
+  "Reload (Ctrl+R)": [
+    "Reload (Ctrl+R)",
+    "Yenile (Ctrl+R)",
+    "Neu laden (Ctrl+R)",
+    "Actualiser (Ctrl+R)"
+  ],
+  "Edit bookmark (Ctrl+D)": [
+    "Edit bookmark (Ctrl+D)",
+    "Yer imini düzenle (Ctrl+D)",
+    "Lesezeichen bearbeiten (Ctrl+D)",
+    "Modifier le favori (Ctrl+D)"
+  ],
+  "Bookmark page (Ctrl+D)": [
+    "Bookmark page (Ctrl+D)",
+    "Yer imlerine ekle (Ctrl+D)",
+    "Lesezeichen hinzufügen (Ctrl+D)",
+    "Ajouter aux favoris (Ctrl+D)"
+  ],
+  "Search or enter an address": [
+    "Search or enter an address",
+    "Ara veya adres yaz",
+    "Suchen oder Adresse eingeben",
+    "Rechercher ou saisir une adresse"
+  ],
+  "Search or navigate": [
+    "Search or navigate",
+    "Ara veya adrese git",
+    "Suchen oder aufrufen",
+    "Rechercher ou ouvrir"
+  ],
+  "Type an address, a search, or an engine keyword": [
+    "Type an address, a search, or an engine keyword",
+    "Adres, arama veya motor kısayolu yaz",
+    "Adresse, Suchbegriff oder Suchmaschinenkürzel eingeben",
+    "Saisir une adresse, une recherche ou un mot-clé de moteur"
+  ],
+  "Recent search": ["Recent search", "Son arama", "Letzte Suche", "Recherche récente"],
+  "Switch to tab": ["Switch to tab", "Sekmeye geç", "Zum Tab wechseln", "Accéder à l’onglet"],
+  "search": ["search", "arama", "Suche", "recherche"],
+  "bookmark": ["bookmark", "yer imi", "Lesezeichen", "favori"],
+  "history": ["history", "geçmiş", "Verlauf", "historique"],
+  "bookmarks": ["bookmarks", "yer imleri", "Lesezeichen", "favoris"],
+  "downloads": ["downloads", "indirilenler", "Downloads", "téléchargements"],
+  "tabs": ["tabs", "sekmeler", "Tabs", "onglets"],
+  "enter": ["enter", "Enter", "Enter", "Entrée"],
+  "esc": ["esc", "Esc", "Esc", "Échap"],
+  "to navigate": ["to navigate", "gezinmek için", "zum Navigieren", "pour naviguer"],
+  "to open": ["to open", "açmak için", "zum Öffnen", "pour ouvrir"],
+  "to close": ["to close", "kapatmak için", "zum Schließen", "pour fermer"],
+  "navigate": ["navigate", "gezin", "navigieren", "naviguer"],
+  "select": ["select", "seç", "auswählen", "sélectionner"],
+  "Exit split view": [
+    "Exit split view",
+    "Bölünmüş görünümü kapat",
+    "Geteilte Ansicht beenden",
+    "Quitter la vue partagée"
+  ],
+  "Swap": ["Swap", "Yer değiştir", "Tauschen", "Permuter"],
+  "Side by side": ["Side by side", "Yan yana", "Nebeneinander", "Côte à côte"],
+  "Stacked": ["Stacked", "Alt alta", "Untereinander", "Superposées"],
+  "Split layout": [
+    "Split layout",
+    "Bölünmüş görünüm düzeni",
+    "Anordnung der geteilten Ansicht",
+    "Disposition de la vue partagée"
+  ],
+  "Split ratio": [
+    "Split ratio",
+    "Bölünmüş görünüm oranı",
+    "Teilungsverhältnis",
+    "Proportion de la vue partagée"
+  ],
+  "Side panel section": [
+    "Side panel section",
+    "Yan panel bölümü",
+    "Seitenleistenbereich",
+    "Section du panneau latéral"
+  ],
+  "Search side panel": [
+    "Search side panel",
+    "Yan panelde ara",
+    "Seitenleiste durchsuchen",
+    "Rechercher dans le panneau latéral"
+  ],
+  "Tabs": ["Tabs", "Sekmeler", "Tabs", "Onglets"],
+  "Resize side panel": [
+    "Resize side panel",
+    "Yan paneli boyutlandır",
+    "Seitenpanel skalieren",
+    "Redimensionner le panneau latéral"
+  ],
+  "Nothing here yet.": [
+    "Nothing here yet.",
+    "Henüz bir şey yok.",
+    "Noch keine Einträge.",
+    "Aucun élément pour le moment."
+  ],
+  "New folder": ["New folder", "Yeni klasör", "Neuer Ordner", "Nouveau dossier"],
+  "Folder": ["Folder", "Klasör", "Ordner", "Dossier"],
+  "Folder name": ["Folder name", "Klasör adı", "Ordnername", "Nom du dossier"],
+  "Add bookmark": ["Add bookmark", "Yer imi ekle", "Lesezeichen hinzufügen", "Ajouter un favori"],
+  "Add shortcut": [
+    "Add shortcut",
+    "Kısayol ekle",
+    "Verknüpfung hinzufügen",
+    "Ajouter un raccourci"
+  ],
+  "Edit bookmark": [
+    "Edit bookmark",
+    "Yer imini düzenle",
+    "Lesezeichen bearbeiten",
+    "Modifier le favori"
+  ],
+  "Bookmark name": ["Bookmark name", "Yer imi adı", "Lesezeichenname", "Nom du favori"],
+  "Bookmark URL": ["Bookmark URL", "Yer imi adresi", "Lesezeichenadresse", "Adresse du favori"],
+  "Bookmark folder": [
+    "Bookmark folder",
+    "Yer imi klasörü",
+    "Lesezeichenordner",
+    "Dossier du favori"
+  ],
+  "Shortcut name": ["Shortcut name", "Kısayol adı", "Verknüpfungsname", "Nom du raccourci"],
+  "Shortcut URL": ["Shortcut URL", "Kısayol adresi", "Verknüpfungsadresse", "Adresse du raccourci"],
+  "Workspace name": [
+    "Workspace name",
+    "Çalışma alanı adı",
+    "Name des Arbeitsbereichs",
+    "Nom de l’espace"
+  ],
+  "Workspace color": [
+    "Workspace color",
+    "Çalışma alanı rengi",
+    "Farbe des Arbeitsbereichs",
+    "Couleur de l’espace"
+  ],
+  "Workspace icon": [
+    "Workspace icon",
+    "Çalışma alanı simgesi",
+    "Symbol des Arbeitsbereichs",
+    "Icône de l’espace"
+  ],
+  "Group name": ["Group name", "Grup adı", "Gruppenname", "Nom du groupe"],
+  "Group color": ["Group color", "Grup rengi", "Gruppenfarbe", "Couleur du groupe"],
+  "Ungroup tabs": ["Ungroup tabs", "Grubu dağıt", "Tab-Gruppe auflösen", "Dissocier les onglets"],
+  "Delete space": [
+    "Delete space",
+    "Çalışma alanını sil",
+    "Arbeitsbereich löschen",
+    "Supprimer l’espace"
+  ],
+  "Deleting a space moves its tabs to another space.": [
+    "Deleting a space moves its tabs to another space.",
+    "Silinen alanın sekmeleri başka bir alana taşınır.",
+    "Beim Löschen werden die Tabs in einen anderen Bereich verschoben.",
+    "Les onglets d’un espace supprimé sont déplacés vers un autre espace."
+  ],
+  "Choose a second tab to show alongside this page.": [
+    "Choose a second tab to show alongside this page.",
+    "Bu sayfanın yanında gösterilecek ikinci sekmeyi seç.",
+    "Einen zweiten Tab neben dieser Seite anzeigen.",
+    "Choisissez un deuxième onglet à afficher à côté de cette page."
+  ],
+  "Second tab": ["Second tab", "İkinci sekme", "Zweiter Tab", "Deuxième onglet"],
+  "Second split tab": [
+    "Second split tab",
+    "Bölünmüş görünümün ikinci sekmesi",
+    "Zweiter Tab der geteilten Ansicht",
+    "Deuxième onglet de la vue partagée"
+  ],
+  "Layout": ["Layout", "Düzen", "Anordnung", "Disposition"],
+  "Ratio": ["Ratio", "Oran", "Verhältnis", "Proportion"],
+  "Split direction": ["Split direction", "Bölünme yönü", "Teilungsrichtung", "Sens du partage"],
+  "Open two web tabs in the same workspace, then start split view from one of them.": [
+    "Open two web tabs in the same workspace, then start split view from one of them.",
+    "Aynı alanda iki web sekmesi aç, ardından birinden bölünmüş görünümü başlat.",
+    "Zwei Web-Tabs im gleichen Bereich öffnen und in einem davon die geteilte Ansicht starten.",
+    "Ouvrez deux onglets web dans le même espace, puis lancez la vue partagée depuis l’un d’eux."
+  ],
+  "Time range": ["Time range", "Zaman aralığı", "Zeitraum", "Période"],
+  "Clear data time range": [
+    "Clear data time range",
+    "Veri temizleme zaman aralığı",
+    "Zeitraum zum Löschen",
+    "Période des données à effacer"
+  ],
+  "Last hour": ["Last hour", "Son saat", "Letzte Stunde", "Dernière heure"],
+  "Last 24 hours": ["Last 24 hours", "Son 24 saat", "Letzte 24 Stunden", "Dernières 24 heures"],
+  "Last 7 days": ["Last 7 days", "Son 7 gün", "Letzte 7 Tage", "7 derniers jours"],
+  "Last 4 weeks": ["Last 4 weeks", "Son 4 hafta", "Letzte 4 Wochen", "4 dernières semaines"],
+  "All time": ["All time", "Tüm zamanlar", "Gesamter Zeitraum", "Toutes les périodes"],
+  "Browsing history and searches": [
+    "Browsing history and searches",
+    "Tarama geçmişi ve aramalar",
+    "Browserverlauf und Suchanfragen",
+    "Historique et recherches"
+  ],
+  "Cookies and site storage (all time)": [
+    "Cookies and site storage (all time)",
+    "Çerezler ve site verileri (tüm zamanlar)",
+    "Cookies und Websitedaten (gesamter Zeitraum)",
+    "Cookies et données des sites (toutes les périodes)"
+  ],
+  "Cached files (all time)": [
+    "Cached files (all time)",
+    "Önbellekteki dosyalar (tüm zamanlar)",
+    "Cachedateien (gesamter Zeitraum)",
+    "Fichiers en cache (toutes les périodes)"
+  ],
+  "Recently closed tabs and saved restore records": [
+    "Recently closed tabs and saved restore records",
+    "Kapatılan sekmeler ve oturum kayıtları",
+    "Geschlossene Tabs und Wiederherstellungsdaten",
+    "Onglets fermés et sessions enregistrées"
+  ],
+  "Site data removal may sign you out. Open tabs continue to be saved for recovery.": [
+    "Site data removal may sign you out. Open tabs continue to be saved for recovery.",
+    "Site verilerini silmek oturumunu kapatabilir. Açık sekmeler kurtarma için kaydedilmeye devam eder.",
+    "Das Löschen von Websitedaten kann Sie abmelden. Offene Tabs werden weiterhin zur Wiederherstellung gespeichert.",
+    "Effacer les données des sites peut vous déconnecter. Les onglets ouverts restent enregistrés pour la restauration."
+  ],
+  "Clear data": ["Clear data", "Verileri temizle", "Daten löschen", "Effacer les données"],
+  "Clearing…": ["Clearing…", "Temizleniyor…", "Wird gelöscht…", "Effacement…"],
+  "Reading site information…": [
+    "Reading site information…",
+    "Site bilgileri yükleniyor…",
+    "Websiteinformationen werden geladen…",
+    "Chargement des informations du site…"
+  ],
+  "HTTPS connection": [
+    "HTTPS connection",
+    "HTTPS bağlantısı",
+    "HTTPS-Verbindung",
+    "Connexion HTTPS"
+  ],
+  "Connection not yet verified": [
+    "Connection not yet verified",
+    "Bağlantı henüz doğrulanmadı",
+    "Verbindung noch nicht geprüft",
+    "Connexion pas encore vérifiée"
+  ],
+  "Connection failed": [
+    "Connection failed",
+    "Bağlantı başarısız",
+    "Verbindung fehlgeschlagen",
+    "Échec de la connexion"
+  ],
+  "Connection is not encrypted": [
+    "Connection is not encrypted",
+    "Bağlantı şifreli değil",
+    "Verbindung ist nicht verschlüsselt",
+    "Connexion non chiffrée"
+  ],
+  "Chromium accepted this connection’s certificate. HTTPS does not establish whether a site is trustworthy.": [
+    "Chromium accepted this connection’s certificate. HTTPS does not establish whether a site is trustworthy.",
+    "Bağlantının sertifikası geçerli. HTTPS, sitenin güvenilir olduğunu tek başına göstermez.",
+    "Das Zertifikat wurde von Chromium akzeptiert. HTTPS allein garantiert keine vertrauenswürdige Website.",
+    "Chromium a accepté le certificat. HTTPS ne garantit pas à lui seul la fiabilité du site."
+  ],
+  "Connection information will be available after this page finishes loading.": [
+    "Connection information will be available after this page finishes loading.",
+    "Bağlantı bilgileri sayfa yüklendiğinde gösterilir.",
+    "Verbindungsinformationen erscheinen nach dem Laden der Seite.",
+    "Les informations de connexion seront disponibles après le chargement."
+  ],
+  "Avoid sharing sensitive information on this connection.": [
+    "Avoid sharing sensitive information on this connection.",
+    "Bu bağlantıda hassas bilgilerini paylaşma.",
+    "Über diese Verbindung keine sensiblen Daten teilen.",
+    "Évitez de partager des informations sensibles sur cette connexion."
+  ],
+  "Permissions": ["Permissions", "İzinler", "Berechtigungen", "Autorisations"],
+  "This site will ask when it needs access.": [
+    "This site will ask when it needs access.",
+    "Site erişim gerektiğinde izin isteyecek.",
+    "Diese Website fragt bei Bedarf nach einer Berechtigung.",
+    "Ce site demandera une autorisation si nécessaire."
+  ],
+  "Allow popups from this site": [
+    "Allow popups from this site",
+    "Bu sitenin açılır pencerelerine izin ver",
+    "Popups dieser Website erlauben",
+    "Autoriser les fenêtres contextuelles de ce site"
+  ],
+  "Cookies: {count}": [
+    "Cookies: {count}",
+    "Çerezler: {count}",
+    "Cookies: {count}",
+    "Cookies : {count}"
+  ],
+  " · HTTPS only": [" · HTTPS only", " · yalnızca HTTPS", " · nur HTTPS", " · HTTPS uniquement"],
+  " · HTTP only": [" · HTTP only", " · yalnızca HTTP", " · nur HTTP", " · HTTP uniquement"],
+  "Clear this site’s data": [
+    "Clear this site’s data",
+    "Bu sitenin verilerini temizle",
+    "Daten dieser Website löschen",
+    "Effacer les données de ce site"
+  ],
+  "Visits, searches and tabs are not saved. Downloaded files remain on your device.": [
+    "Visits, searches and tabs are not saved. Downloaded files remain on your device.",
+    "Ziyaretler, aramalar ve sekmeler kaydedilmez. İndirilen dosyalar cihazında kalır.",
+    "Besuche, Suchanfragen und Tabs werden nicht gespeichert. Heruntergeladene Dateien bleiben auf dem Gerät.",
+    "Les visites, recherches et onglets ne sont pas enregistrés. Les fichiers téléchargés restent sur l’appareil."
+  ],
+  "Your bookmarks, settings and cookies stay on this device.": [
+    "Your bookmarks, settings and cookies stay on this device.",
+    "Yer imleri, ayarlar ve çerezler bu cihazda tutulur.",
+    "Lesezeichen, Einstellungen und Cookies bleiben auf diesem Gerät.",
+    "Vos favoris, paramètres et cookies restent sur cet appareil."
+  ],
+  "Open private window": [
+    "Open private window",
+    "Gizli pencere aç",
+    "Privates Fenster öffnen",
+    "Ouvrir une fenêtre privée"
+  ],
+  "Open normal window": [
+    "Open normal window",
+    "Normal pencere aç",
+    "Normales Fenster öffnen",
+    "Ouvrir une fenêtre normale"
+  ],
+  "Import from another browser": [
+    "Import from another browser",
+    "Başka tarayıcıdan aktar",
+    "Aus anderem Browser importieren",
+    "Importer depuis un autre navigateur"
+  ],
+  "Browser profile": [
+    "Browser profile",
+    "Tarayıcı profili",
+    "Browserprofil",
+    "Profil du navigateur"
+  ],
+  "Bring bookmarks, history and open tabs from Chromium-based or Firefox-based browsers. Every discovered profile is listed separately. For portable browsers or a custom location, choose the profile or user data folder.": [
+    "Bring bookmarks, history and open tabs from Chromium-based or Firefox-based browsers. Every discovered profile is listed separately. For portable browsers or a custom location, choose the profile or user data folder.",
+    "Chromium ve Firefox tabanlı tarayıcılardan yer imlerini, geçmişi ve sekmeleri aktar. Profiller ayrı listelenir. Taşınabilir tarayıcılar için profil klasörünü seç.",
+    "Lesezeichen, Verlauf und Tabs aus Chromium- oder Firefox-Browsern importieren. Profile werden einzeln aufgeführt. Bei portablen Browsern den Profilordner wählen.",
+    "Importez les favoris, l’historique et les onglets depuis les navigateurs Chromium ou Firefox. Chaque profil est listé séparément. Pour un navigateur portable, choisissez son dossier de profil."
+  ],
+  "Choose browser folder": [
+    "Choose browser folder",
+    "Tarayıcı klasörünü seç",
+    "Browserordner wählen",
+    "Choisir le dossier du navigateur"
+  ],
+  "No compatible profiles were found automatically. Choose a browser folder below.": [
+    "No compatible profiles were found automatically. Choose a browser folder below.",
+    "Uyumlu profil bulunamadı. Aşağıdan tarayıcı klasörünü seç.",
+    "Keine kompatiblen Profile gefunden. Unten einen Browserordner wählen.",
+    "Aucun profil compatible trouvé. Choisissez un dossier ci-dessous."
+  ],
+  "Browsing history": [
+    "Browsing history",
+    "Tarama geçmişi",
+    "Browserverlauf",
+    "Historique de navigation"
+  ],
+  "Open tabs": ["Open tabs", "Açık sekmeler", "Offene Tabs", "Onglets ouverts"],
+  "Cookies": ["Cookies", "Çerezler", "Cookies", "Cookies"],
+  "Passwords": ["Passwords", "Parolalar", "Passwörter", "Mots de passe"],
+  "Passwords and cookies": [
+    "Passwords and cookies",
+    "Parolalar ve çerezler",
+    "Passwörter und Cookies",
+    "Mots de passe et cookies"
+  ],
+  "Export passwords as CSV from your previous browser's password manager, then import that file here. Compatible Chromium-based and Firefox-based CSV exports are supported. Imported passwords are encrypted with your operating-system account and available from Saved passwords in the toolbar.": [
+    "Export passwords as CSV from your previous browser's password manager, then import that file here. Compatible Chromium-based and Firefox-based CSV exports are supported. Imported passwords are encrypted with your operating-system account and available from Saved passwords in the toolbar.",
+    "Eski tarayıcının parola yöneticisinden CSV dosyası dışa aktar ve burada seç. Chromium ile Firefox CSV dosyaları desteklenir. Parolalar sistem hesabınla şifreli saklanır; menüdeki Kayıtlı parolalar bölümünden kullanılır.",
+    "Passwörter im bisherigen Browser als CSV exportieren und hier importieren. Chromium- und Firefox-CSV werden unterstützt. Passwörter werden mit dem Systemkonto verschlüsselt und sind unter Gespeicherte Passwörter verfügbar.",
+    "Exportez les mots de passe en CSV depuis l’ancien navigateur, puis importez le fichier ici. Les CSV de Chromium et Firefox sont pris en charge. Les mots de passe sont chiffrés avec votre compte système et accessibles dans Mots de passe enregistrés."
+  ],
+  "The exported CSV contains readable passwords. Delete it after importing if you no longer need it.": [
+    "The exported CSV contains readable passwords. Delete it after importing if you no longer need it.",
+    "CSV dosyası parolaları okunabilir biçimde içerir. Aktarım sonrası gerekmiyorsa dosyayı sil.",
+    "Die CSV enthält lesbare Passwörter. Nach dem Import löschen, wenn sie nicht mehr gebraucht wird.",
+    "Le CSV contient des mots de passe lisibles. Supprimez-le après l’importation si vous n’en avez plus besoin."
+  ],
+  "Cookies can be imported from an exported JSON or Netscape TXT file. Some sites will still require you to sign in again.": [
+    "Cookies can be imported from an exported JSON or Netscape TXT file. Some sites will still require you to sign in again.",
+    "Çerezler JSON veya Netscape TXT dosyasından aktarılabilir. Bazı siteler yeniden giriş ister.",
+    "Cookies aus JSON oder Netscape-TXT importieren. Manche Websites verlangen trotzdem eine neue Anmeldung.",
+    "Les cookies s’importent depuis un JSON ou un TXT Netscape. Certains sites nécessiteront une nouvelle connexion."
+  ],
+  "Import password CSV": [
+    "Import password CSV",
+    "Parola CSV dosyasını aktar",
+    "Passwort-CSV importieren",
+    "Importer un CSV de mots de passe"
+  ],
+  "Import cookie file": [
+    "Import cookie file",
+    "Çerez dosyasını aktar",
+    "Cookiedatei importieren",
+    "Importer un fichier de cookies"
+  ],
+  "Reading…": ["Reading…", "Okunuyor…", "Wird gelesen…", "Lecture…"],
+  "Preview": ["Preview", "Önizleme", "Vorschau", "Aperçu"],
+  "Import": ["Import", "Aktar", "Importieren", "Importer"],
+  "Imported: {bookmarks} bookmarks, {history} history entries, {tabs} tabs, {passwords} passwords and {cookies} cookies.": [
+    "Imported: {bookmarks} bookmarks, {history} history entries, {tabs} tabs, {passwords} passwords and {cookies} cookies.",
+    "Aktarıldı: {bookmarks} yer imi, {history} geçmiş kaydı, {tabs} sekme, {passwords} parola ve {cookies} çerez.",
+    "Importiert: {bookmarks} Lesezeichen, {history} Verlaufseinträge, {tabs} Tabs, {passwords} Passwörter und {cookies} Cookies.",
+    "Importés : {bookmarks} favoris, {history} entrées d’historique, {tabs} onglets, {passwords} mots de passe et {cookies} cookies."
+  ],
+  "Passwords are encrypted with your system account. Choose Fill on this site to fill a login form; you submit it yourself.": [
+    "Passwords are encrypted with your system account. Choose Fill on this site to fill a login form; you submit it yourself.",
+    "Parolalar sistem hesabınla şifrelenir. Bu sitede doldur seçeneği giriş formunu doldurur; giriş düğmesine sen basarsın.",
+    "Passwörter werden mit Ihrem Systemkonto verschlüsselt. Auf dieser Website ausfüllen befüllt das Formular; Sie senden es selbst ab.",
+    "Les mots de passe sont chiffrés avec votre compte système. Remplir sur ce site complète le formulaire ; vous le validez vous-même."
+  ],
+  "Search saved passwords": [
+    "Search saved passwords",
+    "Kayıtlı parolalarda ara",
+    "Gespeicherte Passwörter durchsuchen",
+    "Rechercher les mots de passe enregistrés"
+  ],
+  "Search sites or usernames": [
+    "Search sites or usernames",
+    "Site veya kullanıcı adı ara",
+    "Website oder Benutzernamen suchen",
+    "Rechercher un site ou un nom d’utilisateur"
+  ],
+  "(No username)": [
+    "(No username)",
+    "(Kullanıcı adı yok)",
+    "(Kein Benutzername)",
+    "(Sans nom d’utilisateur)"
+  ],
+  "Show": ["Show", "Göster", "Anzeigen", "Afficher"],
+  "Hide": ["Hide", "Gizle", "Verbergen", "Masquer"],
+  "Fill on this site": [
+    "Fill on this site",
+    "Bu sitede doldur",
+    "Auf dieser Website ausfüllen",
+    "Remplir sur ce site"
+  ],
+  "Copy": ["Copy", "Kopyala", "Kopieren", "Copier"],
+  "No saved passwords yet. Import the CSV exported by your previous browser.": [
+    "No saved passwords yet. Import the CSV exported by your previous browser.",
+    "Henüz kayıtlı parola yok. Eski tarayıcıdan dışa aktardığın CSV dosyasını aktar.",
+    "Noch keine Passwörter gespeichert. CSV aus dem bisherigen Browser importieren.",
+    "Aucun mot de passe enregistré. Importez le CSV de votre ancien navigateur."
+  ],
+  "Search title, address or workspace": [
+    "Search title, address or workspace",
+    "Başlık, adres veya çalışma alanı ara",
+    "Titel, Adresse oder Arbeitsbereich suchen",
+    "Rechercher un titre, une adresse ou un espace"
+  ],
+  "Sleeping": ["Sleeping", "Uyuyor", "Pausiert", "En veille"],
+  "Current": ["Current", "Geçerli", "Aktuell", "Actuel"],
+  "No open tabs match.": [
+    "No open tabs match.",
+    "Eşleşen açık sekme yok.",
+    "Keine passenden offenen Tabs.",
+    "Aucun onglet ouvert correspondant."
+  ],
+  "{count} tabs · ↑ ↓ to choose · Enter to switch": [
+    "{count} tabs · ↑ ↓ to choose · Enter to switch",
+    "{count} sekme · ↑ ↓ ile seç · Enter ile geç",
+    "{count} Tabs · ↑ ↓ wählen · Enter wechseln",
+    "{count} onglets · ↑ ↓ pour choisir · Entrée pour ouvrir"
+  ],
+  "{count} min read": [
+    "{count} min read",
+    "{count} dk okuma",
+    "{count} Min. Lesezeit",
+    "{count} min de lecture"
+  ],
+  "Preparing reading view…": [
+    "Preparing reading view…",
+    "Okuma görünümü hazırlanıyor…",
+    "Leseansicht wird vorbereitet…",
+    "Préparation du mode lecture…"
+  ],
+  "Back to page": ["Back to page", "Sayfaya dön", "Zurück zur Seite", "Retour à la page"],
+  "Smaller reading text": [
+    "Smaller reading text",
+    "Okuma yazısını küçült",
+    "Lesetext verkleinern",
+    "Réduire le texte de lecture"
+  ],
+  "Larger reading text": [
+    "Larger reading text",
+    "Okuma yazısını büyüt",
+    "Lesetext vergrößern",
+    "Agrandir le texte de lecture"
+  ],
+  "Search history": [
+    "Search history",
+    "Geçmişte ara",
+    "Verlauf durchsuchen",
+    "Rechercher dans l’historique"
+  ],
+  "Search your history": [
+    "Search your history",
+    "Geçmişinde ara",
+    "Im Verlauf suchen",
+    "Rechercher dans votre historique"
+  ],
+  "Search bookmarks": [
+    "Search bookmarks",
+    "Yer imlerinde ara",
+    "Lesezeichen durchsuchen",
+    "Rechercher dans les favoris"
+  ],
+  "BROWSING HISTORY": [
+    "BROWSING HISTORY",
+    "TARAMA GEÇMİŞİ",
+    "BROWSERVERLAUF",
+    "HISTORIQUE DE NAVIGATION"
+  ],
+  "SAVED PAGES": ["SAVED PAGES", "KAYITLI SAYFALAR", "GESPEICHERTE SEITEN", "PAGES ENREGISTRÉES"],
+  "FILES": ["FILES", "DOSYALAR", "DATEIEN", "FICHIERS"],
+  "Today": ["Today", "Bugün", "Heute", "Aujourd’hui"],
+  "Yesterday": ["Yesterday", "Dün", "Gestern", "Hier"],
+  "Previous 7 days": ["Previous 7 days", "Önceki 7 gün", "Vorherige 7 Tage", "7 jours précédents"],
+  "Older": ["Older", "Daha eski", "Älter", "Plus ancien"],
+  "No history yet": ["No history yet", "Henüz geçmiş yok", "Noch kein Verlauf", "Aucun historique"],
+  "The places you visit will appear here.": [
+    "The places you visit will appear here.",
+    "Ziyaret ettiğin siteler burada görünür.",
+    "Besuchte Websites erscheinen hier.",
+    "Les sites visités apparaîtront ici."
+  ],
+  "Your visits stay out of history in this private window.": [
+    "Your visits stay out of history in this private window.",
+    "Gizli penceredeki ziyaretlerin geçmişe kaydedilmez.",
+    "Besuche in diesem privaten Fenster werden nicht gespeichert.",
+    "Les visites de cette fenêtre privée ne sont pas enregistrées."
+  ],
+  "Delete history entry": [
+    "Delete history entry",
+    "Geçmiş kaydını sil",
+    "Verlaufseintrag löschen",
+    "Supprimer l’entrée d’historique"
+  ],
+  "Open in new tab": [
+    "Open in new tab",
+    "Yeni sekmede aç",
+    "In neuem Tab öffnen",
+    "Ouvrir dans un nouvel onglet"
+  ],
+  "Copy URL": ["Copy URL", "Adresi kopyala", "Adresse kopieren", "Copier l’adresse"],
+  "Import browser": [
+    "Import browser",
+    "Tarayıcıdan aktar",
+    "Aus Browser importieren",
+    "Importer depuis un navigateur"
+  ],
+  "Import file": ["Import file", "Dosyadan aktar", "Datei importieren", "Importer un fichier"],
+  "Export": ["Export", "Dışa aktar", "Exportieren", "Exporter"],
+  "No bookmarks yet": [
+    "No bookmarks yet",
+    "Henüz yer imi yok",
+    "Noch keine Lesezeichen",
+    "Aucun favori"
+  ],
+  "Save a page with the star in your address bar, or add one here.": [
+    "Save a page with the star in your address bar, or add one here.",
+    "Adres çubuğundaki yıldızla bir sayfayı kaydet veya buradan ekle.",
+    "Eine Seite mit dem Stern in der Adressleiste speichern oder hier hinzufügen.",
+    "Enregistrez une page avec l’étoile de la barre d’adresse ou ajoutez-la ici."
+  ],
+  "Open bookmark in new tab": [
+    "Open bookmark in new tab",
+    "Yer imini yeni sekmede aç",
+    "Lesezeichen in neuem Tab öffnen",
+    "Ouvrir le favori dans un nouvel onglet"
+  ],
+  "Remove bookmark": [
+    "Remove bookmark",
+    "Yer imini kaldır",
+    "Lesezeichen entfernen",
+    "Retirer le favori"
+  ],
+  "Nothing downloading": [
+    "Nothing downloading",
+    "İndirilen dosya yok",
+    "Keine Downloads",
+    "Aucun téléchargement"
+  ],
+  "Your downloads will appear here.": [
+    "Your downloads will appear here.",
+    "İndirdiğin dosyalar burada görünür.",
+    "Downloads erscheinen hier.",
+    "Vos téléchargements apparaîtront ici."
+  ],
+  "Resume download": [
+    "Resume download",
+    "İndirmeyi sürdür",
+    "Download fortsetzen",
+    "Reprendre le téléchargement"
+  ],
+  "Pause download": [
+    "Pause download",
+    "İndirmeyi duraklat",
+    "Download pausieren",
+    "Suspendre le téléchargement"
+  ],
+  "Cancel download": [
+    "Cancel download",
+    "İndirmeyi iptal et",
+    "Download abbrechen",
+    "Annuler le téléchargement"
+  ],
+  "Retry download": [
+    "Retry download",
+    "İndirmeyi yeniden dene",
+    "Download erneut versuchen",
+    "Réessayer le téléchargement"
+  ],
+  "Show in folder": [
+    "Show in folder",
+    "Klasörde göster",
+    "Im Ordner anzeigen",
+    "Afficher dans le dossier"
+  ],
+  "Clear completed": [
+    "Clear completed",
+    "Tamamlananları temizle",
+    "Abgeschlossene löschen",
+    "Effacer les téléchargements terminés"
+  ],
+  "Download settings": [
+    "Download settings",
+    "İndirme ayarları",
+    "Downloadeinstellungen",
+    "Paramètres de téléchargement"
+  ],
+  "Customize": ["Customize", "Özelleştir", "Anpassen", "Personnaliser"],
+  "Search the web": ["Search the web", "Web’de ara", "Im Web suchen", "Rechercher sur le web"],
+  "Opening Dot…": ["Opening Dot…", "Dot açılıyor…", "Dot wird geöffnet…", "Ouverture de Dot…"],
+  "Opening…": ["Opening…", "Açılıyor…", "Wird geöffnet…", "Ouverture…"],
+  "PAGE ERROR": ["PAGE ERROR", "SAYFA HATASI", "SEITENFEHLER", "ERREUR DE PAGE"],
+  "This page couldn’t open.": [
+    "This page couldn’t open.",
+    "Sayfa açılamadı.",
+    "Diese Seite konnte nicht geöffnet werden.",
+    "Cette page n’a pas pu être ouverte."
+  ],
+  "Check the address and your connection, then try again.": [
+    "Check the address and your connection, then try again.",
+    "Adresi ve bağlantını kontrol edip yeniden dene.",
+    "Adresse und Verbindung prüfen und erneut versuchen.",
+    "Vérifiez l’adresse et la connexion, puis réessayez."
+  ],
+  "Try again": ["Try again", "Yeniden dene", "Erneut versuchen", "Réessayer"],
+  "Go back": ["Go back", "Geri dön", "Zurück", "Retour"],
+  "BROWSER PROCESSES": [
+    "BROWSER PROCESSES",
+    "TARAYICI İŞLEMLERİ",
+    "BROWSERPROZESSE",
+    "PROCESSUS DU NAVIGATEUR"
+  ],
+  "Task manager": ["Task manager", "Görev yöneticisi", "Taskmanager", "Gestionnaire des tâches"],
+  "Refresh": ["Refresh", "Yenile", "Aktualisieren", "Actualiser"],
+  "Process IDs are supplied by Chromium. Multiple tabs may share a process.": [
+    "Process IDs are supplied by Chromium. Multiple tabs may share a process.",
+    "İşlem kimlikleri Chromium’dan alınır. Sekmeler aynı işlemi paylaşabilir.",
+    "Prozess-IDs stammen von Chromium. Mehrere Tabs können einen Prozess teilen.",
+    "Les identifiants viennent de Chromium. Plusieurs onglets peuvent partager un processus."
+  ],
+  "Suspended": ["Suspended", "Uyutuldu", "Pausiert", "En veille"],
+  "Internal": ["Internal", "Tarayıcı sayfası", "Browserseite", "Page interne"],
+  "Loading": ["Loading", "Yükleniyor", "Wird geladen", "Chargement"],
+  "Running": ["Running", "Çalışıyor", "Aktiv", "Actif"],
+  "Suspend": ["Suspend", "Uyut", "Pausieren", "Mettre en veille"],
+  "Page not found": [
+    "Page not found",
+    "Sayfa bulunamadı",
+    "Seite nicht gefunden",
+    "Page introuvable"
+  ],
+  "Open new tab": ["Open new tab", "Yeni sekme aç", "Neuen Tab öffnen", "Ouvrir un nouvel onglet"],
+  "Private": ["Private", "Gizli", "Privat", "Privé"],
+  "Minimize window": [
+    "Minimize window",
+    "Pencereyi küçült",
+    "Fenster minimieren",
+    "Réduire la fenêtre"
+  ],
+  "Maximize window": [
+    "Maximize window",
+    "Pencereyi büyüt",
+    "Fenster maximieren",
+    "Agrandir la fenêtre"
+  ],
+  "Restore window": [
+    "Restore window",
+    "Pencereyi geri yükle",
+    "Fenster wiederherstellen",
+    "Restaurer la fenêtre"
+  ],
+  "Close window": ["Close window", "Pencereyi kapat", "Fenster schließen", "Fermer la fenêtre"],
+  "Dismiss notification": [
+    "Dismiss notification",
+    "Bildirimi kapat",
+    "Benachrichtigung schließen",
+    "Fermer la notification"
+  ],
+  "Resize split view": [
+    "Resize split view",
+    "Bölünmüş görünümü boyutlandır",
+    "Geteilte Ansicht skalieren",
+    "Redimensionner la vue partagée"
+  ],
+  "Site permission request": [
+    "Site permission request",
+    "Site izin isteği",
+    "Website-Berechtigungsanfrage",
+    "Demande d’autorisation du site"
+  ],
+  "wants to use": ["wants to use", "kullanmak istiyor", "möchte verwenden", "souhaite utiliser"],
+  "Allow once": ["Allow once", "Bir kez izin ver", "Einmal erlauben", "Autoriser une fois"],
+  "Always allow": ["Always allow", "Her zaman izin ver", "Immer erlauben", "Toujours autoriser"],
+  "Block": ["Block", "Engelle", "Blockieren", "Bloquer"],
+  "Close dialog": ["Close dialog", "Kapat", "Dialog schließen", "Fermer le dialogue"],
+  "Close find": [
+    "Close find",
+    "Sayfada bulmayı kapat",
+    "Seitensuche schließen",
+    "Fermer la recherche"
+  ],
+  "Previous match": [
+    "Previous match",
+    "Önceki eşleşme",
+    "Vorheriger Treffer",
+    "Résultat précédent"
+  ],
+  "Next match": ["Next match", "Sonraki eşleşme", "Nächster Treffer", "Résultat suivant"],
+  "The interface needs a fresh start.": [
+    "The interface needs a fresh start.",
+    "Arayüzün yeniden yüklenmesi gerekiyor.",
+    "Die Oberfläche muss neu geladen werden.",
+    "L’interface doit être rechargée."
+  ],
+  "Reload interface": [
+    "Reload interface",
+    "Arayüzü yeniden yükle",
+    "Oberfläche neu laden",
+    "Recharger l’interface"
+  ],
+  "A desktop browser powered by Chromium.": [
+    "A desktop browser powered by Chromium.",
+    "Chromium tabanlı masaüstü tarayıcı.",
+    "Ein Desktopbrowser auf Chromium-Basis.",
+    "Un navigateur de bureau basé sur Chromium."
+  ],
+  "Built with Electron, Chromium, React, TypeScript, Zustand, Zod and Lucide.": [
+    "Built with Electron, Chromium, React, TypeScript, Zustand, Zod and Lucide.",
+    "Electron, Chromium, React, TypeScript, Zustand, Zod ve Lucide ile geliştirildi.",
+    "Entwickelt mit Electron, Chromium, React, TypeScript, Zustand, Zod und Lucide.",
+    "Développé avec Electron, Chromium, React, TypeScript, Zustand, Zod et Lucide."
+  ],
+  "Dot source: MIT. Electron: MIT. React: MIT. Zustand: MIT. Zod: MIT. Lucide: ISC. Chromium uses BSD and third-party licenses included with the application distribution.": [
+    "Dot source: MIT. Electron: MIT. React: MIT. Zustand: MIT. Zod: MIT. Lucide: ISC. Chromium uses BSD and third-party licenses included with the application distribution.",
+    "Dot: MIT. Electron: MIT. React: MIT. Zustand: MIT. Zod: MIT. Lucide: ISC. Chromium’un BSD ve üçüncü taraf lisansları uygulamayla birlikte gelir.",
+    "Dot: MIT. Electron: MIT. React: MIT. Zustand: MIT. Zod: MIT. Lucide: ISC. Chromium-Lizenzen für BSD und Drittanbieter werden mitgeliefert.",
+    "Dot : MIT. Electron : MIT. React : MIT. Zustand : MIT. Zod : MIT. Lucide : ISC. Les licences BSD et tierces de Chromium sont incluses."
+  ],
+  "Dot Browser {version}: changes and fixes.": [
+    "Dot Browser {version}: changes and fixes.",
+    "Dot Browser {version}: yenilikler ve düzeltmeler.",
+    "Dot Browser {version}: Änderungen und Fehlerbehebungen.",
+    "Dot Browser {version} : nouveautés et corrections."
+  ],
+  "Version {version}": [
+    "Version {version}",
+    "Sürüm {version}",
+    "Version {version}",
+    "Version {version}"
+  ],
+  "Neler yeni?": ["What’s new?", "Neler yeni?", "Was ist neu?", "Nouveautés"],
+  "Eklentiler": ["Extensions", "Eklentiler", "Erweiterungen", "Extensions"],
+  "Anladım": ["Got it", "Anladım", "Verstanden", "Compris"],
+  "Değişiklikler yükleniyor…": [
+    "Loading changes…",
+    "Değişiklikler yükleniyor…",
+    "Änderungen werden geladen…",
+    "Chargement des nouveautés…"
+  ],
+  "Değişiklikler yüklenemedi.": [
+    "Could not load changes.",
+    "Değişiklikler yüklenemedi.",
+    "Änderungen konnten nicht geladen werden.",
+    "Impossible de charger les nouveautés."
+  ],
+  "Hazır eklentilerden seçin veya manifest.json içeren bir eklenti klasörü ekleyin. Chrome Web Store'dan doğrudan kurulum desteklenmez; bazı Chrome eklentileri uyumlu olmayabilir.": [
+    "Choose a built-in extension or add a folder containing manifest.json. Direct Chrome Web Store installation is unavailable; some Chrome extensions may be incompatible.",
+    "Hazır eklenti seç veya manifest.json içeren bir klasör ekle. Chrome Web Store’dan doğrudan kurulum yok; bazı eklentiler uyumlu olmayabilir.",
+    "Eine integrierte Erweiterung wählen oder einen Ordner mit manifest.json hinzufügen. Keine direkte Installation aus dem Chrome Web Store; einige Erweiterungen sind inkompatibel.",
+    "Choisissez une extension intégrée ou un dossier contenant manifest.json. L’installation directe depuis le Chrome Web Store n’est pas disponible ; certaines extensions peuvent être incompatibles."
+  ],
+  "Eklentiler gizli pencerelerde çalışmaz. Yönetmek için normal pencereye geçin.": [
+    "Extensions do not run in private windows. Manage them from a normal window.",
+    "Eklentiler gizli pencerede çalışmaz. Yönetmek için normal pencereye geç.",
+    "Erweiterungen laufen nicht in privaten Fenstern. In einem normalen Fenster verwalten.",
+    "Les extensions ne fonctionnent pas dans les fenêtres privées. Gérez-les depuis une fenêtre normale."
+  ],
+  "Klasörden eklenti ekle": [
+    "Add extension from folder",
+    "Klasörden eklenti ekle",
+    "Erweiterung aus Ordner hinzufügen",
+    "Ajouter une extension depuis un dossier"
+  ],
+  "Hazır eklentiler": [
+    "Built-in extensions",
+    "Hazır eklentiler",
+    "Integrierte Erweiterungen",
+    "Extensions intégrées"
+  ],
+  "Eklenen eklentiler": [
+    "Installed extensions",
+    "Eklenen eklentiler",
+    "Installierte Erweiterungen",
+    "Extensions installées"
+  ],
+  "Henüz eklenti eklenmedi. Eklentiler yalnızca siz eklediğinizde etkinleşir.": [
+    "No extensions installed yet.",
+    "Henüz eklenti eklenmedi.",
+    "Noch keine Erweiterungen installiert.",
+    "Aucune extension installée."
+  ],
+  "Gece görünümü": ["Night view", "Gece görünümü", "Nachtansicht", "Vue nocturne"],
+  "Açık renkli sayfaları koyulaştırır. Bazı sitelerde renkler farklı görünebilir.": [
+    "Darkens light pages. Native dark pages are left alone; colors may look different on some sites.",
+    "Açık sayfaları koyulaştırır. Zaten koyu olan sayfalara dokunmaz; bazı sitelerde renkler değişebilir.",
+    "Dunkelt helle Seiten ab. Bereits dunkle Seiten bleiben unverändert; manche Farben können abweichen.",
+    "Assombrit les pages claires sans modifier celles déjà sombres. Les couleurs peuvent varier sur certains sites."
+  ],
+  "Başa dön": ["Back to top", "Başa dön", "Nach oben", "Retour en haut"],
+  "Uzun sayfalarda tek tıkla başa dönmek için küçük bir düğme ekler.": [
+    "Adds a small button to return to the top of long pages.",
+    "Uzun sayfalarda başa dönmek için küçük bir düğme ekler.",
+    "Fügt auf langen Seiten eine kleine Schaltfläche zum Seitenanfang hinzu.",
+    "Ajoute un petit bouton pour revenir en haut des pages longues."
+  ],
+  "Eklendi": ["Added", "Eklendi", "Hinzugefügt", "Ajoutée"],
+  "Ekle": ["Add", "Ekle", "Hinzufügen", "Ajouter"],
+  "Etkin": ["Enabled", "Etkin", "Aktiv", "Activée"],
+  "Kapalı": ["Disabled", "Kapalı", "Deaktiviert", "Désactivée"],
+  "Kaldır": ["Remove", "Kaldır", "Entfernen", "Retirer"],
+  "Yalnızca güvendiğiniz eklentileri yükleyin; eklentiler ziyaret ettiğiniz sayfalara erişebilir.": [
+    "Install extensions you trust; they can access the pages you visit.",
+    "Güvendiğin eklentileri yükle; eklentiler ziyaret ettiğin sayfalara erişebilir.",
+    "Nur vertrauenswürdige Erweiterungen installieren; sie können auf besuchte Seiten zugreifen.",
+    "Installez des extensions fiables ; elles peuvent accéder aux pages visitées."
+  ],
+  "Değişiklikler kaydedildi. Açık sayfalarda etkisini görmek için sayfayı yenileyin.": [
+    "Saved. Reload open pages to apply extension changes.",
+    "Kaydedildi. Açık sayfalara uygulamak için sayfayı yenile.",
+    "Gespeichert. Offene Seiten neu laden, um Änderungen anzuwenden.",
+    "Enregistré. Rechargez les pages pour appliquer les changements."
+  ],
+  "Eklentiler yüklenemedi.": [
+    "Could not load extensions.",
+    "Eklentiler yüklenemedi.",
+    "Erweiterungen konnten nicht geladen werden.",
+    "Impossible de charger les extensions."
+  ],
+  "Eklenti yüklenemedi.": [
+    "Could not load extension.",
+    "Eklenti yüklenemedi.",
+    "Erweiterung konnte nicht geladen werden.",
+    "Impossible de charger l’extension."
+  ],
+  "Eklenti yüklenemedi. Klasörünü ve uyumluluğunu kontrol edin.": [
+    "Could not load extension. Check its folder and compatibility.",
+    "Eklenti yüklenemedi. Klasörünü ve uyumluluğunu kontrol et.",
+    "Erweiterung konnte nicht geladen werden. Ordner und Kompatibilität prüfen.",
+    "Impossible de charger l’extension. Vérifiez le dossier et la compatibilité."
+  ],
+  "En fazla 20 eklenti eklenebilir.": [
+    "Up to 20 extensions can be installed.",
+    "En fazla 20 eklenti eklenebilir.",
+    "Bis zu 20 Erweiterungen können installiert werden.",
+    "Vous pouvez installer jusqu’à 20 extensions."
+  ],
+  "Bu eklenti zaten eklenmiş.": [
+    "This extension is already installed.",
+    "Bu eklenti zaten eklenmiş.",
+    "Diese Erweiterung ist bereits installiert.",
+    "Cette extension est déjà installée."
+  ],
+  "Bu eklenti kimliği zaten eklenmiş.": [
+    "An extension with this ID is already installed.",
+    "Bu kimliğe sahip bir eklenti zaten eklenmiş.",
+    "Eine Erweiterung mit dieser ID ist bereits installiert.",
+    "Une extension avec cet identifiant est déjà installée."
+  ],
+  "Eklenti bulunamadı.": [
+    "Extension not found.",
+    "Eklenti bulunamadı.",
+    "Erweiterung nicht gefunden.",
+    "Extension introuvable."
+  ],
+  "Focus address bar": [
+    "Focus address bar",
+    "Adres çubuğuna odaklan",
+    "Adressleiste fokussieren",
+    "Sélectionner la barre d’adresse"
+  ],
+  "Reopen tab": ["Reopen tab", "Sekmeyi yeniden aç", "Tab wieder öffnen", "Rouvrir l’onglet"],
+  "Next / previous tab": [
+    "Next / previous tab",
+    "Sonraki / önceki sekme",
+    "Nächster / vorheriger Tab",
+    "Onglet suivant / précédent"
+  ],
+  "Select tab 1–8 / last tab": [
+    "Select tab 1–8 / last tab",
+    "1–8. sekme / son sekme",
+    "Tab 1–8 / letzter Tab",
+    "Onglet 1–8 / dernier onglet"
+  ],
+  "Reload / hard reload": [
+    "Reload / hard reload",
+    "Yenile / önbelleksiz yenile",
+    "Neu laden / ohne Cache laden",
+    "Actualiser / sans cache"
+  ],
+  "Back / forward": ["Back / forward", "Geri / ileri", "Zurück / vorwärts", "Retour / suivant"],
+  "History / downloads": [
+    "History / downloads",
+    "Geçmiş / indirilenler",
+    "Verlauf / Downloads",
+    "Historique / téléchargements"
+  ],
+  "Zoom in / out / reset": [
+    "Zoom in / out / reset",
+    "Yakınlaştır / uzaklaştır / sıfırla",
+    "Vergrößern / verkleinern / zurücksetzen",
+    "Agrandir / réduire / réinitialiser"
+  ],
+  "Command palette": ["Command palette", "Komut paleti", "Befehlspalette", "Palette de commandes"],
+  "New / private window": [
+    "New / private window",
+    "Yeni / gizli pencere",
+    "Neues / privates Fenster",
+    "Nouvelle fenêtre / fenêtre privée"
+  ],
+  "Fullscreen": ["Fullscreen", "Tam ekran", "Vollbild", "Plein écran"],
+  "Print / save page": [
+    "Print / save page",
+    "Yazdır / sayfayı kaydet",
+    "Drucken / Seite speichern",
+    "Imprimer / enregistrer la page"
+  ],
+  "Reload": ["Reload", "Yenile", "Neu laden", "Actualiser"],
+  "Duplicate": ["Duplicate", "Çoğalt", "Duplizieren", "Dupliquer"],
+  "Move to workspace": [
+    "Move to workspace",
+    "Çalışma alanına taşı",
+    "In Arbeitsbereich verschieben",
+    "Déplacer vers un espace"
+  ],
+  "Add to group": ["Add to group", "Gruba ekle", "Zu Gruppe hinzufügen", "Ajouter au groupe"],
+  "New group…": ["New group…", "Yeni grup…", "Neue Gruppe…", "Nouveau groupe…"],
+  "Remove from group": [
+    "Remove from group",
+    "Gruptan çıkar",
+    "Aus Gruppe entfernen",
+    "Retirer du groupe"
+  ],
+  "Move to new window": [
+    "Move to new window",
+    "Yeni pencereye taşı",
+    "In neues Fenster verschieben",
+    "Déplacer vers une nouvelle fenêtre"
+  ],
+  "Close other tabs": [
+    "Close other tabs",
+    "Diğer sekmeleri kapat",
+    "Andere Tabs schließen",
+    "Fermer les autres onglets"
+  ],
+  "Close tabs to right": [
+    "Close tabs to right",
+    "Sağdaki sekmeleri kapat",
+    "Tabs rechts schließen",
+    "Fermer les onglets à droite"
+  ],
+  "Save as PDF…": [
+    "Save as PDF…",
+    "PDF olarak kaydet…",
+    "Als PDF speichern…",
+    "Enregistrer au format PDF…"
+  ],
+  "Print…": ["Print…", "Yazdır…", "Drucken…", "Imprimer…"],
+  "Save page…": ["Save page…", "Sayfayı kaydet…", "Seite speichern…", "Enregistrer la page…"],
+  "Split view…": ["Split view…", "Bölünmüş görünüm…", "Geteilte Ansicht…", "Vue partagée…"],
+  "Exit": ["Exit", "Çıkış", "Beenden", "Quitter"],
+  "Open link in new tab": [
+    "Open link in new tab",
+    "Bağlantıyı yeni sekmede aç",
+    "Link in neuem Tab öffnen",
+    "Ouvrir le lien dans un nouvel onglet"
+  ],
+  "Open link in background tab": [
+    "Open link in background tab",
+    "Bağlantıyı arka plan sekmesinde aç",
+    "Link in Hintergrund-Tab öffnen",
+    "Ouvrir le lien dans un onglet en arrière-plan"
+  ],
+  "Open link in new window": [
+    "Open link in new window",
+    "Bağlantıyı yeni pencerede aç",
+    "Link in neuem Fenster öffnen",
+    "Ouvrir le lien dans une nouvelle fenêtre"
+  ],
+  "Copy link address": [
+    "Copy link address",
+    "Bağlantı adresini kopyala",
+    "Linkadresse kopieren",
+    "Copier l’adresse du lien"
+  ],
+  "Open image in new tab": [
+    "Open image in new tab",
+    "Görseli yeni sekmede aç",
+    "Bild in neuem Tab öffnen",
+    "Ouvrir l’image dans un nouvel onglet"
+  ],
+  "Copy image URL": [
+    "Copy image URL",
+    "Görsel adresini kopyala",
+    "Bildadresse kopieren",
+    "Copier l’adresse de l’image"
+  ],
+  "Save image as…": [
+    "Save image as…",
+    "Görseli farklı kaydet…",
+    "Bild speichern unter…",
+    "Enregistrer l’image sous…"
+  ],
+  "Undo": ["Undo", "Geri al", "Rückgängig", "Annuler"],
+  "Redo": ["Redo", "Yinele", "Wiederholen", "Rétablir"],
+  "Cut": ["Cut", "Kes", "Ausschneiden", "Couper"],
+  "Paste": ["Paste", "Yapıştır", "Einfügen", "Coller"],
+  "Select all": ["Select all", "Tümünü seç", "Alles auswählen", "Tout sélectionner"],
+  "Back": ["Back", "Geri", "Zurück", "Retour"],
+  "Forward": ["Forward", "İleri", "Vorwärts", "Suivant"],
+  "View source": [
+    "View source",
+    "Kaynağı görüntüle",
+    "Quelltext anzeigen",
+    "Afficher le code source"
+  ],
+  "Inspect element": [
+    "Inspect element",
+    "Öğeyi incele",
+    "Element untersuchen",
+    "Inspecter l’élément"
+  ],
+  "Open application": [
+    "Open application",
+    "Uygulamayı aç",
+    "Anwendung öffnen",
+    "Ouvrir l’application"
+  ],
+  "Search {engine} for “{query}”": [
+    "Search {engine} for “{query}”",
+    "{engine} ile “{query}” ara",
+    "Mit {engine} nach „{query}“ suchen",
+    "Rechercher « {query} » avec {engine}"
+  ],
+  "Password for {name} at {origin}": [
+    "Password for {name} at {origin}",
+    "{origin} sitesindeki {name} parolası",
+    "Passwort für {name} auf {origin}",
+    "Mot de passe de {name} sur {origin}"
+  ],
+  "{name}: click to {action}, right click to edit": [
+    "{name}: click to {action}, right click to edit",
+    "{name}: {action} için tıkla, düzenlemek için sağ tıkla",
+    "{name}: zum {action} klicken, zum Bearbeiten rechtsklicken",
+    "{name} : cliquer pour {action}, clic droit pour modifier"
+  ],
+  "expand": ["expand", "aç", "Aufklappen", "développer"],
+  "collapse": ["collapse", "daralt", "Einklappen", "réduire"],
+  "{count} visits": ["{count} visits", "{count} ziyaret", "{count} Besuche", "{count} visites"],
+  "{count} selected": [
+    "{count} selected",
+    "{count} seçili",
+    "{count} ausgewählt",
+    "{count} sélectionnés"
+  ],
+  "progressing": ["progressing", "indiriliyor", "wird heruntergeladen", "téléchargement"],
+  "paused": ["paused", "duraklatıldı", "pausiert", "en pause"],
+  "cancelled": ["cancelled", "iptal edildi", "abgebrochen", "annulé"],
+  "interrupted": ["interrupted", "kesildi", "unterbrochen", "interrompu"],
+  "completed": ["completed", "tamamlandı", "abgeschlossen", "terminé"],
+  "of {total}": ["of {total}", "/ {total}", "von {total}", "sur {total}"],
+  "violet": ["violet", "mor", "Violett", "violet"],
+  "blue": ["blue", "mavi", "Blau", "bleu"],
+  "green": ["green", "yeşil", "Grün", "vert"],
+  "rose": ["rose", "pembe", "Rosa", "rose"],
+  "amber": ["amber", "kehribar", "Bernstein", "ambre"],
+  "{color} accent": [
+    "{color} accent",
+    "{color} vurgu rengi",
+    "Akzentfarbe {color}",
+    "Accent {color}"
+  ],
+  "media": ["media", "kamera ve mikrofon", "Kamera und Mikrofon", "caméra et microphone"],
+  "geolocation": ["geolocation", "konum", "Standort", "position"],
+  "notifications": ["notifications", "bildirimler", "Benachrichtigungen", "notifications"],
+  "clipboard-read": [
+    "clipboard-read",
+    "panoyu okuma",
+    "Zwischenablage lesen",
+    "lecture du presse-papiers"
+  ],
+  "fullscreen": ["fullscreen", "tam ekran", "Vollbild", "plein écran"],
+  "allow": ["allow", "izin verildi", "erlaubt", "autorisé"],
+  "block": ["block", "engellendi", "blockiert", "bloqué"],
+  "Operation failed": [
+    "Operation failed",
+    "İşlem başarısız",
+    "Vorgang fehlgeschlagen",
+    "Échec de l’opération"
+  ],
+  "Could not find browser profiles": [
+    "Could not find browser profiles",
+    "Tarayıcı profilleri bulunamadı",
+    "Browserprofile nicht gefunden",
+    "Profils du navigateur introuvables"
+  ],
+  "Could not read browser profiles": [
+    "Could not read browser profiles",
+    "Tarayıcı profilleri okunamadı",
+    "Browserprofile konnten nicht gelesen werden",
+    "Impossible de lire les profils du navigateur"
+  ],
+  "Could not read the exported file": [
+    "Could not read the exported file",
+    "Dışa aktarılan dosya okunamadı",
+    "Exportierte Datei konnte nicht gelesen werden",
+    "Impossible de lire le fichier exporté"
+  ],
+  "Could not preview this profile": [
+    "Could not preview this profile",
+    "Bu profilin önizlemesi açılamadı",
+    "Profilvorschau konnte nicht geöffnet werden",
+    "Impossible d’afficher l’aperçu du profil"
+  ],
+  "Import failed": [
+    "Import failed",
+    "Aktarım başarısız",
+    "Import fehlgeschlagen",
+    "Échec de l’importation"
+  ],
+  "Enter a valid HTTP or HTTPS URL.": [
+    "Enter a valid HTTP or HTTPS URL.",
+    "Geçerli bir HTTP veya HTTPS adresi yaz.",
+    "Gültige HTTP- oder HTTPS-Adresse eingeben.",
+    "Saisissez une adresse HTTP ou HTTPS valide."
+  ],
+  "Enter a website URL": [
+    "Enter a website URL",
+    "Bir web sitesi adresi yaz",
+    "Websiteadresse eingeben",
+    "Saisissez l’adresse d’un site"
+  ],
+  "Could not read this page": [
+    "Could not read this page",
+    "Sayfa okunamadı",
+    "Seite konnte nicht gelesen werden",
+    "Impossible de lire cette page"
+  ],
+  "Could not read saved passwords": [
+    "Could not read saved passwords",
+    "Kayıtlı parolalar okunamadı",
+    "Gespeicherte Passwörter konnten nicht gelesen werden",
+    "Impossible de lire les mots de passe enregistrés"
+  ],
+  "Password action failed": [
+    "Password action failed",
+    "Parola işlemi başarısız",
+    "Passwortaktion fehlgeschlagen",
+    "Échec de l’action sur le mot de passe"
+  ],
+  "Open a website to bookmark it": [
+    "Open a website to bookmark it",
+    "Yer imi eklemek için bir site aç",
+    "Zum Speichern eines Lesezeichens eine Website öffnen",
+    "Ouvrez un site pour l’ajouter aux favoris"
+  ],
+  "Open a webpage first": [
+    "Open a webpage first",
+    "Önce bir web sayfası aç",
+    "Zuerst eine Webseite öffnen",
+    "Ouvrez d’abord une page web"
+  ],
+  "Open a webpage to use reading view.": [
+    "Open a webpage to use reading view.",
+    "Okuma görünümü için bir web sayfası aç.",
+    "Für die Leseansicht eine Webseite öffnen.",
+    "Ouvrez une page web pour utiliser le mode lecture."
+  ],
+  "Browsing data cleared": [
+    "Browsing data cleared",
+    "Tarama verileri temizlendi",
+    "Browserdaten gelöscht",
+    "Données de navigation effacées"
+  ],
+  "Site data cleared": [
+    "Site data cleared",
+    "Site verileri temizlendi",
+    "Websitedaten gelöscht",
+    "Données du site effacées"
+  ],
+  "Page saved as PDF.": [
+    "Page saved as PDF.",
+    "Sayfa PDF olarak kaydedildi.",
+    "Seite als PDF gespeichert.",
+    "Page enregistrée au format PDF."
+  ],
+  "Start split view": [
+    "Start split view",
+    "Bölünmüş görünümü başlat",
+    "Geteilte Ansicht starten",
+    "Lancer la vue partagée"
+  ],
+  "About": ["About", "Hakkında", "Über", "À propos"],
+  "Performance": ["Performance", "Görev yöneticisi", "Taskmanager", "Gestionnaire des tâches"],
+  "Select {name}": ["Select {name}", "{name} seç", "{name} auswählen", "Sélectionner {name}"],
+  "Dil seçimi artık menüleri, ayarları ve tarayıcı pencerelerini de değiştirir: Türkçe, İngilizce, Almanca ve Fransızca.": [
+    "Language selection now changes menus, settings and browser dialogs: Turkish, English, German and French.",
+    "Dil seçimi artık menüleri, ayarları ve tarayıcı pencerelerini de değiştirir: Türkçe, İngilizce, Almanca ve Fransızca.",
+    "Die Sprachwahl ändert jetzt Menüs, Einstellungen und Browserdialoge: Türkisch, Englisch, Deutsch und Französisch.",
+    "La langue choisie s’applique aux menus, paramètres et dialogues : turc, anglais, allemand et français."
+  ],
+  "Koyu temada web sayfaları otomatik koyulaştırılır. Görseller ters çevrilmez; site bilgileri üzerinden istisna eklenebilir.": [
+    "Webpages automatically darken with the dark theme. Images are not inverted; add site exceptions from site information.",
+    "Koyu temada web sayfaları otomatik koyulaştırılır. Görseller ters çevrilmez; site bilgileri üzerinden istisna eklenebilir.",
+    "Webseiten werden bei dunklem Design abgedunkelt. Bilder werden nicht invertiert; Ausnahmen lassen sich in den Websiteinformationen hinzufügen.",
+    "Les pages s’assombrissent avec le thème sombre. Les images ne sont pas inversées ; ajoutez des exceptions depuis les informations du site."
+  ],
+  "Sayfa araçlarına Bağlantıyı kopyala ve Sonra oku eklendi. Okuma listesi yer imlerinde tutulur.": [
+    "Copy page link and Read later added to page tools. The reading list is stored with bookmarks.",
+    "Sayfa araçlarına Bağlantıyı kopyala ve Sonra oku eklendi. Okuma listesi yer imlerinde tutulur.",
+    "Seitenlink kopieren und Später lesen wurden ergänzt. Die Leseliste wird bei den Lesezeichen gespeichert.",
+    "Copier le lien et Lire plus tard sont ajoutés aux outils de page. La liste de lecture se trouve dans les favoris."
+  ],
+  "Karışık diller ve süslü metinler düzeltildi. Eklenti ayarları mevcut eklenti yöneticisini açar.": [
+    "Mixed languages and decorative wording corrected. Extension settings now open the extension manager.",
+    "Karışık diller ve süslü metinler düzeltildi. Eklenti ayarları mevcut eklenti yöneticisini açar.",
+    "Gemischte Sprachen und überflüssige Formulierungen korrigiert. Die Erweiterungseinstellungen öffnen die Verwaltung.",
+    "Les langues mélangées et les formulations superflues sont corrigées. Les paramètres des extensions ouvrent leur gestionnaire."
+  ],
+  "Gece görünümü eklentisinin zaten koyu sayfaları tekrar ters çevirmesi önlendi.": [
+    "Night view no longer inverts pages that are already dark.",
+    "Gece görünümü eklentisinin zaten koyu sayfaları tekrar ters çevirmesi önlendi.",
+    "Die Nachtansicht invertiert bereits dunkle Seiten nicht mehr.",
+    "La vue nocturne n’inverse plus les pages déjà sombres."
+  ],
+  "Menüler ve pencereler yumuşak açılış ve kapanış geçişleri kazandı.": [
+    "Menus and dialogs now open and close with smooth transitions.",
+    "Menüler ve pencereler yumuşak açılış ve kapanış geçişleri kazandı.",
+    "Menüs und Dialoge öffnen und schließen mit sanften Übergängen.",
+    "Les menus et dialogues s’ouvrent et se ferment avec des transitions fluides."
+  ],
+  "Sekmeler, yan panel, yeni sekme kısayolları ve düğme etkileşimleri daha akıcı hale getirildi.": [
+    "Tabs, side panels, shortcuts and button interactions are smoother.",
+    "Sekmeler, yan panel, yeni sekme kısayolları ve düğme etkileşimleri daha akıcı hale getirildi.",
+    "Tabs, Seitenleisten, Verknüpfungen und Schaltflächen reagieren flüssiger.",
+    "Les onglets, panneaux latéraux, raccourcis et boutons sont plus fluides."
+  ],
+  "Sayfa yükleme çizgisi yerleşimi değiştirmeyen bir animasyon kullanır.": [
+    "The loading indicator animates without changing the layout.",
+    "Sayfa yükleme çizgisi yerleşimi değiştirmeyen bir animasyon kullanır.",
+    "Die Ladeanzeige animiert ohne Layoutänderungen.",
+    "L’indicateur de chargement s’anime sans modifier la disposition."
+  ],
+  "Kapanış sırasında eski aktarım ekranının yeni önizlemeleri iptal etmesi düzeltildi.": [
+    "Closing an old import dialog no longer cancels a newer preview.",
+    "Kapanış sırasında eski aktarım ekranının yeni önizlemeleri iptal etmesi düzeltildi.",
+    "Das Schließen eines alten Importdialogs beendet keine neue Vorschau mehr.",
+    "Fermer un ancien dialogue d’importation n’annule plus un nouvel aperçu."
+  ],
+  "Animasyon ayarı ve sistemin hareketi azalt tercihi geçişlerde ve kapanışlarda uygulanır.": [
+    "Animation settings and system reduced motion apply to transitions and closing.",
+    "Animasyon ayarı ve sistemin hareketi azalt tercihi geçişlerde ve kapanışlarda uygulanır.",
+    "Animationseinstellungen und reduzierte Bewegung gelten auch beim Schließen.",
+    "Les paramètres d’animation et la réduction des mouvements s’appliquent aussi à la fermeture."
+  ],
+  "Her güncellemeden sonra, yeni sürüm ilk açıldığında Neler yeni? penceresi gösterilir.": [
+    "The What’s new dialog appears on the first launch after each update.",
+    "Her güncellemeden sonra, yeni sürüm ilk açıldığında Neler yeni? penceresi gösterilir.",
+    "Nach jedem Update erscheint beim ersten Start Was ist neu?",
+    "Le dialogue Nouveautés apparaît au premier démarrage après chaque mise à jour."
+  ],
+  "Aynı sürümün bildirimi tekrar gösterilmez; Hakkında sayfasından değişiklikleri yeniden okuyabilirsiniz.": [
+    "Each version is announced once; reopen the changes from About.",
+    "Aynı sürümün bildirimi tekrar gösterilmez; Hakkında sayfasından değişiklikleri yeniden okuyabilirsiniz.",
+    "Jede Version wird einmal angekündigt; Änderungen sind unter Über erneut lesbar.",
+    "Chaque version est annoncée une fois ; retrouvez les changements dans À propos."
+  ],
+  "Araç çubuğu sadeleştirildi; şifreler, profil, okuma görünümü ve sayfa araçları düzenli menüye taşındı.": [
+    "The toolbar is simpler; passwords, profile and page tools are organized in the menu.",
+    "Araç çubuğu sadeleştirildi; şifreler, profil, okuma görünümü ve sayfa araçları düzenli menüye taşındı.",
+    "Die Symbolleiste wurde vereinfacht; Passwörter, Profil und Seitenwerkzeuge sind im Menü angeordnet.",
+    "La barre d’outils est simplifiée ; mots de passe, profil et outils de page sont regroupés dans le menu."
+  ],
+  "Yeni sekme sayfası arama ve kısayollara odaklanacak şekilde sadeleştirildi.": [
+    "The new tab page focuses on search and shortcuts.",
+    "Yeni sekme sayfası arama ve kısayollara odaklanacak şekilde sadeleştirildi.",
+    "Neue Tabs konzentrieren sich auf Suche und Verknüpfungen.",
+    "Les nouveaux onglets se concentrent sur la recherche et les raccourcis."
+  ],
+  "Eklenti yönetimi eklendi: uyumlu klasörleri yükleme, etkinleştirme, kapatma ve kaldırma.": [
+    "Extension management added: load compatible folders, enable, disable and remove.",
+    "Eklenti yönetimi eklendi: uyumlu klasörleri yükleme, etkinleştirme, kapatma ve kaldırma.",
+    "Erweiterungsverwaltung hinzugefügt: kompatible Ordner laden, aktivieren, deaktivieren und entfernen.",
+    "Gestion des extensions ajoutée : charger des dossiers compatibles, activer, désactiver et retirer."
+  ],
+  "Hazır Gece Görünümü ve Başa Dön eklentileri eklendi.": [
+    "Night view and Back to top built-in extensions added.",
+    "Hazır Gece Görünümü ve Başa Dön eklentileri eklendi.",
+    "Nachtansicht und Nach oben als integrierte Erweiterungen hinzugefügt.",
+    "Extensions intégrées Vue nocturne et Retour en haut ajoutées."
+  ],
+  "Tüm çalışma alanlarındaki sekmeler arasında hızlı arama: Ctrl+Shift+A.": [
+    "Search tabs across all workspaces: Ctrl+Shift+A.",
+    "Tüm çalışma alanlarındaki sekmeler arasında hızlı arama: Ctrl+Shift+A.",
+    "Tabs in allen Arbeitsbereichen suchen: Ctrl+Shift+A.",
+    "Rechercher les onglets de tous les espaces : Ctrl+Shift+A."
+  ],
+  "Yazı boyutu ayarlanabilen sade okuma görünümü: Ctrl+Shift+M.": [
+    "Reading view with adjustable text size: Ctrl+Shift+M.",
+    "Yazı boyutu ayarlanabilen sade okuma görünümü: Ctrl+Shift+M.",
+    "Leseansicht mit einstellbarer Textgröße: Ctrl+Shift+M.",
+    "Mode lecture avec taille de texte réglable : Ctrl+Shift+M."
+  ],
+  "Sayfaları PDF olarak kaydetme: Ctrl+Shift+S.": [
+    "Save pages as PDF: Ctrl+Shift+S.",
+    "Sayfaları PDF olarak kaydetme: Ctrl+Shift+S.",
+    "Seiten als PDF speichern: Ctrl+Shift+S.",
+    "Enregistrer les pages au format PDF : Ctrl+Shift+S."
+  ],
+  "Profil aktarımında kilitli veritabanı artık okunabilen diğer verilerin aktarılmasını engellemez.": [
+    "A locked profile database no longer prevents importing other readable data.",
+    "Profil aktarımında kilitli veritabanı artık okunabilen diğer verilerin aktarılmasını engellemez.",
+    "Eine gesperrte Profildatenbank verhindert nicht mehr den Import anderer lesbarer Daten.",
+    "Une base de profil verrouillée n’empêche plus l’importation des autres données lisibles."
+  ],
+  "Chromium geçmişindeki büyük tarih değerlerinin okunması düzeltildi; kilitli kaynaklar için açıklayıcı hata mesajı eklendi.": [
+    "Large Chromium history timestamps are read correctly; locked sources report a clear error.",
+    "Chromium geçmişindeki büyük tarih değerlerinin okunması düzeltildi; kilitli kaynaklar için açıklayıcı hata mesajı eklendi.",
+    "Große Chromium-Zeitstempel werden korrekt gelesen; gesperrte Quellen melden einen klaren Fehler.",
+    "Les grands horodatages Chromium sont lus correctement ; les sources verrouillées affichent une erreur claire."
+  ],
+  "Uyumlu Chromium ve Firefox tarayıcılarının profilleri dosya biçimlerine göre bulunur.": [
+    "Compatible Chromium and Firefox profiles are discovered by their file formats.",
+    "Uyumlu Chromium ve Firefox tarayıcılarının profilleri dosya biçimlerine göre bulunur.",
+    "Kompatible Chromium- und Firefox-Profile werden anhand ihrer Dateiformate gefunden.",
+    "Les profils Chromium et Firefox compatibles sont détectés par leurs formats de fichiers."
+  ],
+  "Taşınabilir tarayıcılar ve farklı konumlardaki profiller için klasör seçimi eklendi.": [
+    "Folder selection added for portable browsers and custom profile locations.",
+    "Taşınabilir tarayıcılar ve farklı konumlardaki profiller için klasör seçimi eklendi.",
+    "Ordnerauswahl für portable Browser und benutzerdefinierte Profile ergänzt.",
+    "Sélection de dossiers ajoutée pour les navigateurs portables et les profils personnalisés."
+  ],
+  "Tarayıcınızdan dışa aktardığınız CSV dosyalarından şifre aktarımı ve şifre yöneticisi eklendi.": [
+    "Password manager and import from exported browser CSV files added.",
+    "Tarayıcınızdan dışa aktardığınız CSV dosyalarından şifre aktarımı ve şifre yöneticisi eklendi.",
+    "Passwortmanager und Import aus Browser-CSV hinzugefügt.",
+    "Gestionnaire de mots de passe et importation des CSV exportés ajoutés."
+  ],
+  "Şifreler işletim sisteminin korumalı deposuyla şifrelenir; siteye doldurma kullanıcı isteğiyle yapılır.": [
+    "Passwords use the operating system’s protected encryption; filling requires your action.",
+    "Şifreler işletim sisteminin korumalı deposuyla şifrelenir; siteye doldurma kullanıcı isteğiyle yapılır.",
+    "Passwörter nutzen die geschützte Systemverschlüsselung; Ausfüllen erfordert Ihre Aktion.",
+    "Les mots de passe utilisent le chiffrement protégé du système ; le remplissage nécessite votre action."
+  ],
+  "JSON ve Netscape biçimindeki çerez dosyalarını içe aktarma eklendi.": [
+    "Cookie import from JSON and Netscape files added.",
+    "JSON ve Netscape biçimindeki çerez dosyalarını içe aktarma eklendi.",
+    "Cookieimport aus JSON und Netscape-Dateien ergänzt.",
+    "Importation des cookies JSON et Netscape ajoutée."
+  ],
+  "Dot Browser ilk sürümü: sekmeler, çalışma alanları, bölünmüş görünüm ve yer imleri.": [
+    "First Dot Browser release: tabs, workspaces, split view and bookmarks.",
+    "Dot Browser ilk sürümü: sekmeler, çalışma alanları, bölünmüş görünüm ve yer imleri.",
+    "Erste Dot-Browser-Version: Tabs, Arbeitsbereiche, geteilte Ansicht und Lesezeichen.",
+    "Première version de Dot Browser : onglets, espaces, vue partagée et favoris."
+  ],
+  "Tarayıcı profillerinden veri aktarımı ve otomatik güncelleme desteği.": [
+    "Browser profile import and automatic updates.",
+    "Tarayıcı profillerinden veri aktarımı ve otomatik güncelleme desteği.",
+    "Browserprofilimport und automatische Updates.",
+    "Importation des profils et mises à jour automatiques."
+  ],
+  "Choose browser profile or user data folder": [
+    "Choose browser profile or user data folder",
+    "Tarayıcı profilini veya veri klasörünü seç",
+    "Browserprofil oder Datenordner wählen",
+    "Choisir le profil ou le dossier de données"
+  ],
+  "Import exported browser password CSV": [
+    "Import exported browser password CSV",
+    "Dışa aktarılan parola CSV dosyasını seç",
+    "Exportierte Passwort-CSV wählen",
+    "Choisir le CSV de mots de passe exporté"
+  ],
+  "Import exported browser data": [
+    "Import exported browser data",
+    "Dışa aktarılan tarayıcı verilerini seç",
+    "Exportierte Browserdaten wählen",
+    "Choisir les données exportées du navigateur"
+  ],
+  "Password CSV": ["Password CSV", "Parola CSV dosyası", "Passwort-CSV", "CSV de mots de passe"],
+  "Exported data": [
+    "Exported data",
+    "Dışa aktarılan veriler",
+    "Exportierte Daten",
+    "Données exportées"
+  ],
+  "Eklenti klasörünü seçin (manifest.json içermeli)": [
+    "Choose extension folder (must contain manifest.json)",
+    "Eklenti klasörünü seç (manifest.json içermeli)",
+    "Erweiterungsordner wählen (mit manifest.json)",
+    "Choisir le dossier d’extension (avec manifest.json)"
+  ],
+  "PDF document": ["PDF document", "PDF belgesi", "PDF-Dokument", "Document PDF"],
+  "Web page": ["Web page", "Web sayfası", "Webseite", "Page web"],
+  "Bookmark HTML": ["Bookmark HTML", "Yer imi HTML dosyası", "Lesezeichen-HTML", "HTML de favoris"],
+  "Dot Gece Görünümü": [
+    "Dot Night View",
+    "Dot Gece Görünümü",
+    "Dot Nachtansicht",
+    "Dot Vue nocturne"
+  ],
+  "Dot Başa Dön": ["Dot Back to Top", "Dot Başa Dön", "Dot Nach oben", "Dot Retour en haut"],
+  "Açık renkli web sayfalarını daha koyu gösterir. Bazı sitelerde renkler farklı görünebilir.": [
+    "Darkens light webpages. Some sites may have different colors.",
+    "Açık web sayfalarını koyulaştırır. Bazı sitelerde renkler değişebilir.",
+    "Dunkelt helle Webseiten ab. Farben können auf manchen Seiten abweichen.",
+    "Assombrit les pages claires. Les couleurs peuvent varier sur certains sites."
+  ],
+  "Uzun sayfalarda tek tıkla sayfanın başına dönmenizi sağlayan düğme.": [
+    "A button to return to the top of long pages.",
+    "Uzun sayfalarda başa dönmek için bir düğme.",
+    "Eine Schaltfläche zum Anfang langer Seiten.",
+    "Un bouton pour revenir en haut des pages longues."
+  ],
+  "{count} history entries": [
+    "{count} history entries",
+    "{count} geçmiş kaydı",
+    "{count} Verlaufseinträge",
+    "{count} entrées d’historique"
+  ]
+}

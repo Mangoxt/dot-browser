@@ -92,11 +92,11 @@ try {
   await expect(page.getByRole('dialog', { name: 'Browser menu', exact: true })).toBeVisible();
   await capture('test-results/clean-browser-menu.png');
   await page.getByRole('button', { name: 'Extensions', exact: true }).last().click();
-  await expect(page.getByRole('dialog', { name: 'Eklentiler', exact: true })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: 'Extensions', exact: true })).toBeVisible();
   await page
     .locator('.extension-card')
-    .filter({ hasText: 'Başa dön' })
-    .getByRole('button', { name: 'Ekle', exact: true })
+    .filter({ hasText: 'Back to top' })
+    .getByRole('button', { name: 'Add', exact: true })
     .click();
   await expect(page.locator('.extension-card.installed')).toHaveCount(1);
   await capture('test-results/extensions-manager.png');
@@ -111,10 +111,13 @@ try {
   await cmd({ type: 'tab.action', action: 'reload' });
   await expect.poll(() => web('!!document.querySelector("[data-dot-scroll-top]")')).toBe(true);
   await cmd({ type: 'extension.install', builtin: 'night' });
+  await cmd({ type: 'settings', patch: { theme: 'light' } });
   await cmd({ type: 'tab.action', action: 'reload' });
   await expect
     .poll(() => web('getComputedStyle(document.documentElement).filter'))
     .toContain('invert');
+  await cmd({ type: 'settings', patch: { theme: 'dark' } });
+  await expect.poll(() => web('getComputedStyle(document.documentElement).filter')).toBe('none');
   await app.evaluate(({ dialog }, custom) => {
     dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [custom] });
   }, custom);

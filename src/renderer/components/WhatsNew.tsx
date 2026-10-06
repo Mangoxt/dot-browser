@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { useEffect, useState } from 'react';
 import type { CommandResult } from '../../shared/ipc';
 import { command, useBrowser } from '../stores/browser';
@@ -25,24 +26,24 @@ export function WhatsNew() {
     <div className="release-notes">
       <p className="muted">
         {release
-          ? `Dot Browser ${release.version} hazır. İşte eklenenler ve düzeltmeler.`
-          : error || 'Değişiklikler yükleniyor…'}
+          ? tr('Dot Browser {version}: changes and fixes.', { version: release.version })
+          : tr(error || 'Değişiklikler yükleniyor…')}
       </p>
       {release?.releases.map((item, index) => (
         <details key={item.version} open={index === 0}>
           <summary>
-            Sürüm {item.version} <small>{item.date}</small>
+            {tr('Version {version}', { version: item.version })} <small>{item.date}</small>
           </summary>
           <ul>
             {item.changes.map((change) => (
-              <li key={change}>{change}</li>
+              <li key={change}>{tr(change)}</li>
             ))}
           </ul>
         </details>
       ))}
       <div className="form-actions">
         <button className="primary" autoFocus onClick={() => open(null)}>
-          Anladım
+          {tr('Anladım')}
         </button>
       </div>
     </div>

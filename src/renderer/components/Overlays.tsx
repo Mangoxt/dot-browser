@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { useEffect, useRef, useState } from 'react';
 import {
   X,
@@ -105,12 +106,12 @@ export function Overlays() {
         className={`modal ${overlay === 'palette' ? 'palette-modal' : ''} ${overlay === 'reader' ? 'reader-modal' : ''} ${overlay === 'browsermenu' ? 'browser-menu-modal' : ''} ${overlay === 'extensions' ? 'extensions-modal' : ''}`}
         role="dialog"
         aria-modal="true"
-        aria-label={titles[overlay]}
+        aria-label={tr(titles[overlay])}
       >
         {overlay !== 'palette' && (
           <div className="modal-heading">
-            <h2>{titles[overlay]}</h2>
-            <IconButton icon={X} label="Close dialog" onClick={() => open(null)} />
+            <h2>{tr(titles[overlay])}</h2>
+            <IconButton icon={X} label={tr('Close dialog')} onClick={() => open(null)} />
           </div>
         )}
         {overlay === 'palette' && <CommandPalette />}
@@ -132,7 +133,7 @@ export function Overlays() {
                 openPage('downloads');
               }}
             >
-              View all downloads
+              {tr('View all downloads')}
               <ArrowUpRight size={14} />
             </button>
           </>
@@ -205,14 +206,14 @@ function ImportBrowserData() {
   return (
     <div className="form-stack">
       <p>
-        Bring bookmarks, history and open tabs from Chromium-based or Firefox-based browsers. Every
-        discovered profile is listed separately. For portable browsers or a custom location, choose
-        the profile or user data folder.
+        {tr(
+          'Bring bookmarks, history and open tabs from Chromium-based or Firefox-based browsers. Every discovered profile is listed separately. For portable browsers or a custom location, choose the profile or user data folder.',
+        )}
       </p>
       <label>
-        Browser profile
+        {tr('Browser profile')}
         <select
-          aria-label="Browser profile"
+          aria-label={tr('Browser profile')}
           value={sourceId}
           onChange={(e) => {
             setSourceId(e.target.value);
@@ -227,7 +228,9 @@ function ImportBrowserData() {
         </select>
       </label>
       {!sources.length && (
-        <p>No compatible profiles were found automatically. Choose a browser folder below.</p>
+        <p>
+          {tr('No compatible profiles were found automatically. Choose a browser folder below.')}
+        </p>
       )}
       <button
         disabled={busy}
@@ -246,29 +249,30 @@ function ImportBrowserData() {
           setBusy(false);
         }}
       >
-        Choose browser folder
+        {tr('Choose browser folder')}
       </button>
       {(['bookmarks', 'history', 'tabs'] as const).map((kind) => (
         <label className="checkbox-label" key={kind}>
           <input type="checkbox" checked={kinds.includes(kind)} onChange={() => toggle(kind)} />
-          {names[kind]}
+          {tr(names[kind])}
         </label>
       ))}
       <details>
-        <summary>Passwords and cookies</summary>
+        <summary>{tr('Passwords and cookies')}</summary>
         <p>
-          Export passwords as CSV from your previous browser's password manager, then import that
-          file here. Compatible Chromium-based and Firefox-based CSV exports are supported. Imported
-          passwords are encrypted with your operating-system account and available from Saved
-          passwords in the toolbar.
+          {tr(
+            "Export passwords as CSV from your previous browser's password manager, then import that file here. Compatible Chromium-based and Firefox-based CSV exports are supported. Imported passwords are encrypted with your operating-system account and available from Saved passwords in the toolbar.",
+          )}
         </p>
         <p>
-          The exported CSV contains readable passwords. Delete it after importing if you no longer
-          need it.
+          {tr(
+            'The exported CSV contains readable passwords. Delete it after importing if you no longer need it.',
+          )}
         </p>
         <p>
-          Cookies can be imported from an exported JSON or Netscape TXT file. Some sites will still
-          require you to sign in again.
+          {tr(
+            'Cookies can be imported from an exported JSON or Netscape TXT file. Some sites will still require you to sign in again.',
+          )}
         </p>
         {(['passwords', 'cookies'] as const).map((kind) => (
           <button
@@ -285,7 +289,7 @@ function ImportBrowserData() {
               setBusy(false);
             }}
           >
-            {kind === 'passwords' ? 'Import password CSV' : 'Import cookie file'}
+            {kind === 'passwords' ? tr('Import password CSV') : tr('Import cookie file')}
           </button>
         ))}
       </details>
@@ -294,19 +298,19 @@ function ImportBrowserData() {
           <strong>{preview.source}</strong>
           {(['bookmarks', 'history', 'tabs', 'passwords', 'cookies'] as const).map((kind) => (
             <span key={kind}>
-              {names[kind]}: {preview.counts[kind]}
+              {tr(names[kind])}: {preview.counts[kind]}
             </span>
           ))}
           {preview.warnings.map((warning) => (
-            <p key={warning}>{warning}</p>
+            <p key={warning}>{tr(warning)}</p>
           ))}
         </div>
       )}
-      {message && <p role="status">{message}</p>}
-      {error && <p role="alert">{error}</p>}
+      {message && <p role="status">{tr(message)}</p>}
+      {error && <p role="alert">{tr(error)}</p>}
       <div className="form-actions">
         <button type="button" onClick={() => open(null)}>
-          Close
+          {tr('Close')}
         </button>
         <span />
         <button
@@ -321,7 +325,7 @@ function ImportBrowserData() {
             setBusy(false);
           }}
         >
-          {busy ? 'Reading…' : 'Preview'}
+          {busy ? tr('Reading…') : tr('Preview')}
         </button>
         <button
           type="button"
@@ -335,14 +339,19 @@ function ImportBrowserData() {
             if (result.ok && result.report) {
               const { bookmarks, history, tabs, passwords, cookies } = result.report.counts;
               setMessage(
-                `Imported ${bookmarks} bookmarks, ${history} history entries and ${tabs} tabs. ${passwords} passwords and ${cookies} cookies imported. ${result.report.warnings.join(' ')}`,
+                tr(
+                  'Imported: {bookmarks} bookmarks, {history} history entries, {tabs} tabs, {passwords} passwords and {cookies} cookies.',
+                  { bookmarks, history, tabs, passwords, cookies },
+                ) +
+                  ' ' +
+                  result.report.warnings.map((warning) => tr(warning)).join(' '),
               );
               setPreview(null);
             } else setError(result.error ?? 'Import failed');
             setBusy(false);
           }}
         >
-          Import
+          {tr('Import')}
         </button>
       </div>
     </div>
@@ -355,10 +364,10 @@ function FormActions({ text = 'Save', children }: { text?: string; children?: Re
       {children}
       <span />
       <button type="button" onClick={() => open(null)}>
-        Cancel
+        {tr('Cancel')}
       </button>
       <button type="submit" className="primary">
-        {text}
+        {tr(text)}
         <Check size={14} />
       </button>
     </div>
@@ -383,38 +392,40 @@ function BookmarkForm() {
       }}
     >
       <label>
-        Name
+        {tr('Name')}
         <input
           autoFocus
           required
           maxLength={500}
-          aria-label="Bookmark name"
+          aria-label={tr('Bookmark name')}
           value={bookmark.title}
           onChange={(e) => setBookmark({ ...bookmark, title: e.target.value })}
         />
       </label>
       <label>
-        URL
+        {tr('URL')}
         <input
           required
-          aria-label="Bookmark URL"
+          aria-label={tr('Bookmark URL')}
           value={bookmark.url}
           onChange={(e) => setBookmark({ ...bookmark, url: e.target.value })}
         />
       </label>
       <label>
-        Folder
+        {tr('Folder')}
         <select
-          aria-label="Bookmark folder"
+          aria-label={tr('Bookmark folder')}
           value={bookmark.folder}
           onChange={(e) => setBookmark({ ...bookmark, folder: e.target.value })}
         >
           {state.folders.map((f) => (
-            <option key={f}>{f}</option>
+            <option key={f} value={f}>
+              {tr(f)}
+            </option>
           ))}
         </select>
       </label>
-      {error && <p className="form-error">{error}</p>}
+      {error && <p className="form-error">{tr(error)}</p>}
       <FormActions text="Done">
         {state.bookmarks.some((b) => b.id === bookmark.id) && (
           <button
@@ -425,7 +436,7 @@ function BookmarkForm() {
               open(null);
             }}
           >
-            Remove
+            {tr('Remove')}
           </button>
         )}
       </FormActions>
@@ -454,26 +465,26 @@ function ShortcutForm() {
       }}
     >
       <label>
-        Name
+        {tr('Name')}
         <input
           required
           autoFocus
-          aria-label="Shortcut name"
+          aria-label={tr('Shortcut name')}
           value={item.title}
           onChange={(e) => setItem({ ...item, title: e.target.value })}
         />
       </label>
       <label>
-        Website
+        {tr('Website')}
         <input
           required
-          aria-label="Shortcut URL"
-          placeholder="example.com"
+          aria-label={tr('Shortcut URL')}
+          placeholder={tr('example.com')}
           value={item.url}
           onChange={(e) => setItem({ ...item, url: e.target.value })}
         />
       </label>
-      {error && <p className="form-error">{error}</p>}
+      {error && <p className="form-error">{tr(error)}</p>}
       <FormActions />
     </form>
   );
@@ -500,11 +511,11 @@ function WorkspaceForm() {
       }}
     >
       <label>
-        Name
+        {tr('Name')}
         <input
           required
           autoFocus
-          aria-label="Workspace name"
+          aria-label={tr('Workspace name')}
           maxLength={40}
           value={item.name}
           onChange={(e) => setItem({ ...item, name: e.target.value })}
@@ -512,26 +523,26 @@ function WorkspaceForm() {
       </label>
       <div className="form-columns">
         <label>
-          Color
+          {tr('Color')}
           <input
             type="color"
-            aria-label="Workspace color"
+            aria-label={tr('Workspace color')}
             value={item.color}
             onChange={(e) => setItem({ ...item, color: e.target.value })}
           />
         </label>
         <label>
-          Icon
+          {tr('Icon')}
           <select
-            aria-label="Workspace icon"
+            aria-label={tr('Workspace icon')}
             value={item.icon}
             onChange={(e) => setItem({ ...item, icon: e.target.value as Workspace['icon'] })}
           >
-            <option value="home">Home</option>
-            <option value="briefcase">Work</option>
-            <option value="book">Study</option>
-            <option value="music">Music</option>
-            <option value="gamepad">Gaming</option>
+            <option value="home">{tr('Home')}</option>
+            <option value="briefcase">{tr('Work')}</option>
+            <option value="book">{tr('Study')}</option>
+            <option value="music">{tr('Music')}</option>
+            <option value="gamepad">{tr('Gaming')}</option>
           </select>
         </label>
       </div>
@@ -545,11 +556,11 @@ function WorkspaceForm() {
               open(null);
             }}
           >
-            Delete space
+            {tr('Delete space')}
           </button>
         )}
       </FormActions>
-      <p className="modal-hint">Deleting a space moves its tabs to another space.</p>
+      <p className="modal-hint">{tr('Deleting a space moves its tabs to another space.')}</p>
     </form>
   );
 }
@@ -573,21 +584,21 @@ function GroupForm() {
       }}
     >
       <label>
-        Group name
+        {tr('Group name')}
         <input
           required
           autoFocus
           maxLength={40}
-          aria-label="Group name"
+          aria-label={tr('Group name')}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
       </label>
       <label>
-        Color
+        {tr('Color')}
         <input
           type="color"
-          aria-label="Group color"
+          aria-label={tr('Group color')}
           value={color}
           onChange={(e) => setColor(e.target.value)}
         />
@@ -602,7 +613,7 @@ function GroupForm() {
               open(null);
             }}
           >
-            Ungroup tabs
+            {tr('Ungroup tabs')}
           </button>
         )}
       </FormActions>
@@ -632,13 +643,13 @@ function SplitForm() {
         if (r.ok) open(null);
       }}
     >
-      <p className="muted">Two pages. One train of thought.</p>
+      <p className="muted">{tr('Choose a second tab to show alongside this page.')}</p>
       {available ? (
         <>
           <label>
-            Second tab
+            {tr('Second tab')}
             <select
-              aria-label="Second split tab"
+              aria-label={tr('Second split tab')}
               value={otherId}
               onChange={(e) => setOtherId(e.target.value)}
             >
@@ -651,20 +662,20 @@ function SplitForm() {
           </label>
           <div className="form-columns">
             <label>
-              Layout
+              {tr('Layout')}
               <select
-                aria-label="Split direction"
+                aria-label={tr('Split direction')}
                 value={direction}
                 onChange={(e) => setDirection(e.target.value as 'vertical' | 'horizontal')}
               >
-                <option value="vertical">Side by side</option>
-                <option value="horizontal">Stacked</option>
+                <option value="vertical">{tr('Side by side')}</option>
+                <option value="horizontal">{tr('Stacked')}</option>
               </select>
             </label>
             <label>
-              Ratio
+              {tr('Ratio')}
               <select
-                aria-label="Split ratio"
+                aria-label={tr('Split ratio')}
                 value={ratio}
                 onChange={(e) => setRatio(Number(e.target.value))}
               >
@@ -677,7 +688,9 @@ function SplitForm() {
           <FormActions text="Start split view" />
         </>
       ) : (
-        <p>Open two web tabs in the same workspace, then start split view from one of them.</p>
+        <p>
+          {tr('Open two web tabs in the same workspace, then start split view from one of them.')}
+        </p>
       )}
       {state.split && (
         <button
@@ -687,7 +700,7 @@ function SplitForm() {
             open(null);
           }}
         >
-          Exit split view
+          {tr('Exit split view')}
         </button>
       )}
     </form>
@@ -714,9 +727,9 @@ function ClearForm() {
       }}
     >
       <label>
-        Time range
+        {tr('Time range')}
         <select
-          aria-label="Clear data time range"
+          aria-label={tr('Clear data time range')}
           value={hours}
           onChange={(e) => setHours(Number(e.target.value))}
         >
@@ -728,7 +741,7 @@ function ClearForm() {
             [0, 'All time'],
           ].map(([v, l]) => (
             <option key={v} value={v}>
-              {l}
+              {tr(l.toString())}
             </option>
           ))}
         </select>
@@ -747,22 +760,22 @@ function ClearForm() {
             checked={selection[key]}
             onChange={(e) => setSelection({ ...selection, [key]: e.target.checked })}
           />
-          {label}
+          {tr(label)}
         </label>
       ))}
       <p className="modal-hint">
-        Site data removal may sign you out. Open tabs continue to be saved for recovery.
+        {tr('Site data removal may sign you out. Open tabs continue to be saved for recovery.')}
       </p>
       <div className="form-actions">
         <button type="button" onClick={() => open(null)}>
-          Cancel
+          {tr('Cancel')}
         </button>
         <button
           type="submit"
           className="danger"
           disabled={busy || !Object.values(selection).some(Boolean)}
         >
-          {busy ? 'Clearing…' : 'Clear data'}
+          {busy ? tr('Clearing…') : tr('Clear data')}
         </button>
       </div>
     </form>
@@ -776,33 +789,49 @@ function SiteInformation() {
       if (r.site) setSite(r.site);
     });
   }, []);
-  if (!site) return <p>Reading site information…</p>;
+  if (!site) return <p>{tr('Reading site information…')}</p>;
   return (
     <div className="site-info">
       <h3>{site.origin}</h3>
       <p className={site.https ? 'secure-label' : 'danger-text'}>
         <Shield size={16} />
         {site.https
-          ? 'HTTPS connection'
+          ? tr('HTTPS connection')
           : site.connection === 'pending'
-            ? 'Connection not yet verified'
+            ? tr('Connection not yet verified')
             : site.connection === 'error'
-              ? 'Connection failed'
-              : 'Connection is not encrypted'}
+              ? tr('Connection failed')
+              : tr('Connection is not encrypted')}
       </p>
       <p className="muted">
         {site.https
-          ? 'Chromium accepted this connection’s certificate. HTTPS does not establish whether a site is trustworthy.'
+          ? tr(
+              'Chromium accepted this connection’s certificate. HTTPS does not establish whether a site is trustworthy.',
+            )
           : site.connection === 'pending'
-            ? 'Connection information will be available after this page finishes loading.'
-            : 'Avoid sharing sensitive information on this connection.'}
+            ? tr('Connection information will be available after this page finishes loading.')
+            : tr('Avoid sharing sensitive information on this connection.')}
       </p>
-      <h4>Permissions</h4>
+      <h4>{tr('Permissions')}</h4>
+      <label className="checkbox-label">
+        <input
+          type="checkbox"
+          checked={state?.settings.darkSiteExceptions.includes(site.origin) ?? false}
+          onChange={(e) =>
+            patchSettings({
+              darkSiteExceptions: e.target.checked
+                ? [...new Set([...(state?.settings.darkSiteExceptions ?? []), site.origin])]
+                : state?.settings.darkSiteExceptions.filter((origin) => origin !== site.origin),
+            })
+          }
+        />
+        {tr('Keep this site light')}
+      </label>
       {site.permissions.length ? (
         site.permissions.map((p) => (
           <div className="site-permission" key={p.permission}>
             <span>
-              {p.permission} · {p.decision}
+              {tr(p.permission)} · {tr(p.decision)}
             </span>
             <button
               onClick={async () => {
@@ -817,12 +846,12 @@ function SiteInformation() {
                 });
               }}
             >
-              Reset
+              {tr('Reset')}
             </button>
           </div>
         ))
       ) : (
-        <p className="muted">This site will ask when it needs access.</p>
+        <p className="muted">{tr('This site will ask when it needs access.')}</p>
       )}
       <label className="checkbox-label">
         <input
@@ -836,17 +865,17 @@ function SiteInformation() {
             })
           }
         />
-        Allow popups from this site
+        {tr('Allow popups from this site')}
       </label>
-      <h4>{site.cookies.length} cookies</h4>
+      <h4>{tr('Cookies: {count}', { count: site.cookies.length })}</h4>
       <div className="cookie-list">
         {site.cookies.map((c, i) => (
           <div key={`${c.name}-${i}`}>
             <code>{c.name}</code>
             <small>
               {c.domain}
-              {c.secure ? ' · HTTPS only' : ''}
-              {c.httpOnly ? ' · HTTP only' : ''}
+              {c.secure ? tr(' · HTTPS only') : ''}
+              {c.httpOnly ? tr(' · HTTP only') : ''}
             </small>
           </div>
         ))}
@@ -857,7 +886,7 @@ function SiteInformation() {
           setSite({ ...site, cookies: [] });
         }}
       >
-        Clear this site’s data
+        {tr('Clear this site’s data')}
       </button>
     </div>
   );
@@ -866,17 +895,19 @@ function Profile() {
   const { state, open } = useBrowser();
   return (
     <div className="profile-info">
-      <span className="profile-avatar">{state?.private ? <Shield size={30} /> : 'P'}</span>
-      <h3>{state?.private ? 'Private session' : 'Personal'}</h3>
+      <span className="profile-avatar">
+        {state?.private ? <Shield size={30} /> : tr('Personal').slice(0, 1)}
+      </span>
+      <h3>{state?.private ? tr('Private session') : tr('Personal')}</h3>
       <p className="muted">
         {state?.private
-          ? 'Visits, searches and tabs are not saved. Downloaded files remain on your device.'
-          : 'Your bookmarks, settings and cookies stay on this device.'}
+          ? tr('Visits, searches and tabs are not saved. Downloaded files remain on your device.')
+          : tr('Your bookmarks, settings and cookies stay on this device.')}
       </p>
       {!state?.private && (
         <button className="full-width" onClick={() => open('import')}>
           <Download size={16} />
-          Import from another browser
+          {tr('Import from another browser')}
         </button>
       )}
       <button
@@ -887,7 +918,7 @@ function Profile() {
         }}
       >
         <Shield size={16} />
-        Open private window
+        {tr('Open private window')}
       </button>
       <button
         className="full-width"
@@ -897,7 +928,7 @@ function Profile() {
         }}
       >
         <Plus size={16} />
-        Open normal window
+        {tr('Open normal window')}
       </button>
     </div>
   );
@@ -931,26 +962,26 @@ function Onboarding() {
       }}
     >
       <div className="welcome-orbit">
-        <span>d•</span>
+        <span>{tr('d•')}</span>
       </div>
-      <p>A little space to focus. Settle in with a few choices.</p>
+      <p>{tr('Choose your theme and search engine.')}</p>
       <div className="form-columns">
         <label>
-          Theme
+          {tr('Theme')}
           <select
-            aria-label="Initial theme"
+            aria-label={tr('Initial theme')}
             value={theme}
             onChange={(e) => setTheme(e.target.value as typeof theme)}
           >
-            <option value="dark">Dark</option>
-            <option value="light">Light</option>
-            <option value="system">System</option>
+            <option value="dark">{tr('Dark')}</option>
+            <option value="light">{tr('Light')}</option>
+            <option value="system">{tr('System')}</option>
           </select>
         </label>
         <label>
-          Search
+          {tr('Search')}
           <select
-            aria-label="Initial search engine"
+            aria-label={tr('Initial search engine')}
             value={engine}
             onChange={(e) => setEngine(e.target.value)}
           >
@@ -964,18 +995,18 @@ function Onboarding() {
       </div>
       <label className="checkbox-label">
         <input type="checkbox" checked={vertical} onChange={(e) => setVertical(e.target.checked)} />
-        Use vertical tabs
+        {tr('Use vertical tabs')}
       </label>
       <label className="checkbox-label">
         <input type="checkbox" checked={restore} onChange={(e) => setRestore(e.target.checked)} />
-        Continue where I left off
+        {tr('Continue where I left off')}
       </label>
       <div className="form-actions">
         <button type="button" onClick={() => void finish(true)}>
-          Skip
+          {tr('Skip')}
         </button>
         <button type="submit" className="primary">
-          Make yourself at home
+          {tr('Start browsing')}
           <ArrowUpRight size={15} />
         </button>
       </div>
@@ -1050,7 +1081,7 @@ function CommandPalette() {
     { label: 'Dark theme', icon: Moon, run: () => patchSettings({ theme: 'dark' }) },
     { label: 'Light theme', icon: Sun, run: () => patchSettings({ theme: 'light' }) },
     ...state.workspaces.map((w) => ({
-      label: `Switch workspace · ${w.name}`,
+      label: tr('Switch workspace · {name}', { name: w.name }),
       icon: Layers,
       run: () => void command({ type: 'workspace.action', action: 'select', id: w.id }),
     })),
@@ -1059,7 +1090,9 @@ function CommandPalette() {
       icon: Globe,
       run: () => void command({ type: 'tab.action', action: 'select', id: t.id }),
     })),
-  ].filter((c) => c.label.toLowerCase().includes(q.toLowerCase()));
+  ]
+    .map((c) => ({ ...c, label: tr(c.label) }))
+    .filter((c) => c.label.toLowerCase().includes(q.toLowerCase()));
   const choose = (i: number) => {
     const item = commands[i];
     if (!item) return;
@@ -1072,9 +1105,9 @@ function CommandPalette() {
         <Search size={20} />
         <input
           autoFocus
-          aria-label="Search commands and tabs"
+          aria-label={tr('Search commands and tabs')}
           value={q}
-          placeholder="A command, a tab, a little shortcut…"
+          placeholder={tr('Search commands or tabs')}
           onChange={(e) => {
             setQ(e.target.value);
             setIndex(0);
@@ -1094,7 +1127,7 @@ function CommandPalette() {
             }
           }}
         />
-        <kbd>esc</kbd>
+        <kbd>{tr('esc')}</kbd>
       </div>
       <div className="palette-results" ref={container}>
         {commands.map((c, i) => (
@@ -1109,12 +1142,15 @@ function CommandPalette() {
             {c.keys && <kbd>{c.keys}</kbd>}
           </button>
         ))}
-        {!commands.length && <p className="empty-palette">No commands or tabs match.</p>}
+        {!commands.length && <p className="empty-palette">{tr('No commands or tabs match.')}</p>}
       </div>
       <div className="palette-footer">
-        <span>DOT QUICK COMMAND</span>
+        <span>{tr('DOT QUICK COMMAND')}</span>
         <span>
-          <kbd>↑ ↓</kbd> navigate <kbd>↵</kbd> select
+          <kbd>↑ ↓</kbd>
+          {tr('navigate')}
+          <kbd>↵</kbd>
+          {tr('select')}
         </span>
       </div>
     </>

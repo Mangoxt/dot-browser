@@ -1,3 +1,4 @@
+import { tr } from './i18n';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Minus, Square, Copy, X, Globe, RotateCw, ArrowLeft, Shield, Cpu } from 'lucide-react';
 import {
@@ -37,6 +38,9 @@ export default function App() {
   } = useBrowser();
   const header = useRef<HTMLElement>(null);
   const content = useRef<HTMLElement>(null);
+  useEffect(() => {
+    document.documentElement.lang = state?.settings.language ?? 'en-US';
+  }, [state?.settings.language]);
   useEffect(() => {
     let started = false;
     const unsubscribe = window.dot.onState((next) => {
@@ -138,8 +142,8 @@ export default function App() {
   if (!state)
     return (
       <div className="bootstrap">
-        <span className="dot-logo">d•</span>
-        <span>Opening your space…</span>
+        <span className="dot-logo">{tr('d•')}</span>
+        <span>{tr('Opening Dot…')}</span>
       </div>
     );
   const tab = state.tabs.find((t) => t.id === state.activeId);
@@ -152,25 +156,25 @@ export default function App() {
       return (
         <div className="error-page">
           <Globe size={44} />
-          <span className="eyebrow">A BUMP IN THE ROAD</span>
-          <h1>This page couldn’t open.</h1>
+          <span className="eyebrow">{tr('PAGE ERROR')}</span>
+          <h1>{tr('This page couldn’t open.')}</h1>
           <p>{tab.url}</p>
           <code>{tab.error}</code>
-          <p className="muted">Check the address and your connection, then try again.</p>
+          <p className="muted">{tr('Check the address and your connection, then try again.')}</p>
           <div>
             <button
               className="primary"
               onClick={() => void command({ type: 'tab.action', action: 'reload' })}
             >
               <RotateCw size={15} />
-              Try again
+              {tr('Try again')}
             </button>
             <button
               disabled={!tab.canGoBack}
               onClick={() => void command({ type: 'tab.action', action: 'back' })}
             >
               <ArrowLeft size={15} />
-              Go back
+              {tr('Go back')}
             </button>
           </div>
         </div>
@@ -183,21 +187,21 @@ export default function App() {
     if (page === 'about')
       return (
         <div className="internal-page">
-          <PageHeading eyebrow="A CONSIDERED SPACE FOR THE WEB" title="About Dot" />
+          <PageHeading eyebrow="DOT BROWSER" title={tr('About Dot')} />
           <AboutContent />
         </div>
       );
     if (page === 'performance')
       return (
         <div className="internal-page">
-          <PageHeading eyebrow="KEEP THINGS LIGHT" title="Task manager">
+          <PageHeading eyebrow={tr('BROWSER PROCESSES')} title={tr('Task manager')}>
             <button onClick={() => void window.dot.snapshot().then(setState)}>
               <RotateCw size={14} />
-              Refresh
+              {tr('Refresh')}
             </button>
           </PageHeading>
           <p className="muted">
-            Process IDs are supplied by Chromium. Multiple tabs may share a process.
+            {tr('Process IDs are supplied by Chromium. Multiple tabs may share a process.')}
           </p>
           {state.tabs.map((t) => (
             <div className="library-row" key={t.id}>
@@ -210,12 +214,12 @@ export default function App() {
               <code>{t.processId || '—'}</code>
               <span className="badge">
                 {t.suspended
-                  ? 'Suspended'
+                  ? tr('Suspended')
                   : internalPage(t.url)
-                    ? 'Internal'
+                    ? tr('Internal')
                     : t.loading
-                      ? 'Loading'
-                      : 'Running'}
+                      ? tr('Loading')
+                      : tr('Running')}
               </span>
               <button
                 disabled={
@@ -225,11 +229,11 @@ export default function App() {
                 }
                 onClick={() => void command({ type: 'tab.action', id: t.id, action: 'suspend' })}
               >
-                Suspend
+                {tr('Suspend')}
               </button>
               <IconButton
                 icon={X}
-                label={`Close ${t.title}`}
+                label={tr('Close {name}', { name: t.title })}
                 onClick={() => void command({ type: 'tab.action', id: t.id, action: 'close' })}
               />
             </div>
@@ -239,8 +243,8 @@ export default function App() {
     if (page === 'error')
       return (
         <div className="error-page">
-          <h1>Page not found</h1>
-          <button onClick={() => openPage('newtab')}>Open new tab</button>
+          <h1>{tr('Page not found')}</h1>
+          <button onClick={() => openPage('newtab')}>{tr('Open new tab')}</button>
         </div>
       );
     return <div className="webpage-surface" aria-hidden="true" />;
@@ -271,7 +275,7 @@ export default function App() {
             {state.private && (
               <span className="title-private">
                 <Shield size={11} />
-                Private
+                {tr('Private')}
               </span>
             )}
           </div>
@@ -279,17 +283,17 @@ export default function App() {
           <div className="window-controls">
             <IconButton
               icon={Minus}
-              label="Minimize window"
+              label={tr('Minimize window')}
               onClick={() => void command({ type: 'window', action: 'minimize' })}
             />
             <IconButton
               icon={state.maximized ? Copy : Square}
-              label={state.maximized ? 'Restore window' : 'Maximize window'}
+              label={state.maximized ? tr('Restore window') : tr('Maximize window')}
               onClick={() => void command({ type: 'window', action: 'maximize' })}
             />
             <IconButton
               icon={X}
-              label="Close window"
+              label={tr('Close window')}
               className="window-close"
               onClick={() => void command({ type: 'window', action: 'close' })}
             />
@@ -301,8 +305,12 @@ export default function App() {
         {toast && (
           <div className="chrome-notice" role="status">
             <span className="tiny-dot" />
-            <span>{toast}</span>
-            <IconButton icon={X} label="Dismiss notification" onClick={() => set({ toast: '' })} />
+            <span>{tr(toast)}</span>
+            <IconButton
+              icon={X}
+              label={tr('Dismiss notification')}
+              onClick={() => set({ toast: '' })}
+            />
           </div>
         )}
       </header>
@@ -318,7 +326,7 @@ export default function App() {
             if (/^https?:\/\//.test(url)) void command({ type: 'tab.new', url });
           }}
         >
-          <Suspense fallback={<div className="internal-loading">Opening…</div>}>
+          <Suspense fallback={<div className="internal-loading">{tr('Opening…')}</div>}>
             {contentPage()}
           </Suspense>
           {state.split && (
@@ -330,7 +338,7 @@ export default function App() {
                   : { top: `calc((100% - 6px) * ${state.split.ratio})` }
               }
               role="separator"
-              aria-label="Resize split view"
+              aria-label={tr('Resize split view')}
               tabIndex={0}
               onKeyDown={(e) => {
                 if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(e.key))
@@ -379,12 +387,12 @@ export default function App() {
             className="permission-dialog"
             role="dialog"
             aria-modal="true"
-            aria-label="Site permission request"
+            aria-label={tr('Site permission request')}
           >
             <Shield size={24} />
             <h3>{state.permissionRequests[0].origin}</h3>
             <p>
-              wants to use <strong>{state.permissionRequests[0].permission}</strong>
+              {tr('wants to use')} <strong>{tr(state.permissionRequests[0].permission)}</strong>
             </p>
             <div className="form-actions">
               {(['block', 'once', 'allow'] as const).map((decision) => (
@@ -400,10 +408,10 @@ export default function App() {
                   }
                 >
                   {decision === 'once'
-                    ? 'Allow once'
+                    ? tr('Allow once')
                     : decision === 'allow'
-                      ? 'Always allow'
-                      : 'Block'}
+                      ? tr('Always allow')
+                      : tr('Block')}
                 </button>
               ))}
             </div>

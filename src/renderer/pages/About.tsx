@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { useBrowser } from '../stores/browser';
 export function AboutContent() {
   const { state, open } = useBrowser();
@@ -8,8 +9,8 @@ export function AboutContent() {
         d<span>•</span>
       </span>
       <h2>Dot Browser</h2>
-      <p>A considered space for the web.</p>
-      <button onClick={() => open('whatsnew')}>Neler yeni?</button>
+      <p>{tr('A desktop browser powered by Chromium.')}</p>
+      <button onClick={() => open('whatsnew')}>{tr('Neler yeni?')}</button>
       <div className="version-list">
         {[
           ['Dot', state.versions.app],
@@ -23,10 +24,11 @@ export function AboutContent() {
           </div>
         ))}
       </div>
-      <p>Built with Electron, Chromium, React, TypeScript, Zustand, Zod and Lucide.</p>
+      <p>{tr('Built with Electron, Chromium, React, TypeScript, Zustand, Zod and Lucide.')}</p>
       <p className="muted">
-        Dot source: MIT. Electron: MIT. React: MIT. Zustand: MIT. Zod: MIT. Lucide: ISC. Chromium
-        uses BSD and third-party licenses included with the application distribution.
+        {tr(
+          'Dot source: MIT. Electron: MIT. React: MIT. Zustand: MIT. Zod: MIT. Lucide: ISC. Chromium uses BSD and third-party licenses included with the application distribution.',
+        )}
       </p>
     </div>
   );

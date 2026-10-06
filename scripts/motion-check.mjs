@@ -84,9 +84,9 @@ try {
     document.querySelector('button[aria-label="Close dialog"]').click();
     setTimeout(() => document.querySelector('button[aria-label="Extensions"]').click(), 20);
   });
-  await expect(page.getByRole('dialog', { name: 'Eklentiler', exact: true })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: 'Extensions', exact: true })).toBeVisible();
   await page.waitForTimeout(200);
-  await expect(page.getByRole('dialog', { name: 'Eklentiler', exact: true })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: 'Extensions', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Close dialog', exact: true }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
   for (const mode of ['setting', 'system']) {

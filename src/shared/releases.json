@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.0.7",
+    "date": "2026-10-06",
+    "changes": [
+      "Dil seçimi artık menüleri, ayarları ve tarayıcı pencerelerini de değiştirir: Türkçe, İngilizce, Almanca ve Fransızca.",
+      "Koyu temada web sayfaları otomatik koyulaştırılır. Görseller ters çevrilmez; site bilgileri üzerinden istisna eklenebilir.",
+      "Sayfa araçlarına Bağlantıyı kopyala ve Sonra oku eklendi. Okuma listesi yer imlerinde tutulur.",
+      "Karışık diller ve süslü metinler düzeltildi. Eklenti ayarları mevcut eklenti yöneticisini açar.",
+      "Gece görünümü eklentisinin zaten koyu sayfaları tekrar ters çevirmesi önlendi."
+    ]
+  },
+  {
     "version": "1.0.6",
     "date": "2026-10-06",
     "changes": [

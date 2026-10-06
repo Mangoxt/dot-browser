@@ -1,3 +1,4 @@
+import { tr } from './i18n';
 import { createRoot } from 'react-dom/client';
 import { Component, type ReactNode } from 'react';
 import App from './App';
@@ -10,8 +11,8 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: boolean 
   render() {
     return this.state.error ? (
       <div className="bootstrap">
-        <h2>The interface needs a fresh start.</h2>
-        <button onClick={() => window.location.reload()}>Reload interface</button>
+        <h2>{tr('The interface needs a fresh start.')}</h2>
+        <button onClick={() => window.location.reload()}>{tr('Reload interface')}</button>
       </div>
     ) : (
       this.props.children

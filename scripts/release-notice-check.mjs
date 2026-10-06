@@ -30,12 +30,12 @@ try {
   data.lastSeenReleaseVersion = '1.0.4';
   await writeFile(path, JSON.stringify(data));
   page = await launch();
-  const dialog = page.getByRole('dialog', { name: 'Neler yeni?', exact: true });
+  const dialog = page.getByRole('dialog', { name: 'What’s new?', exact: true });
   await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText(`Sürüm ${version}`);
-  await expect(dialog).toContainText('Her güncellemeden sonra');
+  await expect(dialog).toContainText(`Version ${version}`);
+  await expect(dialog).toContainText('Language selection now');
   await page.screenshot({ path: 'test-results/whats-new.png' });
-  await page.getByRole('button', { name: 'Anladım', exact: true }).click();
+  await page.getByRole('button', { name: 'Got it', exact: true }).click();
   await expect(dialog).toHaveCount(0);
   await app.close();
   page = await launch();
@@ -44,10 +44,10 @@ try {
     .poll(async () => JSON.parse(await readFile(path, 'utf8')).lastSeenReleaseVersion)
     .toBe(version);
   await page.evaluate(() => window.dot.command({ type: 'tab.new', url: 'browser://about' }));
-  await page.getByRole('button', { name: 'Neler yeni?', exact: true }).click();
-  await expect(page.getByRole('dialog', { name: 'Neler yeni?', exact: true })).toBeVisible();
-  await page.getByText('Sürüm 1.0.4', { exact: false }).click();
-  await expect(page.getByRole('dialog')).toContainText('PDF olarak');
+  await page.getByRole('button', { name: 'What’s new?', exact: true }).click();
+  await expect(page.getByRole('dialog', { name: 'What’s new?', exact: true })).toBeVisible();
+  await page.getByText('Version 1.0.4', { exact: false }).click();
+  await expect(page.getByRole('dialog')).toContainText('Save pages as PDF');
   console.log(
     'PASS: onboarding, upgrade popup, persistent once-per-version, manual release history',
   );

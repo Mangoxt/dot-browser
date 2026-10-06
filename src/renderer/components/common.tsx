@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { Globe, LoaderCircle, type LucideIcon } from 'lucide-react';
 import { useEffect, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
 export function IconButton({
@@ -14,8 +15,8 @@ export function IconButton({
     <button
       {...props}
       className={`icon-button ${active ? 'active' : ''} ${props.className ?? ''}`}
-      title={label}
-      aria-label={label}
+      title={tr(label)}
+      aria-label={tr(label)}
     >
       <Icon size={16} />
     </button>
@@ -60,8 +61,8 @@ export function Empty({
   return (
     <div className="empty">
       <Icon size={30} />
-      <h3>{title}</h3>
-      <p>{detail}</p>
+      <h3>{tr(title)}</h3>
+      <p>{tr(detail)}</p>
     </div>
   );
 }
@@ -77,8 +78,8 @@ export function PageHeading({
   return (
     <div className="page-heading">
       <div>
-        <span className="eyebrow">{eyebrow}</span>
-        <h1>{title}</h1>
+        <span className="eyebrow">{tr(eyebrow)}</span>
+        <h1>{tr(title)}</h1>
       </div>
       <div className="heading-actions">{children}</div>
     </div>
@@ -97,7 +98,7 @@ export function Toggle({
     <button
       className={`toggle ${checked ? 'checked' : ''}`}
       role="switch"
-      aria-label={label}
+      aria-label={tr(label)}
       aria-checked={checked}
       onClick={() => onChange(!checked)}
     >

@@ -34,6 +34,8 @@ import { releaseInfo, markReleaseSeen } from './release-notice';
 import { readProfile } from './profile-import';
 import { readingScript } from './reading';
 import { readingSchema } from '../shared/reading';
+import { PageTheme } from './page-theme';
+import { translate } from '../shared/i18n';
 import { discoverProfiles } from './profile-discovery';
 import type { ImportSource, ImportReport } from '../shared/import';
 import {
@@ -51,6 +53,7 @@ interface LiveTab {
   lastUsed: number;
   previousInternal: string | null;
   shiftClickAt: number;
+  pageTheme?: PageTheme;
 }
 interface BrowserHost {
   extensions: ExtensionManager;
@@ -80,6 +83,9 @@ export class BrowserController implements SessionHost {
   activeId = '';
   split: SplitState | null = null;
   readonly closedTabs: ClosedTab[] = [];
+  private tr(message: string, values?: Record<string, string | number>) {
+    return translate(message, this.data.settings.language, values);
+  }
   private layoutState = { top: 92, left: 224, right: 0, overlay: false };
   private requests = new Map<
     string,
@@ -242,6 +248,7 @@ export class BrowserController implements SessionHost {
       private: this.privateMode,
       tabs: this.tabs.map((t) => ({
         ...t.meta,
+        title: internalPage(t.meta.url) ? this.tr(this.internalTitle(t.meta.url)) : t.meta.title,
         connection: this.connection(t),
         webContentsId: t.view && !t.view.webContents.isDestroyed() ? t.view.webContents.id : null,
         processId:
@@ -293,6 +300,7 @@ export class BrowserController implements SessionHost {
     return committed.startsWith('https:') ? 'https' : 'http';
   }
   emit() {
+    for (const tab of this.tabs) tab.pageTheme?.update(this.data.settings, tab.meta.url);
     if (this.pending || this.window.isDestroyed()) return;
     this.pending = true;
     setImmediate(() => {
@@ -409,6 +417,16 @@ export class BrowserController implements SessionHost {
     this.window.contentView.addChildView(view);
     view.setVisible(false);
     const wc = view.webContents;
+    tab.pageTheme = new PageTheme(wc, (message) => this.host.storage.log('page-theme', message));
+    tab.pageTheme.update(this.data.settings, tab.meta.url);
+    wc.on('dom-ready', () => {
+      tab.pageTheme?.invalidate();
+      tab.pageTheme?.update(this.data.settings, tab.meta.url);
+    });
+    wc.on('devtools-closed', () => {
+      tab.pageTheme?.invalidate();
+      tab.pageTheme?.update(this.data.settings, tab.meta.url);
+    });
     wc.setAudioMuted(tab.meta.muted);
     wc.setZoomFactor(tab.meta.zoom);
     const sync = () => {
@@ -430,6 +448,7 @@ export class BrowserController implements SessionHost {
       this.browserSession.revokeContents(wc.id);
       this.cancelPermissions(wc.id);
       tab.meta.url = url;
+      tab.pageTheme?.invalidate();
       tab.meta.error = null;
       sync();
       this.changed();
@@ -602,6 +621,7 @@ export class BrowserController implements SessionHost {
     if (!this.window.isDestroyed()) this.window.contentView.removeChildView(tab.view);
     if (!tab.view.webContents.isDestroyed()) tab.view.webContents.close();
     tab.view = null;
+    tab.pageTheme = undefined;
   }
   close(tab: LiveTab) {
     const index = this.tabs.indexOf(tab);
@@ -945,7 +965,7 @@ export class BrowserController implements SessionHost {
       }
       case 'import.folder': {
         const result = await dialog.showOpenDialog(this.window, {
-          title: 'Choose browser profile or user data folder',
+          title: this.tr('Choose browser profile or user data folder'),
           properties: ['openDirectory'],
         });
         if (result.canceled || !result.filePaths[0]) return { ok: true };
@@ -990,12 +1010,12 @@ export class BrowserController implements SessionHost {
         const result = await dialog.showOpenDialog(this.window, {
           title:
             c.kind === 'passwords'
-              ? 'Import exported browser password CSV'
-              : 'Import exported browser data',
+              ? this.tr('Import exported browser password CSV')
+              : this.tr('Import exported browser data'),
           properties: ['openFile'],
           filters: [
             {
-              name: c.kind === 'passwords' ? 'Password CSV' : 'Exported data',
+              name: this.tr(c.kind === 'passwords' ? 'Password CSV' : 'Exported data'),
               extensions: c.kind === 'passwords' ? ['csv'] : ['json', 'txt'],
             },
           ],
@@ -1273,7 +1293,7 @@ export class BrowserController implements SessionHost {
         let path = '';
         if (!c.builtin) {
           const result = await dialog.showOpenDialog(this.window, {
-            title: 'Eklenti klasörünü seçin (manifest.json içermeli)',
+            title: this.tr('Eklenti klasörünü seçin (manifest.json içermeli)'),
             properties: ['openDirectory'],
           });
           if (result.canceled || !result.filePaths[0])
@@ -1396,11 +1416,39 @@ export class BrowserController implements SessionHost {
     const t = this.tab(),
       wc = t.view?.webContents;
     if (!wc) throw new Error('Open a webpage first');
+    if (action === 'copyLink') {
+      const url = wc.getURL();
+      if (!isWebURL(url)) throw new Error('Open a webpage first');
+      await clipboard.writeText(url);
+      this.toast('Link copied');
+      return;
+    }
+    if (action === 'readLater') {
+      const url = wc.getURL();
+      if (!isWebURL(url)) throw new Error('Open a webpage first');
+      const existing = this.data.bookmarks.find(
+        (item) => item.url === url && item.folder === 'Reading list',
+      );
+      if (!existing) {
+        if (!this.data.folders.includes('Reading list')) this.data.folders.push('Reading list');
+        this.data.bookmarks.push({
+          id: randomUUID(),
+          url,
+          title: wc.getTitle() || domainOf(url),
+          favicon: t.meta.favicon,
+          folder: 'Reading list',
+          createdAt: Date.now(),
+        });
+        this.changed();
+      }
+      this.toast('Saved to reading list');
+      return;
+    }
     if (action === 'pdf') {
       const originalURL = wc.getURL();
       const selected = await dialog.showSaveDialog(this.window, {
         defaultPath: `${t.meta.title.replace(/[<>:"/\\|?*]/g, '_').slice(0, 80) || 'page'}.pdf`,
-        filters: [{ name: 'PDF document', extensions: ['pdf'] }],
+        filters: [{ name: this.tr('PDF document'), extensions: ['pdf'] }],
       });
       if (selected.canceled || !selected.filePath) return;
       if (wc.isDestroyed() || this.active() !== t || wc.getURL() !== originalURL)
@@ -1423,7 +1471,7 @@ export class BrowserController implements SessionHost {
     if (action === 'save') {
       const path = await dialog.showSaveDialog(this.window, {
         defaultPath: `${t.meta.title.replace(/[<>:"/\\|?*]/g, '_').slice(0, 80)}.html`,
-        filters: [{ name: 'Web page', extensions: ['html'] }],
+        filters: [{ name: this.tr('Web page'), extensions: ['html'] }],
       });
       if (path.filePath) await wc.savePage(path.filePath, 'HTMLComplete');
     }
@@ -1446,18 +1494,22 @@ export class BrowserController implements SessionHost {
       label: string,
       action: Extract<Command, { type: 'tab.action' }>['action'],
     ): MenuItemConstructorOptions => ({
-      label,
+      label: this.tr(label),
       click: () => this.run({ type: 'tab.action', action, id: t.meta.id }),
     });
     const items: MenuItemConstructorOptions[] = [
-      { label: 'New tab', accelerator: 'Ctrl+T', click: () => this.run({ type: 'tab.new' }) },
+      {
+        label: this.tr('New tab'),
+        accelerator: 'Ctrl+T',
+        click: () => this.run({ type: 'tab.new' }),
+      },
       action('Reload', 'reload'),
       action('Duplicate', 'duplicate'),
       { type: 'separator' },
       action(t.meta.pinned ? 'Unpin tab' : 'Pin tab', 'pin'),
       action(t.meta.muted ? 'Unmute tab' : 'Mute tab', 'mute'),
       {
-        label: 'Move to workspace',
+        label: this.tr('Move to workspace'),
         submenu: this.workspaces.map((w) => ({
           label: w.name,
           enabled: w.id !== t.meta.workspaceId,
@@ -1471,10 +1523,10 @@ export class BrowserController implements SessionHost {
         })),
       },
       {
-        label: 'Add to group',
+        label: this.tr('Add to group'),
         submenu: [
           {
-            label: 'New group…',
+            label: this.tr('New group…'),
             click: () => {
               this.select(t);
               this.ui('group');
@@ -1493,7 +1545,7 @@ export class BrowserController implements SessionHost {
                 }),
             })),
           {
-            label: 'Remove from group',
+            label: this.tr('Remove from group'),
             enabled: !!t.meta.groupId,
             click: () =>
               this.run({
@@ -1520,26 +1572,30 @@ export class BrowserController implements SessionHost {
       page: string,
       accelerator?: string,
     ): MenuItemConstructorOptions => ({
-      label,
+      label: this.tr(label),
       accelerator,
       click: () => this.run({ type: 'tab.new', url: `browser://${page}` }),
     });
     const wc = this.active()?.view?.webContents;
     Menu.buildFromTemplate([
-      { label: 'New tab', accelerator: 'Ctrl+T', click: () => this.run({ type: 'tab.new' }) },
       {
-        label: 'New window',
+        label: this.tr('New tab'),
+        accelerator: 'Ctrl+T',
+        click: () => this.run({ type: 'tab.new' }),
+      },
+      {
+        label: this.tr('New window'),
         accelerator: 'Ctrl+N',
         click: () => this.run({ type: 'window', action: 'new' }),
       },
       {
-        label: 'Private window',
+        label: this.tr('Private window'),
         accelerator: 'Ctrl+Shift+N',
         click: () => this.run({ type: 'window', action: 'private' }),
       },
       { type: 'separator' },
       {
-        label: 'Home',
+        label: this.tr('Home'),
         click: () => this.run({ type: 'tab.navigate', input: this.data.settings.home }),
       },
       open('History', 'history', 'Ctrl+H'),
@@ -1550,64 +1606,73 @@ export class BrowserController implements SessionHost {
         label: `Zoom · ${Math.round((this.active()?.meta.zoom ?? 1) * 100)}%`,
         submenu: [
           {
-            label: 'Zoom in',
+            label: this.tr('Zoom in'),
             click: () =>
               this.run({ type: 'zoom', value: Math.min(3, (this.active()?.meta.zoom ?? 1) + 0.1) }),
           },
           {
-            label: 'Zoom out',
+            label: this.tr('Zoom out'),
             click: () =>
               this.run({
                 type: 'zoom',
                 value: Math.max(0.25, (this.active()?.meta.zoom ?? 1) - 0.1),
               }),
           },
-          { label: 'Reset zoom', click: () => this.run({ type: 'zoom', value: 1 }) },
+          { label: this.tr('Reset zoom'), click: () => this.run({ type: 'zoom', value: 1 }) },
         ],
       },
-      { label: 'Find in page', accelerator: 'Ctrl+F', enabled: !!wc, click: () => this.ui('find') },
-      { label: 'Search tabs', accelerator: 'Ctrl+Shift+A', click: () => this.ui('tabsearch') },
       {
-        label: 'Reading view',
+        label: this.tr('Find in page'),
+        accelerator: 'Ctrl+F',
+        enabled: !!wc,
+        click: () => this.ui('find'),
+      },
+      {
+        label: this.tr('Search tabs'),
+        accelerator: 'Ctrl+Shift+A',
+        click: () => this.ui('tabsearch'),
+      },
+      {
+        label: this.tr('Reading view'),
         accelerator: 'Ctrl+Shift+M',
         enabled: !!wc,
         click: () => this.ui('reader'),
       },
       {
-        label: 'Save as PDF…',
+        label: this.tr('Save as PDF…'),
         accelerator: 'Ctrl+Shift+S',
         enabled: !!wc,
         click: () => this.run({ type: 'page', action: 'pdf' }),
       },
       {
-        label: 'Print…',
+        label: this.tr('Print…'),
         accelerator: 'Ctrl+P',
         enabled: !!wc,
         click: () => this.run({ type: 'page', action: 'print' }),
       },
       {
-        label: 'Save page…',
+        label: this.tr('Save page…'),
         accelerator: 'Ctrl+S',
         enabled: !!wc,
         click: () => this.run({ type: 'page', action: 'save' }),
       },
-      { label: 'Split view…', click: () => this.ui('split') },
-      { label: 'Command palette', accelerator: 'Ctrl+K', click: () => this.ui('palette') },
+      { label: this.tr('Split view…'), click: () => this.ui('split') },
+      { label: this.tr('Command palette'), accelerator: 'Ctrl+K', click: () => this.ui('palette') },
       {
-        label: 'Developer tools',
+        label: this.tr('Developer tools'),
         accelerator: 'F12',
         enabled: !!wc,
         click: () => this.run({ type: 'page', action: 'devtools' }),
       },
       {
-        label: 'Fullscreen',
+        label: this.tr('Fullscreen'),
         accelerator: 'F11',
         click: () => this.run({ type: 'window', action: 'fullscreen' }),
       },
       { type: 'separator' },
       open('Settings', 'settings'),
       open('About Dot', 'about'),
-      { label: 'Exit', click: () => app.quit() },
+      { label: this.tr('Exit'), click: () => app.quit() },
     ]).popup({ window: this.window });
   }
   pageMenu(t: LiveTab, params: Electron.ContextMenuParams) {
@@ -1615,42 +1680,53 @@ export class BrowserController implements SessionHost {
     const items: MenuItemConstructorOptions[] = [];
     if (params.linkURL && isWebURL(params.linkURL))
       items.push(
-        { label: 'Open link in new tab', click: () => this.addTab(params.linkURL) },
-        { label: 'Open link in background tab', click: () => this.addTab(params.linkURL, true) },
+        { label: this.tr('Open link in new tab'), click: () => this.addTab(params.linkURL) },
         {
-          label: 'Open link in new window',
+          label: this.tr('Open link in background tab'),
+          click: () => this.addTab(params.linkURL, true),
+        },
+        {
+          label: this.tr('Open link in new window'),
           click: () => {
             const next = this.host.create(this.privateMode);
             next.navigate(next.tab(), params.linkURL);
           },
         },
-        { label: 'Copy link address', click: () => clipboard.writeText(params.linkURL) },
+        { label: this.tr('Copy link address'), click: () => clipboard.writeText(params.linkURL) },
         { type: 'separator' },
       );
     if (params.mediaType === 'image' && isWebURL(params.srcURL))
       items.push(
-        { label: 'Open image in new tab', click: () => this.addTab(params.srcURL) },
-        { label: 'Copy image URL', click: () => clipboard.writeText(params.srcURL) },
-        { label: 'Save image as…', click: () => wc.downloadURL(params.srcURL) },
+        { label: this.tr('Open image in new tab'), click: () => this.addTab(params.srcURL) },
+        { label: this.tr('Copy image URL'), click: () => clipboard.writeText(params.srcURL) },
+        { label: this.tr('Save image as…'), click: () => wc.downloadURL(params.srcURL) },
         { type: 'separator' },
       );
     if (params.isEditable)
       items.push(
-        { role: 'undo' },
-        { role: 'redo' },
+        { role: 'undo', label: this.tr('Undo') },
+        { role: 'redo', label: this.tr('Redo') },
         { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'selectAll' },
+        { role: 'cut', label: this.tr('Cut') },
+        { role: 'copy', label: this.tr('Copy') },
+        { role: 'paste', label: this.tr('Paste') },
+        { role: 'selectAll', label: this.tr('Select all') },
         { type: 'separator' },
       );
     else if (params.selectionText)
-      items.push({ label: 'Copy', click: () => clipboard.writeText(params.selectionText) });
+      items.push({
+        label: this.tr('Copy'),
+        click: () => clipboard.writeText(params.selectionText),
+      });
     if (params.selectionText)
       items.push(
         {
-          label: `Search ${this.data.settings.engines.find((e) => e.id === this.data.settings.engine)?.name ?? 'web'} for “${params.selectionText.slice(0, 45)}”`,
+          label: this.tr('Search {engine} for “{query}”', {
+            engine:
+              this.data.settings.engines.find((e) => e.id === this.data.settings.engine)?.name ??
+              this.tr('the web'),
+            query: params.selectionText.slice(0, 45),
+          }),
           click: () =>
             this.addTab(
               this.data.settings.engines
@@ -1662,21 +1738,21 @@ export class BrowserController implements SessionHost {
       );
     items.push(
       {
-        label: 'Back',
+        label: this.tr('Back'),
         enabled: t.meta.canGoBack,
         click: () => this.run({ type: 'tab.action', action: 'back', id: t.meta.id }),
       },
       {
-        label: 'Forward',
+        label: this.tr('Forward'),
         enabled: t.meta.canGoForward,
         click: () => this.run({ type: 'tab.action', action: 'forward', id: t.meta.id }),
       },
-      { label: 'Reload', click: () => wc.reload() },
+      { label: this.tr('Reload'), click: () => wc.reload() },
       { type: 'separator' },
-      { label: 'Save page…', click: () => this.run({ type: 'page', action: 'save' }) },
-      { label: 'Print…', click: () => this.run({ type: 'page', action: 'print' }) },
-      { label: 'View source', click: () => this.run({ type: 'page', action: 'source' }) },
-      { label: 'Inspect element', click: () => wc.inspectElement(params.x, params.y) },
+      { label: this.tr('Save page…'), click: () => this.run({ type: 'page', action: 'save' }) },
+      { label: this.tr('Print…'), click: () => this.run({ type: 'page', action: 'print' }) },
+      { label: this.tr('View source'), click: () => this.run({ type: 'page', action: 'source' }) },
+      { label: this.tr('Inspect element'), click: () => wc.inspectElement(params.x, params.y) },
     );
     Menu.buildFromTemplate(items).popup({ window: this.window });
   }
@@ -1739,7 +1815,7 @@ export class BrowserController implements SessionHost {
     if (action === 'export') {
       const result = await dialog.showSaveDialog(this.window, {
         defaultPath: 'dot-bookmarks.html',
-        filters: [{ name: 'Bookmark HTML', extensions: ['html'] }],
+        filters: [{ name: this.tr('Bookmark HTML'), extensions: ['html'] }],
       });
       if (result.filePath) {
         const html =
@@ -1759,7 +1835,7 @@ export class BrowserController implements SessionHost {
       }
     } else {
       const result = await dialog.showOpenDialog(this.window, {
-        filters: [{ name: 'Bookmark HTML', extensions: ['html', 'htm'] }],
+        filters: [{ name: this.tr('Bookmark HTML'), extensions: ['html', 'htm'] }],
         properties: ['openFile'],
       });
       if (result.canceled) return;

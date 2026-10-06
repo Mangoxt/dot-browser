@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { Search, Star, History, Download, Layers, X } from 'lucide-react';
 import { useState } from 'react';
 import { command, useBrowser } from '../stores/browser';
@@ -13,16 +14,16 @@ export function SidePanel() {
     <aside className="side-panel" style={{ width: panelWidth }}>
       <div className="panel-heading">
         <select
-          aria-label="Side panel section"
+          aria-label={tr('Side panel section')}
           value={panel}
           onChange={(e) => set({ panel: e.target.value as typeof panel })}
         >
-          <option value="bookmarks">Bookmarks</option>
-          <option value="history">History</option>
-          <option value="downloads">Downloads</option>
-          <option value="tabs">Tabs</option>
+          <option value="bookmarks">{tr('Bookmarks')}</option>
+          <option value="history">{tr('History')}</option>
+          <option value="downloads">{tr('Downloads')}</option>
+          <option value="tabs">{tr('Tabs')}</option>
         </select>
-        <IconButton icon={X} label="Close side panel" onClick={() => set({ panel: null })} />
+        <IconButton icon={X} label={tr('Close side panel')} onClick={() => set({ panel: null })} />
       </div>
       <div className="panel-tabs">
         {(
@@ -49,8 +50,8 @@ export function SidePanel() {
           <label className="filter-input">
             <Search size={14} />
             <input
-              aria-label="Search side panel"
-              placeholder="Search"
+              aria-label={tr('Search side panel')}
+              placeholder={tr('Search')}
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
@@ -74,7 +75,7 @@ export function SidePanel() {
                   </span>
                 </button>
               ))}
-            {!items.length && <p className="muted">Nothing here yet.</p>}
+            {!items.length && <p className="muted">{tr('Nothing here yet.')}</p>}
           </div>
         </>
       )}
@@ -82,7 +83,7 @@ export function SidePanel() {
         className="panel-resizer"
         role="separator"
         tabIndex={0}
-        aria-label="Resize side panel"
+        aria-label={tr('Resize side panel')}
         onKeyDown={(e) => {
           if (['ArrowLeft', 'ArrowRight'].includes(e.key))
             set({

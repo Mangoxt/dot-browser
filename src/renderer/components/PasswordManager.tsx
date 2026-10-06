@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { useEffect, useState } from 'react';
 import type { LoginSummary } from '../../shared/import';
 import { command, useBrowser } from '../stores/browser';
@@ -30,12 +31,13 @@ export function PasswordManager() {
   return (
     <div className="form-stack">
       <p>
-        Passwords are encrypted with your system account. Choose Fill on this site to fill a login
-        form; you submit it yourself.
+        {tr(
+          'Passwords are encrypted with your system account. Choose Fill on this site to fill a login form; you submit it yourself.',
+        )}
       </p>
       <input
-        aria-label="Search saved passwords"
-        placeholder="Search sites or usernames"
+        aria-label={tr('Search saved passwords')}
+        placeholder={tr('Search sites or usernames')}
         value={query}
         onChange={(event) => {
           setQuery(event.target.value);
@@ -50,9 +52,12 @@ export function PasswordManager() {
           .map((login) => (
             <div className="password-entry" key={login.id}>
               <strong>{login.origin}</strong>
-              <span>{login.username || '(No username)'}</span>
+              <span>{login.username || tr('(No username)')}</span>
               <textarea
-                aria-label={`Password for ${login.username} at ${login.origin}`}
+                aria-label={tr('Password for {name} at {origin}', {
+                  name: login.username,
+                  origin: login.origin,
+                })}
                 readOnly
                 value={revealed?.id === login.id ? revealed.value : '••••••••'}
               />
@@ -81,24 +86,24 @@ export function PasswordManager() {
                   >
                     {action === 'reveal'
                       ? revealed?.id === login.id
-                        ? 'Hide'
-                        : 'Show'
+                        ? tr('Hide')
+                        : tr('Show')
                       : action === 'fill'
-                        ? 'Fill on this site'
+                        ? tr('Fill on this site')
                         : action === 'copy'
-                          ? 'Copy'
-                          : 'Delete'}
+                          ? tr('Copy')
+                          : tr('Delete')}
                   </button>
                 ))}
               </div>
             </div>
           ))}
         {!logins.length && (
-          <p>No saved passwords yet. Import the CSV exported by your previous browser.</p>
+          <p>{tr('No saved passwords yet. Import the CSV exported by your previous browser.')}</p>
         )}
       </div>
-      {error && <p role="alert">{error}</p>}
-      <button onClick={() => open('import')}>Import browser data</button>
+      {error && <p role="alert">{tr(error)}</p>}
+      <button onClick={() => open('import')}>{tr('Import browser data')}</button>
     </div>
   );
 }

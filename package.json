@@ -1,8 +1,8 @@
 {
   "name": "dot-browser",
   "productName": "Dot Browser",
-  "version": "1.0.6",
-  "description": "A considered space for the web. A real Chromium desktop browser.",
+  "version": "1.0.7",
+  "description": "Desktop web browser with tabs, workspaces and private windows.",
   "author": "Dot Browser",
   "repository": {
     "type": "git",

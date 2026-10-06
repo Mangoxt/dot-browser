@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { tr } from '../i18n';
+import { useEffect, useState } from 'react';
 import {
   Settings2,
   Palette,
@@ -35,6 +36,14 @@ const sections: [string, string, LucideIcon][] = [
   ['advanced', 'Advanced', Wrench],
   ['about', 'About Dot', Info],
 ];
+const fieldLabels: Partial<Record<keyof BrowserSettings, string>> = {
+  theme: 'Theme',
+  background: 'New tab background',
+  memorySaver: 'Memory saver',
+  protection: 'Request blocking',
+  startup: 'When Dot starts',
+  language: 'Browser language',
+};
 function Row({
   title,
   detail,
@@ -47,8 +56,8 @@ function Row({
   return (
     <div className="setting-row">
       <div>
-        <strong>{title}</strong>
-        {detail && <p>{detail}</p>}
+        <strong>{tr(title)}</strong>
+        {detail && <p>{tr(detail)}</p>}
       </div>
       <div className="setting-control">{children}</div>
     </div>
@@ -70,7 +79,7 @@ function TextSetting({
   const [draft, setDraft] = useState(value);
   return multiline ? (
     <textarea
-      aria-label={label}
+      aria-label={tr(label)}
       value={draft}
       placeholder={placeholder}
       onChange={(e) => setDraft(e.target.value)}
@@ -78,7 +87,7 @@ function TextSetting({
     />
   ) : (
     <input
-      aria-label={label}
+      aria-label={tr(label)}
       value={draft}
       placeholder={placeholder}
       onChange={(e) => setDraft(e.target.value)}
@@ -93,18 +102,22 @@ export default function Settings() {
   const { state, open } = useBrowser();
   const tab = state?.tabs.find((t) => t.id === state.activeId);
   const [section, setSection] = useState(tab?.url.split('#')[1] || 'general');
+  useEffect(() => {
+    setSection(tab?.url.split('#')[1] || 'general');
+  }, [tab?.url]);
   const [engine, setEngine] = useState<SearchEngine | null>(null);
   if (!state) return null;
   const s = state.settings;
   const select = <K extends keyof BrowserSettings>(key: K, options: [string, string][]) => (
     <select
-      aria-label={key}
+      id={`setting-${key}`}
+      aria-label={tr(fieldLabels[key] ?? key)}
       value={String(s[key])}
       onChange={(e) => patchSettings({ [key]: e.target.value })}
     >
       {options.map(([value, label]) => (
         <option key={value} value={value}>
-          {label}
+          {tr(label)}
         </option>
       ))}
     </select>
@@ -114,17 +127,18 @@ export default function Settings() {
       | 'showHome'
       | 'compact'
       | 'animations'
+      | 'forceDarkPages'
       | 'sidebar'
       | 'bookmarkBar'
       | 'verticalTabs'
       | 'askDownload',
     label: string,
-  ) => <Toggle label={label} checked={s[key]} onChange={(v) => patchSettings({ [key]: v })} />;
+  ) => <Toggle label={tr(label)} checked={s[key]} onChange={(v) => patchSettings({ [key]: v })} />;
   return (
     <div className="settings-page">
       <nav className="settings-nav">
-        <span className="eyebrow">MAKE IT YOURS</span>
-        <h2>Settings</h2>
+        <span className="eyebrow">DOT BROWSER</span>
+        <h2>{tr('Settings')}</h2>
         {sections.map(([id, label, Icon]) => (
           <button
             className={section === id ? 'selected' : ''}
@@ -132,72 +146,105 @@ export default function Settings() {
             onClick={() => setSection(id)}
           >
             <Icon size={16} />
-            {label}
+            {tr(label)}
           </button>
         ))}
       </nav>
       <div className="settings-content">
-        <h1>{sections.find((x) => x[0] === section)?.[1] ?? 'General'}</h1>
+        <h1>{tr(sections.find((x) => x[0] === section)?.[1] ?? 'General')}</h1>
         {section === 'general' && (
           <>
-            <p className="section-description">A browser that feels like your own.</p>
-            <Row title="Home button" detail="A familiar place, one click away.">
+            <p className="section-description">{tr('Home page, bookmarks and profile.')}</p>
+            <Row title={tr('Home button')} detail={tr('Show a shortcut to your home page.')}>
               {toggle('showHome', 'Show home button')}
             </Row>
-            <Row title="Home page">
+            <Row title={tr('Home page')}>
               <TextSetting
-                label="Home page"
+                label={tr('Home page')}
                 value={s.home}
                 onSave={(home) => patchSettings({ home })}
               />
             </Row>
-            <Row title="Bookmarks bar">{toggle('bookmarkBar', 'Show bookmarks bar')}</Row>
+            <Row title={tr('Bookmarks bar')}>{toggle('bookmarkBar', 'Show bookmarks bar')}</Row>
             <Row
-              title="Local profile"
-              detail="Personal · isolated Chromium session and local browser data."
+              title={tr('Local profile')}
+              detail={tr('Bookmarks, settings and site data on this device.')}
             >
-              <button onClick={() => open('profile')}>Manage session</button>
+              <button onClick={() => open('profile')}>{tr('Manage session')}</button>
             </Row>
           </>
         )}
         {section === 'appearance' && (
           <>
-            <p className="section-description">Quiet details. Your kind of space.</p>
-            <Row title="Theme">
+            <p className="section-description">{tr('Theme, colors and layout.')}</p>
+            <Row title={tr('Theme')}>
               {select('theme', [
                 ['dark', 'Dark'],
                 ['light', 'Light'],
                 ['system', 'Follow system'],
               ])}
             </Row>
-            <Row title="Accent color">
+            <Row title={tr('Accent color')}>
               <div className="accent-picker">
                 {(['violet', 'blue', 'green', 'rose', 'amber'] as const).map((color) => (
                   <button
                     key={color}
                     className={`swatch ${color} ${s.accent === color ? 'selected' : ''}`}
-                    title={color}
-                    aria-label={`${color} accent`}
+                    title={tr(color)}
+                    aria-label={tr('{color} accent', { color: tr(color) })}
                     aria-pressed={s.accent === color}
                     onClick={() => patchSettings({ accent: color })}
                   />
                 ))}
               </div>
             </Row>
-            <Row title="Compact toolbar">{toggle('compact', 'Compact toolbar')}</Row>
-            <Row title="Sidebar">{toggle('sidebar', 'Show sidebar')}</Row>
-            <Row title="Animations">{toggle('animations', 'Enable animations')}</Row>
-            <Row title="New tab background">
+            <Row
+              title={tr('Dark webpages')}
+              detail={tr(
+                'Darken websites when the browser uses a dark theme. Images keep their colors.',
+              )}
+            >
+              {toggle('forceDarkPages', 'Force dark webpages')}
+            </Row>
+            {!!s.darkSiteExceptions.length && (
+              <Row
+                title={tr('Sites kept light')}
+                detail={tr('Change this for a site from its address bar icon.')}
+              >
+                <div>
+                  {s.darkSiteExceptions.map((origin) => (
+                    <div key={origin}>
+                      <span>{origin}</span>
+                      <IconButton
+                        icon={Trash2}
+                        label={tr('Remove exception')}
+                        onClick={() =>
+                          patchSettings({
+                            darkSiteExceptions: s.darkSiteExceptions.filter(
+                              (item) => item !== origin,
+                            ),
+                          })
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </Row>
+            )}
+            <Row title={tr('Compact toolbar')}>{toggle('compact', 'Compact toolbar')}</Row>
+            <Row title={tr('Sidebar')}>{toggle('sidebar', 'Show sidebar')}</Row>
+            <Row title={tr('Animations')}>{toggle('animations', 'Enable animations')}</Row>
+            <Row title={tr('New tab background')}>
               {select('background', [
                 ['orbital', 'Orbital'],
                 ['plain', 'Minimal'],
                 ['grid', 'Grid'],
               ])}
             </Row>
-            <Row title="Glass intensity">
+            <Row title={tr('Glass intensity')}>
               <input
                 type="range"
-                aria-label="Glass intensity"
+                aria-label={tr('Glass intensity')}
                 min={0}
                 max={1}
                 step={0.1}
@@ -205,10 +252,10 @@ export default function Settings() {
                 onChange={(e) => patchSettings({ glass: Number(e.target.value) })}
               />
             </Row>
-            <Row title="Corner radius">
+            <Row title={tr('Corner radius')}>
               <input
                 type="range"
-                aria-label="Corner radius"
+                aria-label={tr('Corner radius')}
                 min={4}
                 max={14}
                 step={1}
@@ -221,11 +268,11 @@ export default function Settings() {
         {section === 'search' && (
           <>
             <p className="section-description">
-              Search your way. Type a keyword before your query to switch engines.
+              {tr('Type an engine keyword before your search to use it.')}
             </p>
-            <Row title="Default search engine">
+            <Row title={tr('Default search engine')}>
               <select
-                aria-label="Default search engine"
+                aria-label={tr('Default search engine')}
                 value={s.engine}
                 onChange={(e) => patchSettings({ engine: e.target.value })}
               >
@@ -246,12 +293,12 @@ export default function Settings() {
                   <kbd>{e.keyword}</kbd>
                   <IconButton
                     icon={Pencil}
-                    label={`Edit ${e.name}`}
+                    label={tr('Edit {name}', { name: e.name })}
                     onClick={() => setEngine({ ...e })}
                   />
                   <IconButton
                     icon={Trash2}
-                    label={`Remove ${e.name}`}
+                    label={tr('Remove {name}', { name: e.name })}
                     disabled={s.engines.length === 1}
                     onClick={() => void command({ type: 'engine.remove', id: e.id })}
                   />
@@ -269,7 +316,7 @@ export default function Settings() {
               }
             >
               <Plus size={15} />
-              Add search engine
+              {tr('Add search engine')}
             </button>
             {engine && (
               <form
@@ -281,37 +328,37 @@ export default function Settings() {
                 }}
               >
                 <label>
-                  Name
+                  {tr('Name')}
                   <input
                     required
-                    aria-label="Engine name"
+                    aria-label={tr('Engine name')}
                     value={engine.name}
                     onChange={(e) => setEngine({ ...engine, name: e.target.value })}
                   />
                 </label>
                 <label>
-                  Keyword
+                  {tr('Keyword')}
                   <input
-                    aria-label="Engine keyword"
+                    aria-label={tr('Engine keyword')}
                     value={engine.keyword}
                     onChange={(e) => setEngine({ ...engine, keyword: e.target.value })}
                   />
                 </label>
                 <label>
-                  HTTPS search URL · use %s for the query
+                  {tr('HTTPS search URL · use %s for the query')}
                   <input
                     required
-                    aria-label="Engine URL template"
+                    aria-label={tr('Engine URL template')}
                     value={engine.template}
                     onChange={(e) => setEngine({ ...engine, template: e.target.value })}
                   />
                 </label>
                 <div className="form-actions">
                   <button type="button" onClick={() => setEngine(null)}>
-                    Cancel
+                    {tr('Cancel')}
                   </button>
                   <button className="primary" type="submit">
-                    Save engine
+                    {tr('Save engine')}
                   </button>
                 </div>
               </form>
@@ -320,12 +367,14 @@ export default function Settings() {
         )}
         {section === 'tabs' && (
           <>
-            <Row title="Vertical tabs" detail="Give your tabs a little more breathing room.">
+            <Row title={tr('Vertical tabs')} detail={tr('Show tabs in the sidebar.')}>
               {toggle('verticalTabs', 'Vertical tabs')}
             </Row>
             <Row
-              title="Memory saver"
-              detail="Suspend inactive, silent tabs after 20 minutes (Balanced) or 5 minutes (Aggressive). Pages reload when reselected."
+              title={tr('Memory saver')}
+              detail={tr(
+                'Suspend inactive, silent tabs after 20 minutes (Balanced) or 5 minutes (Aggressive). Pages reload when reselected.',
+              )}
             >
               {select('memorySaver', [
                 ['off', 'Off'],
@@ -333,32 +382,34 @@ export default function Settings() {
                 ['aggressive', 'Aggressive'],
               ])}
             </Row>
-            <Row title="Workspaces" detail="Separate your tabs by what you are doing.">
+            <Row title={tr('Workspaces')} detail={tr('Separate your tabs by what you are doing.')}>
               <button onClick={() => open('workspace')}>
                 <Plus size={15} />
-                New workspace
+                {tr('New workspace')}
               </button>
             </Row>
             <Row
-              title="Tab groups"
-              detail="Use the tab context menu to create and organize groups."
+              title={tr('Tab groups')}
+              detail={tr('Use the tab context menu to create and organize groups.')}
             >
-              <button onClick={() => open('group')}>Create group</button>
+              <button onClick={() => open('group')}>{tr('Create group')}</button>
             </Row>
           </>
         )}
         {section === 'privacy' && (
           <>
-            <p className="section-description">Clear choices. No inflated promises.</p>
+            <p className="section-description">{tr('Site permissions and browsing data.')}</p>
             <Row
-              title="Clear browsing data"
-              detail="History, site data, cache and restore records."
+              title={tr('Clear browsing data')}
+              detail={tr('History, site data, cache and restore records.')}
             >
-              <button onClick={() => open('clear')}>Choose data to clear</button>
+              <button onClick={() => open('clear')}>{tr('Choose data to clear')}</button>
             </Row>
             <Row
-              title="Request blocking"
-              detail="Uses your domain list. Balanced blocks subresources; Strict also blocks navigation. This is basic filtering, not comprehensive tracking protection."
+              title={tr('Request blocking')}
+              detail={tr(
+                'Uses your domain list. Balanced blocks subresources; Strict also blocks navigation. This is basic filtering, not comprehensive tracking protection.',
+              )}
             >
               {select('protection', [
                 ['off', 'Off'],
@@ -366,12 +417,15 @@ export default function Settings() {
                 ['strict', 'Strict'],
               ])}
             </Row>
-            <Row title="Blocked domains" detail="One domain per line, without https://.">
+            <Row
+              title={tr('Blocked domains')}
+              detail={tr('One domain per line, without https://.')}
+            >
               <TextSetting
                 multiline
-                label="Blocked domains"
+                label={tr('Blocked domains')}
                 value={s.blockedDomains.join('\n')}
-                placeholder="ads.example.com"
+                placeholder={tr('ads.example.com')}
                 onSave={(v) =>
                   patchSettings({
                     blockedDomains: v
@@ -383,23 +437,23 @@ export default function Settings() {
               />
             </Row>
             <Row
-              title="Allowed popup origins"
-              detail="One full origin per line, such as https://example.com."
+              title={tr('Allowed popup origins')}
+              detail={tr('One full origin per line, such as https://example.com.')}
             >
               <TextSetting
                 multiline
-                label="Popup allowlist"
+                label={tr('Popup allowlist')}
                 value={s.popupAllowlist.join('\n')}
                 onSave={(v) => patchSettings({ popupAllowlist: v.split(/\s+/).filter(Boolean) })}
               />
             </Row>
-            <h3>Saved site permissions</h3>
+            <h3>{tr('Saved site permissions')}</h3>
             {state.permissions.length ? (
               state.permissions.map((p) => (
                 <Row
                   key={`${p.origin}-${p.permission}`}
                   title={p.origin}
-                  detail={`${p.permission} · ${p.decision}`}
+                  detail={`${tr(p.permission)} · ${tr(p.decision)}`}
                 >
                   <button
                     onClick={() =>
@@ -410,33 +464,36 @@ export default function Settings() {
                       })
                     }
                   >
-                    Reset
+                    {tr('Reset')}
                   </button>
                 </Row>
               ))
             ) : (
-              <p className="muted">You haven’t saved any permission decisions.</p>
+              <p className="muted">{tr('You haven’t saved any permission decisions.')}</p>
             )}
           </>
         )}
         {section === 'downloads' && (
           <>
-            <Row title="Ask where to save each file">
+            <Row title={tr('Ask where to save each file')}>
               {toggle('askDownload', 'Ask where to save downloads')}
             </Row>
-            <Row title="Download folder" detail={s.downloadPath || 'Your system Downloads folder'}>
+            <Row
+              title={tr('Download folder')}
+              detail={s.downloadPath || tr('Your system Downloads folder')}
+            >
               <button onClick={() => void command({ type: 'download.directory' })}>
-                Change folder
+                {tr('Change folder')}
               </button>
             </Row>
-            <Row title="Download history">
-              <button onClick={() => openPage('downloads')}>Open downloads</button>
+            <Row title={tr('Download history')}>
+              <button onClick={() => openPage('downloads')}>{tr('Open downloads')}</button>
             </Row>
           </>
         )}
         {section === 'startup' && (
           <>
-            <Row title="When Dot starts">
+            <Row title={tr('When Dot starts')}>
               {select('startup', [
                 ['newtab', 'Open a new tab'],
                 ['restore', 'Continue where I left off'],
@@ -444,10 +501,10 @@ export default function Settings() {
               ])}
             </Row>
             {s.startup === 'pages' && (
-              <Row title="Startup pages" detail="One URL per line.">
+              <Row title={tr('Startup pages')} detail={tr('One URL per line.')}>
                 <TextSetting
                   multiline
-                  label="Startup pages"
+                  label={tr('Startup pages')}
                   value={s.startupPages.join('\n')}
                   onSave={(v) =>
                     patchSettings({
@@ -461,16 +518,17 @@ export default function Settings() {
               </Row>
             )}
             <p className="muted">
-              Normal windows are recovered after an unexpected shutdown. Private tabs are never
-              saved.
+              {tr(
+                'Normal windows are recovered after an unexpected shutdown. Private tabs are never saved.',
+              )}
             </p>
           </>
         )}
         {section === 'languages' && (
           <>
             <Row
-              title="Date and time format"
-              detail="Changes the new tab clock and history timestamps. The interface is currently in English."
+              title={tr('Browser language')}
+              detail={tr('Changes menus, settings, dialogs, dates and times immediately.')}
             >
               {select('language', [
                 ['en-US', 'English (United States)'],
@@ -480,16 +538,18 @@ export default function Settings() {
               ])}
             </Row>
             <p className="muted">
-              Webpage languages and spell checking follow Chromium and your operating system.
+              {tr(
+                'Webpage languages and spell checking follow Chromium and your operating system.',
+              )}
             </p>
           </>
         )}
         {section === 'accessibility' && (
           <>
-            <Row title="Interface text size">
+            <Row title={tr('Interface text size')}>
               <input
                 type="range"
-                aria-label="Interface text size"
+                aria-label={tr('Interface text size')}
                 min={0.85}
                 max={1.3}
                 step={0.05}
@@ -498,10 +558,11 @@ export default function Settings() {
               />
               <span>{Math.round(s.textScale * 100)}%</span>
             </Row>
-            <Row title="Motion">{toggle('animations', 'Enable interface animations')}</Row>
+            <Row title={tr('Motion')}>{toggle('animations', 'Enable interface animations')}</Row>
             <p className="muted">
-              Dot respects your system’s reduced motion preference. All controls support keyboard
-              focus.
+              {tr(
+                'Dot respects your system’s reduced motion preference. All controls support keyboard focus.',
+              )}
             </p>
           </>
         )}
@@ -530,7 +591,7 @@ export default function Settings() {
               ['Developer tools', 'F12 / Ctrl Shift I'],
               ['Print / save page', 'Ctrl P / Ctrl S'],
             ].map(([label, keys]) => (
-              <Row key={label} title={label}>
+              <Row key={tr(label)} title={tr(label)}>
                 <kbd>{keys}</kbd>
               </Row>
             ))}
@@ -539,30 +600,36 @@ export default function Settings() {
         {section === 'advanced' && (
           <>
             <Row
-              title="Browser task manager"
-              detail="Live process IDs and tab lifecycle status. Memory totals are not estimated."
+              title={tr('Browser task manager')}
+              detail={tr(
+                'Live process IDs and tab lifecycle status. Memory totals are not estimated.',
+              )}
             >
-              <button onClick={() => openPage('performance')}>Open task manager</button>
+              <button onClick={() => openPage('performance')}>{tr('Open task manager')}</button>
             </Row>
             <Row
-              title="Extensions"
-              detail="Extension loading is not offered in this release. Chromium web standards run natively."
+              title={tr('Extensions')}
+              detail={tr('Manage installed extensions or add one from a folder.')}
             >
-              <span className="badge">Unavailable</span>
+              <button onClick={() => open('extensions')}>{tr('Manage extensions')}</button>
             </Row>
             <Row
-              title="Passwords and autofill"
-              detail="Import browser password CSV files, store them encrypted and fill login forms on matching sites."
+              title={tr('Passwords and autofill')}
+              detail={tr(
+                'Import browser password CSV files, store them encrypted and fill login forms on matching sites.',
+              )}
             >
               <button onClick={() => useBrowser.getState().open('passwords')}>
-                Manage passwords
+                {tr('Manage passwords')}
               </button>
             </Row>
             <Row
-              title="Updates"
-              detail="Updates download automatically from GitHub Releases and install when you quit Dot."
+              title={tr('Updates')}
+              detail={tr(
+                'Updates download automatically from GitHub Releases and install when you quit Dot.',
+              )}
             >
-              <span className="badge">Automatic</span>
+              <span className="badge">{tr('Automatic')}</span>
             </Row>
           </>
         )}

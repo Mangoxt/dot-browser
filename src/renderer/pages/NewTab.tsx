@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { useEffect, useState } from 'react';
 import { Search, Plus, ArrowUpRight, Pencil, X, SlidersHorizontal, Command } from 'lucide-react';
 import { command, openPage, useBrowser } from '../stores/browser';
@@ -37,7 +38,7 @@ export default function NewTab() {
         </div>
       </div>
       <div className="newtab-center">
-        <h1>Where to next?</h1>
+        <h1>{tr('New tab')}</h1>
         <form
           className="newtab-search"
           onSubmit={(e) => {
@@ -47,12 +48,16 @@ export default function NewTab() {
         >
           <Search size={19} />
           <input
-            aria-label="Search the web"
-            placeholder={`Search ${state.settings.engines.find((e) => e.id === state.settings.engine)?.name ?? 'the web'}, or explore a new address`}
+            aria-label={tr('Search the web')}
+            placeholder={tr('Search {engine} or enter an address', {
+              engine:
+                state.settings.engines.find((e) => e.id === state.settings.engine)?.name ??
+                tr('the web'),
+            })}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <button type="submit" title="Search" aria-label="Search">
+          <button type="submit" title={tr('Search')} aria-label={tr('Search')}>
             <ArrowUpRight size={19} />
           </button>
         </form>
@@ -87,12 +92,12 @@ export default function NewTab() {
               <div className="speed-edit">
                 <IconButton
                   icon={Pencil}
-                  label={`Edit ${s.title}`}
+                  label={tr('Edit {name}', { name: s.title })}
                   onClick={() => open('shortcut', s)}
                 />
                 <IconButton
                   icon={X}
-                  label={`Remove ${s.title}`}
+                  label={tr('Remove {name}', { name: s.title })}
                   onClick={() => void command({ type: 'shortcut.remove', id: s.id })}
                 />
               </div>
@@ -103,13 +108,13 @@ export default function NewTab() {
               <span className="speed-icon">
                 <Plus size={21} />
               </span>
-              <span>Add shortcut</span>
+              <span>{tr('Add shortcut')}</span>
             </button>
           </div>
         </div>
         {!!state.history.length && (
           <div className="recent-sites">
-            <span>Pick up where you left off</span>
+            <span>{tr('Browsing history')}</span>
             {state.history.slice(0, 3).map((h) => (
               <button
                 key={h.id}
@@ -128,11 +133,11 @@ export default function NewTab() {
         <div>
           <button onClick={() => open('palette')}>
             <Command size={14} />
-            <kbd>Ctrl K</kbd>
+            <kbd>{tr('Ctrl K')}</kbd>
           </button>
           <button onClick={() => openPage('settings#appearance')}>
             <SlidersHorizontal size={14} />
-            Customize
+            {tr('Customize')}
           </button>
         </div>
       </div>

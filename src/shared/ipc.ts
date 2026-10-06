@@ -161,7 +161,7 @@ export const commandSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('reader.extract') }),
   z.object({
     type: z.literal('page'),
-    action: z.enum(['print', 'save', 'pdf', 'devtools', 'source']),
+    action: z.enum(['print', 'save', 'pdf', 'devtools', 'source', 'copyLink', 'readLater']),
   }),
   z.object({
     type: z.literal('window'),

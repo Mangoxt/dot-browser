@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { useEffect, useState } from 'react';
 import { ChevronUp, ChevronDown, X, Search } from 'lucide-react';
 import { command, useBrowser } from '../stores/browser';
@@ -17,8 +18,8 @@ export function FindBar() {
       <Search size={15} />
       <input
         autoFocus
-        aria-label="Find in page"
-        placeholder="Find in page"
+        aria-label={tr('Find in page')}
+        placeholder={tr('Find in page')}
         value={text}
         onChange={(e) => {
           setText(e.target.value);
@@ -34,17 +35,17 @@ export function FindBar() {
       </span>
       <IconButton
         icon={ChevronUp}
-        label="Previous match"
+        label={tr('Previous match')}
         disabled={!text}
         onClick={() => void command({ type: 'find', text, next: true, forward: false })}
       />
       <IconButton
         icon={ChevronDown}
-        label="Next match"
+        label={tr('Next match')}
         disabled={!text}
         onClick={() => void command({ type: 'find', text, next: true })}
       />
-      <IconButton icon={X} label="Close find" onClick={close} />
+      <IconButton icon={X} label={tr('Close find')} onClick={close} />
     </div>
   );
 }

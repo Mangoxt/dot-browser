@@ -1,3 +1,4 @@
+import { tr } from '../i18n';
 import { Plus, X, Pin, Volume2, VolumeX, ChevronDown, Layers, Search } from 'lucide-react';
 import { command, useBrowser } from '../stores/browser';
 import { Favicon, IconButton } from './common';
@@ -50,8 +51,8 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
       {(tab.audio || tab.muted) && (
         <button
           className="tab-small"
-          title={tab.muted ? 'Unmute tab' : 'Mute tab'}
-          aria-label={tab.muted ? 'Unmute tab' : 'Mute tab'}
+          title={tab.muted ? tr('Unmute tab') : tr('Mute tab')}
+          aria-label={tab.muted ? tr('Unmute tab') : tr('Mute tab')}
           onClick={(e) => {
             e.stopPropagation();
             void command({ type: 'tab.action', action: 'mute', id: tab.id });
@@ -64,8 +65,8 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
       {!tab.pinned && (
         <button
           className="tab-small close-tab"
-          title="Close tab (Ctrl+W)"
-          aria-label={`Close ${tab.title}`}
+          title={tr('Close tab (Ctrl+W)')}
+          aria-label={tr('Close {name}', { name: tab.title })}
           onClick={(e) => {
             e.stopPropagation();
             void command({ type: 'tab.action', action: 'close', id: tab.id });
@@ -81,7 +82,7 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
       <div
         className="tab-scroll"
         role="tablist"
-        aria-label="Browser tabs"
+        aria-label={tr('Browser tabs')}
         onDoubleClick={(e) => {
           if (e.target === e.currentTarget) void command({ type: 'tab.new' });
         }}
@@ -97,7 +98,10 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
             >
               <button
                 className="group-label"
-                title={`${g.name} — click to ${g.collapsed ? 'expand' : 'collapse'}, right click to edit`}
+                title={tr('{name}: click to {action}, right click to edit', {
+                  name: g.name,
+                  action: tr(g.collapsed ? 'expand' : 'collapse'),
+                })}
                 onClick={() => void command({ type: 'group.action', id: g.id, action: 'collapse' })}
                 onContextMenu={(e) => {
                   e.preventDefault();
@@ -115,10 +119,14 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
       <div className="tab-controls">
         <IconButton
           icon={Plus}
-          label="New tab (Ctrl+T)"
+          label={tr('New tab (Ctrl+T)')}
           onClick={() => void command({ type: 'tab.new' })}
         />
-        <IconButton icon={Search} label="Search tabs (Ctrl+K)" onClick={() => open('palette')} />
+        <IconButton
+          icon={Search}
+          label={tr('Search tabs (Ctrl+K)')}
+          onClick={() => open('palette')}
+        />
       </div>
     </div>
   );
