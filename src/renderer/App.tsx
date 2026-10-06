@@ -1,6 +1,13 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Minus, Square, Copy, X, Globe, RotateCw, ArrowLeft, Shield, Cpu } from 'lucide-react';
-import { bookmarkCurrent, command, notify, openPage, useBrowser } from './stores/browser';
+import {
+  bookmarkCurrent,
+  command,
+  notify,
+  openPage,
+  useBrowser,
+  OVERLAY_EXIT_MS,
+} from './stores/browser';
 import { internalPage } from '../shared/models';
 import { Tabs } from './components/Tabs';
 import { Toolbar, BookmarkBar } from './components/Toolbar';
@@ -15,8 +22,19 @@ const NewTab = lazy(() => import('./pages/NewTab'));
 const Settings = lazy(() => import('./pages/Settings'));
 export default function App() {
   const [releasePending, setReleasePending] = useState(false);
-  const { state, overlay, omnibox, find, panel, panelWidth, toast, setState, open, set } =
-    useBrowser();
+  const {
+    state,
+    overlay,
+    overlayClosing,
+    omnibox,
+    find,
+    panel,
+    panelWidth,
+    toast,
+    setState,
+    open,
+    set,
+  } = useBrowser();
   const header = useRef<HTMLElement>(null);
   const content = useRef<HTMLElement>(null);
   useEffect(() => {
@@ -73,6 +91,7 @@ export default function App() {
     state?.settings.onboarded,
     state?.permissionRequests.length,
     overlay,
+    overlayClosing,
     omnibox,
     open,
   ]);
@@ -235,6 +254,7 @@ export default function App() {
           '--radius': `${state.settings.radius}px`,
           '--glass-opacity': state.settings.glass,
           '--text-scale': state.settings.textScale,
+          '--motion-exit': `${OVERLAY_EXIT_MS}ms`,
         } as React.CSSProperties
       }
     >

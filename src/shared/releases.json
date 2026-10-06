@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.0.6",
+    "date": "2026-10-06",
+    "changes": [
+      "Menüler ve pencereler yumuşak açılış ve kapanış geçişleri kazandı.",
+      "Sekmeler, yan panel, yeni sekme kısayolları ve düğme etkileşimleri daha akıcı hale getirildi.",
+      "Sayfa yükleme çizgisi yerleşimi değiştirmeyen bir animasyon kullanır.",
+      "Kapanış sırasında eski aktarım ekranının yeni önizlemeleri iptal etmesi düzeltildi.",
+      "Animasyon ayarı ve sistemin hareketi azalt tercihi geçişlerde ve kapanışlarda uygulanır."
+    ]
+  },
+  {
     "version": "1.0.5",
     "date": "2026-10-06",
     "changes": [

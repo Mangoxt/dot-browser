@@ -3,6 +3,7 @@ import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 const directory = await mkdtemp(join(tmpdir(), 'dot-release-ui-'));
+const { version } = JSON.parse(await readFile('package.json', 'utf8'));
 const env = {
   ...process.env,
   DOT_TEST_HIDDEN: '1',
@@ -31,7 +32,7 @@ try {
   page = await launch();
   const dialog = page.getByRole('dialog', { name: 'Neler yeni?', exact: true });
   await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText('Sürüm 1.0.5');
+  await expect(dialog).toContainText(`Sürüm ${version}`);
   await expect(dialog).toContainText('Her güncellemeden sonra');
   await page.screenshot({ path: 'test-results/whats-new.png' });
   await page.getByRole('button', { name: 'Anladım', exact: true }).click();
@@ -41,7 +42,7 @@ try {
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect
     .poll(async () => JSON.parse(await readFile(path, 'utf8')).lastSeenReleaseVersion)
-    .toBe('1.0.5');
+    .toBe(version);
   await page.evaluate(() => window.dot.command({ type: 'tab.new', url: 'browser://about' }));
   await page.getByRole('button', { name: 'Neler yeni?', exact: true }).click();
   await expect(page.getByRole('dialog', { name: 'Neler yeni?', exact: true })).toBeVisible();

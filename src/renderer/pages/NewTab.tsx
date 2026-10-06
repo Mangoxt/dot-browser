@@ -61,6 +61,7 @@ export default function NewTab() {
             <div
               key={s.id}
               className="speed-item"
+              style={{ animationDelay: `${Math.min(i * 24, 144)}ms` }}
               draggable
               onDragStart={(e) => e.dataTransfer.setData('dot/shortcut', s.id)}
               onDragOver={(e) => e.preventDefault()}

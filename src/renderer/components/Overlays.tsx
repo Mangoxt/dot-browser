@@ -34,7 +34,7 @@ import { isWebURL, resolveInput } from '../../shared/navigation';
 import type { ImportKind, ImportPreview, ImportSource } from '../../shared/import';
 
 export function Overlays() {
-  const { overlay, open } = useBrowser();
+  const { overlay, overlayClosing, open } = useBrowser();
   const modal = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!overlay) return;
@@ -94,12 +94,13 @@ export function Overlays() {
   };
   return (
     <div
-      className={`overlay-scrim ${overlay === 'palette' ? 'palette-scrim' : ''} ${overlay === 'browsermenu' ? 'menu-scrim' : ''}`}
+      className={`overlay-scrim ${overlayClosing ? 'closing' : ''} ${overlay === 'palette' ? 'palette-scrim' : ''} ${overlay === 'browsermenu' ? 'menu-scrim' : ''}`}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) open(null);
       }}
     >
       <div
+        key={overlay}
         ref={modal}
         className={`modal ${overlay === 'palette' ? 'palette-modal' : ''} ${overlay === 'reader' ? 'reader-modal' : ''} ${overlay === 'browsermenu' ? 'browser-menu-modal' : ''} ${overlay === 'extensions' ? 'extensions-modal' : ''}`}
         role="dialog"
@@ -154,10 +155,26 @@ function ImportBrowserData() {
   const [sourceId, setSourceId] = useState('');
   const [kinds, setKinds] = useState<ImportKind[]>(['bookmarks', 'history', 'tabs']);
   const [preview, setPreview] = useState<ImportPreview | null>(null);
+  const ownedPreviews = useRef(new Set<string>());
+  const alive = useRef(true);
+  const showPreview = (next: ImportPreview | null) => {
+    if (!next) {
+      setPreview(null);
+      return;
+    }
+    if (!alive.current) {
+      void command({ type: 'import.cancel', token: next.token });
+      return;
+    }
+    ownedPreviews.current.add(next.token);
+    setPreview(next);
+  };
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   useEffect(() => {
+    alive.current = true;
+    const owned = ownedPreviews.current;
     void command({ type: 'import.sources' }).then((result) => {
       if (!result.ok) setError(result.error ?? 'Could not find browser profiles');
       else {
@@ -167,7 +184,9 @@ function ImportBrowserData() {
       }
     });
     return () => {
-      void command({ type: 'import.cancel' });
+      alive.current = false;
+      for (const token of owned) void command({ type: 'import.cancel', token });
+      owned.clear();
     };
   }, []);
   const names: Record<ImportKind, string> = {
@@ -261,7 +280,7 @@ function ImportBrowserData() {
               setMessage('');
               setPreview(null);
               const result = await command({ type: 'import.file', kind });
-              if (result.ok) setPreview(result.preview ?? null);
+              if (result.ok) showPreview(result.preview ?? null);
               else setError(result.error ?? 'Could not read the exported file');
               setBusy(false);
             }}
@@ -297,7 +316,7 @@ function ImportBrowserData() {
             setBusy(true);
             setError('');
             const result = await command({ type: 'import.preview', sourceId, kinds });
-            if (result.ok && result.preview) setPreview(result.preview);
+            if (result.ok && result.preview) showPreview(result.preview);
             else setError(result.error ?? 'Could not preview this profile');
             setBusy(false);
           }}

@@ -202,6 +202,9 @@ async function step(name, fn) {
   const start = Date.now();
   try {
     await fn();
+    // A step ends after its visual exit and component cleanup, before the next
+    // independent workflow creates new import previews or other resources.
+    await expect(page.locator('.overlay-scrim.closing')).toHaveCount(0);
     results.push({ name, status: 'PASS', duration: Date.now() - start });
     process.stdout.write(`PASS ${name}\n`);
   } catch (error) {
@@ -526,6 +529,7 @@ try {
     await page.getByRole('button', { name: 'Browser menu', exact: true }).click();
     await page.getByText('Page tools', { exact: true }).click();
     await page.getByRole('button', { name: 'Bookmarks side panel', exact: true }).click();
+    await expect(page.getByRole('dialog', { name: 'Browser menu', exact: true })).toHaveCount(0);
     await expect(page.locator('.side-panel')).toBeVisible();
     for (const section of ['history', 'tabs', 'downloads', 'bookmarks']) {
       await page.getByLabel('Side panel section', { exact: true }).selectOption(section);

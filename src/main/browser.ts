@@ -314,9 +314,10 @@ export class BrowserController implements SessionHost {
   }
   ui(type: string) {
     if (!this.window.isDestroyed()) {
-      this.layoutState.overlay =
-        ['omnibox', 'palette', 'split', 'group', 'clear', 'tabsearch', 'reader'].includes(type) ||
-        (type === 'bookmark' && isWebURL(this.active()?.meta.url ?? ''));
+      if (type !== 'escape')
+        this.layoutState.overlay =
+          ['omnibox', 'palette', 'split', 'group', 'clear', 'tabsearch', 'reader'].includes(type) ||
+          (type === 'bookmark' && isWebURL(this.active()?.meta.url ?? ''));
       this.layout();
       this.window.webContents.focus();
       this.window.webContents.send('dot:event', { type });
@@ -1119,7 +1120,8 @@ export class BrowserController implements SessionHost {
         return { ok: true, report };
       }
       case 'import.cancel':
-        this.importPreviews.clear();
+        if (c.token) this.importPreviews.delete(c.token);
+        else this.importPreviews.clear();
         return { ok: true };
       case 'login.list':
         return {

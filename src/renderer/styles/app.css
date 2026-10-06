@@ -2332,9 +2332,6 @@ form > label select {
   transition: none !important;
   animation: none !important;
 }
-.no-animation .spin {
-  animation: spin 1s linear infinite !important;
-}
 @media (prefers-reduced-motion: reduce) {
   *,
   *:before,
@@ -2691,5 +2688,209 @@ form > label select {
   .newtab h1 {
     font-size: 28px;
     margin-bottom: 18px;
+  }
+}
+
+/* Short, composited motion for browser chrome; native web views keep stable bounds. */
+.app {
+  --motion-fast: 120ms;
+  --motion-enter: 190ms;
+  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.icon-button,
+.tab-small {
+  transition:
+    background var(--motion-fast),
+    color var(--motion-fast),
+    opacity var(--motion-fast),
+    transform var(--motion-fast) var(--motion-ease);
+}
+.icon-button:not(:disabled):active,
+.tab-small:active {
+  transform: scale(0.91);
+}
+.tab {
+  animation: dot-tab-in 160ms var(--motion-ease);
+  transition:
+    background var(--motion-fast),
+    color var(--motion-fast),
+    border-color var(--motion-fast);
+}
+.tab.selected::after {
+  transform-origin: left;
+  animation: dot-tab-accent 170ms var(--motion-ease);
+}
+.close-tab,
+.workspace-edit {
+  transition:
+    opacity var(--motion-fast),
+    background var(--motion-fast);
+}
+.group-label > svg:last-child {
+  transition: transform var(--motion-enter) var(--motion-ease);
+}
+.overlay-scrim {
+  animation: dot-fade-in 130ms ease-out;
+}
+.modal,
+.permission-dialog {
+  animation: dot-dialog-in var(--motion-enter) var(--motion-ease);
+}
+.browser-menu-modal {
+  transform-origin: top right;
+  animation-name: dot-menu-in;
+}
+.overlay-scrim.closing {
+  pointer-events: none;
+  animation: dot-fade-out var(--motion-exit) ease-in forwards;
+}
+.overlay-scrim.closing .modal {
+  animation: dot-dialog-out var(--motion-exit) ease-in forwards;
+}
+.side-panel {
+  animation: dot-panel-in var(--motion-enter) var(--motion-ease);
+}
+.suggestions {
+  transform-origin: top center;
+  animation: dot-menu-in 150ms var(--motion-ease);
+}
+.chrome-notice,
+.find-bar {
+  animation: dot-rise-in 160ms var(--motion-ease);
+}
+.newtab-center > h1 {
+  animation: dot-rise-in 240ms var(--motion-ease) both;
+}
+.newtab-search {
+  animation: dot-rise-in 240ms var(--motion-ease) 35ms both;
+  transition:
+    border-color var(--motion-fast),
+    box-shadow var(--motion-enter);
+}
+.speed-item {
+  animation: dot-rise-in 220ms var(--motion-ease) both;
+}
+.speed-icon {
+  transition:
+    background var(--motion-fast),
+    border-color var(--motion-fast),
+    transform var(--motion-enter) var(--motion-ease);
+}
+.speed-open:active .speed-icon {
+  transform: translateY(0) scale(0.94);
+}
+.browser-menu-item > svg {
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+.browser-menu-item:not(:disabled):hover > svg {
+  transform: translateX(2px);
+}
+.loading-line {
+  left: 0;
+}
+@keyframes loading {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(286%);
+  }
+}
+@keyframes dot-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes dot-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes dot-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(9px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes dot-dialog-out {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(4px) scale(0.985);
+  }
+}
+@keyframes dot-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes dot-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes dot-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes dot-tab-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes dot-tab-accent {
+  from {
+    transform: scaleX(0.35);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 0.8;
+  }
+}
+.no-animation .icon-button:active,
+.no-animation .tab-small:active,
+.no-animation .speed-open .speed-icon,
+.no-animation .browser-menu-item > svg {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .icon-button:active,
+  .tab-small:active,
+  .speed-open .speed-icon,
+  .browser-menu-item > svg {
+    transform: none !important;
   }
 }

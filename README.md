@@ -26,7 +26,7 @@ npm run package
 npm run package:setup
 ```
 
-The Windows setup installer is `release/Dot-Browser-Setup-1.0.5.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
+The Windows setup installer is `release/Dot-Browser-Setup-1.0.6.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
 
 ### Automatic updates for installed copies
 
@@ -87,5 +87,3 @@ After each installed update, Dot shows a one-time **Neler yeni?** changelog. Reo
 
 
 Extensions: open the puzzle icon or Browser menu → Extensions. Optional bundled Night view and Back to top extensions can be added, disabled or removed. Compatible unpacked Chrome extension folders can be loaded; Chrome Web Store and .crx installation are not supported. Changes apply to pages on reload, and extensions stay disabled in private windows. Keep an external extension's selected folder in place for future launches.
-
-

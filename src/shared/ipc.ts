@@ -118,7 +118,7 @@ export const commandSchema = z.discriminatedUnion('type', [
   }),
   z.object({ type: z.literal('import.file'), kind: z.enum(['passwords', 'cookies', 'tabs']) }),
   z.object({ type: z.literal('import.apply'), token: id }),
-  z.object({ type: z.literal('import.cancel') }),
+  z.object({ type: z.literal('import.cancel'), token: id.optional() }),
   z.object({ type: z.literal('login.list') }),
   z.object({
     type: z.literal('login.action'),

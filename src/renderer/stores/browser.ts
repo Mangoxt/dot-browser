@@ -30,6 +30,7 @@ export type Overlay =
 interface UIState {
   state: BrowserWindowState | null;
   overlay: Overlay;
+  overlayClosing: boolean;
   editing: Bookmark | Shortcut | Workspace | TabGroup | null;
   panel: 'bookmarks' | 'history' | 'downloads' | 'tabs' | null;
   panelWidth: number;
@@ -40,9 +41,12 @@ interface UIState {
   open: (overlay: Overlay, editing?: UIState['editing']) => void;
   set: (patch: Partial<UIState>) => void;
 }
-export const useBrowser = create<UIState>((set) => ({
+export const OVERLAY_EXIT_MS = 110;
+let overlayTimer: ReturnType<typeof setTimeout> | undefined;
+export const useBrowser = create<UIState>((set, get) => ({
   state: null,
   overlay: null,
+  overlayClosing: false,
   editing: null,
   panel: null,
   panelWidth: 300,
@@ -50,7 +54,23 @@ export const useBrowser = create<UIState>((set) => ({
   find: false,
   toast: '',
   setState: (state) => set({ state }),
-  open: (overlay, editing = null) => set({ overlay, editing, omnibox: false }),
+  open: (overlay, editing = null) => {
+    const current = get();
+    if (!overlay && current.overlayClosing) return;
+    clearTimeout(overlayTimer);
+    if (
+      !overlay &&
+      current.overlay &&
+      current.state?.settings.animations !== false &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      set({ overlayClosing: true, omnibox: false });
+      overlayTimer = setTimeout(
+        () => set({ overlay: null, overlayClosing: false, editing: null }),
+        OVERLAY_EXIT_MS,
+      );
+    } else set({ overlay, overlayClosing: false, editing, omnibox: false });
+  },
   set: (patch) => set(patch),
 }));
 let toastTimer: ReturnType<typeof setTimeout>;

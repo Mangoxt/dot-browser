@@ -1,7 +1,7 @@
 {
   "name": "dot-browser",
   "productName": "Dot Browser",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A considered space for the web. A real Chromium desktop browser.",
   "author": "Dot Browser",
   "repository": {
