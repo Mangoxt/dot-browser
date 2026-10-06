@@ -22,4 +22,6 @@ Both focused keyboard/interface checks and the broader interface checks pass aga
 
 Installer: 115,310,769 bytes. SHA-256: `ee96578182a4dd1c64956aca5ff4b7af8a6a8dd31bb708f5e180cdb354a3c30c`.
 
-Public release and live update-feed verification pending.
+[Release v1.0.10](https://github.com/Mangoxt/dot-browser/releases/tag/v1.0.10) is public. [Windows setup](https://github.com/Mangoxt/dot-browser/releases/download/v1.0.10/Dot-Browser-Setup-1.0.10.exe), blockmap and `latest.yml` match local file sizes and the SHA-256 digests returned by GitHub. The stable setup link returns HTTP 200. Release source commit: `5d0458c8ea3289ca7464553689aa7d1f57debcbb`.
+
+After the public latest-release feed refreshed, the real updater in the final packaged application detected 1.0.10 and `Dot-Browser-Setup-1.0.10.exe` from a simulated installed version of 1.0.9. Downloads and installation were disabled during this isolated check; every window remained hidden.
