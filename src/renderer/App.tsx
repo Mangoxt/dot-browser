@@ -22,6 +22,12 @@ import { AboutContent } from './pages/About';
 const NewTab = lazy(() => import('./pages/NewTab'));
 const Settings = lazy(() => import('./pages/Settings'));
 export default function App() {
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const resize = () => setViewportWidth(window.innerWidth);
+    window.addEventListener('resize', resize);
+    return () => window.removeEventListener('resize', resize);
+  }, []);
   const [releasePending, setReleasePending] = useState(false);
   const {
     state,
@@ -99,7 +105,7 @@ export default function App() {
     omnibox,
     open,
   ]);
-  const showSidebar = !!state?.settings.sidebar && window.innerWidth >= 980;
+  const showSidebar = !!state?.settings.sidebar && viewportWidth >= 980;
   const sidebarWidth = showSidebar ? (state?.settings.sidebarWidth ?? 224) : 0;
   const vertical = !!state?.settings.verticalTabs && showSidebar;
   useEffect(() => {
@@ -315,7 +321,7 @@ export default function App() {
         )}
       </header>
       <div className="browser-body">
-        {state.settings.sidebar && <Sidebar />}
+        {showSidebar && <Sidebar />}
         <main
           ref={content}
           className="page-content"

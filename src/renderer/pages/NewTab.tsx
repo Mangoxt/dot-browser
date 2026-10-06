@@ -1,6 +1,17 @@
 import { tr } from '../i18n';
 import { useEffect, useState } from 'react';
-import { Search, Plus, ArrowUpRight, Pencil, X, SlidersHorizontal, Command } from 'lucide-react';
+import {
+  Search,
+  Plus,
+  ArrowUpRight,
+  Pencil,
+  X,
+  SlidersHorizontal,
+  Command,
+  Star,
+  History,
+  Download,
+} from 'lucide-react';
 import { command, openPage, useBrowser } from '../stores/browser';
 import { Favicon, IconButton } from '../components/common';
 import { domainOf } from '../../shared/navigation';
@@ -61,6 +72,20 @@ export default function NewTab() {
             <ArrowUpRight size={19} />
           </button>
         </form>
+        <nav className="newtab-library" aria-label={tr('Library')}>
+          <button onClick={() => openPage('bookmarks')}>
+            <Star size={15} />
+            {tr('Bookmarks')}
+          </button>
+          <button onClick={() => openPage('history')}>
+            <History size={15} />
+            {tr('History')}
+          </button>
+          <button onClick={() => open('downloads')}>
+            <Download size={15} />
+            {tr('Downloads')}
+          </button>
+        </nav>
         <div className="speed-dial">
           {state.shortcuts.map((s, i) => (
             <div
@@ -78,6 +103,7 @@ export default function NewTab() {
             >
               <button
                 className="speed-open"
+                title={s.url}
                 onClick={() => void command({ type: 'tab.navigate', input: s.url })}
               >
                 <span className="speed-icon">
@@ -87,7 +113,10 @@ export default function NewTab() {
                     <span>{s.title.slice(0, 1)}</span>
                   )}
                 </span>
-                <span>{s.title}</span>
+                <span className="speed-caption">
+                  <strong>{s.title}</strong>
+                  <small>{domainOf(s.url)}</small>
+                </span>
               </button>
               <div className="speed-edit">
                 <IconButton
@@ -115,17 +144,23 @@ export default function NewTab() {
         {!!state.history.length && (
           <div className="recent-sites">
             <span>{tr('Browsing history')}</span>
-            {state.history.slice(0, 3).map((h) => (
-              <button
-                key={h.id}
-                title={h.url}
-                onClick={() => void command({ type: 'tab.navigate', input: h.url })}
-              >
-                <Favicon url={h.favicon} size={13} />
-                {domainOf(h.url)}
-                <ArrowUpRight size={12} />
-              </button>
-            ))}
+            {state.history
+              .filter((h, i, all) => all.findIndex((item) => item.url === h.url) === i)
+              .slice(0, 3)
+              .map((h) => (
+                <button
+                  key={h.id}
+                  title={h.url}
+                  onClick={() => void command({ type: 'tab.navigate', input: h.url })}
+                >
+                  <Favicon url={h.favicon} size={13} />
+                  <span className="recent-caption">
+                    <strong>{h.title || domainOf(h.url)}</strong>
+                    <small>{domainOf(h.url)}</small>
+                  </span>
+                  <ArrowUpRight size={12} />
+                </button>
+              ))}
           </div>
         )}
       </div>

@@ -38,7 +38,15 @@ async function launch() {
         }
       : { args: ['.'], env },
   );
-  page = await app.firstWindow();
+  await app.firstWindow();
+  // Restored WebContentsViews can appear before the browser chrome in packaged builds.
+  // Select the trusted interface explicitly instead of treating a webpage as the UI.
+  await expect
+    .poll(() => app.windows().some((p) => p.url().includes('/dist/renderer/index.html')), {
+      timeout: 20000,
+    })
+    .toBe(true);
+  page = app.windows().find((p) => p.url().includes('/dist/renderer/index.html'));
   page.setDefaultTimeout(12000);
   await page.waitForSelector('.app');
   if (process.env.DOT_PACKAGED)

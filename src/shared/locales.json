@@ -2233,5 +2233,66 @@
     "{count} geçmiş kaydı",
     "{count} Verlaufseinträge",
     "{count} entrées d’historique"
+  ],
+  "Scroll tabs left": [
+    "Scroll tabs left",
+    "Sekmeleri sola kaydır",
+    "Tabs nach links scrollen",
+    "Faire défiler les onglets vers la gauche"
+  ],
+  "Scroll tabs right": [
+    "Scroll tabs right",
+    "Sekmeleri sağa kaydır",
+    "Tabs nach rechts scrollen",
+    "Faire défiler les onglets vers la droite"
+  ],
+  "Search tabs (Ctrl+Shift+A)": [
+    "Search tabs (Ctrl+Shift+A)",
+    "Sekmelerde ara (Ctrl+Shift+A)",
+    "Tabs suchen (Ctrl+Shift+A)",
+    "Rechercher des onglets (Ctrl+Shift+A)"
+  ],
+  "Search settings sections": [
+    "Search settings sections",
+    "Ayar bölümlerinde ara",
+    "Einstellungsbereiche suchen",
+    "Rechercher des sections de paramètres"
+  ],
+  "Search sections": [
+    "Search sections",
+    "Bölümlerde ara",
+    "Bereiche suchen",
+    "Rechercher des sections"
+  ],
+  "No matching sections": [
+    "No matching sections",
+    "Eşleşen bölüm yok",
+    "Keine passenden Bereiche",
+    "Aucune section correspondante"
+  ],
+  "Library": ["Library", "Kitaplık", "Bibliothek", "Bibliothèque"],
+  "Sekme başlıkları daha okunaklı hale getirildi; taşan sekmeler için kaydırma düğmeleri ve klavye gezinmesi eklendi.": [
+    "Tab titles are more readable. Overflow scroll buttons and keyboard navigation were added.",
+    "Sekme başlıkları daha okunaklı hale getirildi; taşan sekmeler için kaydırma düğmeleri ve klavye gezinmesi eklendi.",
+    "Tabtitel sind besser lesbar. Scrolltasten und Tastaturnavigation wurden hinzugefügt.",
+    "Les titres des onglets sont plus lisibles. Des boutons de défilement et la navigation au clavier ont été ajoutés."
+  ],
+  "Yeni sekme sayfasına site kartları ve yer imleri, geçmiş ve indirmeler için hızlı erişim eklendi.": [
+    "The new tab page has site cards and quick access to bookmarks, history and downloads.",
+    "Yeni sekme sayfasına site kartları ve yer imleri, geçmiş ve indirmeler için hızlı erişim eklendi.",
+    "Die neue Tabseite bietet Website-Karten und Schnellzugriff auf Lesezeichen, Verlauf und Downloads.",
+    "La page de nouvel onglet propose des cartes de sites et un accès rapide aux favoris, à l’historique et aux téléchargements."
+  ],
+  "Ayar bölümlerinde arama eklendi; dar pencerelerde ayarların ve büyük metinlerin yerleşimi iyileştirildi.": [
+    "Settings sections can be searched. Layouts work better in narrow windows and with larger text.",
+    "Ayar bölümlerinde arama eklendi; dar pencerelerde ayarların ve büyük metinlerin yerleşimi iyileştirildi.",
+    "Einstellungsbereiche können gesucht werden. Layouts wurden für schmale Fenster und größere Schrift verbessert.",
+    "Les sections des paramètres peuvent être recherchées. La disposition est améliorée pour les fenêtres étroites et les grands caractères."
+  ],
+  "Sekme arama düğmesi düzeltildi; pencere boyutu değişirken dikey sekmelerin yerleşimi güncellenir.": [
+    "The tab search button was fixed. Vertical tabs update their layout when the window is resized.",
+    "Sekme arama düğmesi düzeltildi; pencere boyutu değişirken dikey sekmelerin yerleşimi güncellenir.",
+    "Die Tabsuche wurde korrigiert. Vertikale Tabs passen sich beim Ändern der Fenstergröße an.",
+    "Le bouton de recherche d’onglets a été corrigé. Les onglets verticaux s’adaptent au redimensionnement de la fenêtre."
   ]
 }

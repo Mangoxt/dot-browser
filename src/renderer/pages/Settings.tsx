@@ -106,6 +106,7 @@ export default function Settings() {
     setSection(tab?.url.split('#')[1] || 'general');
   }, [tab?.url]);
   const [engine, setEngine] = useState<SearchEngine | null>(null);
+  const [sectionQuery, setSectionQuery] = useState('');
   if (!state) return null;
   const s = state.settings;
   const select = <K extends keyof BrowserSettings>(key: K, options: [string, string][]) => (
@@ -139,16 +140,41 @@ export default function Settings() {
       <nav className="settings-nav">
         <span className="eyebrow">DOT BROWSER</span>
         <h2>{tr('Settings')}</h2>
-        {sections.map(([id, label, Icon]) => (
-          <button
-            className={section === id ? 'selected' : ''}
-            key={id}
-            onClick={() => setSection(id)}
-          >
-            <Icon size={16} />
-            {tr(label)}
-          </button>
-        ))}
+        <label className="settings-section-search">
+          <Search size={15} />
+          <input
+            type="search"
+            value={sectionQuery}
+            aria-label={tr('Search settings sections')}
+            placeholder={tr('Search sections')}
+            onChange={(e) => setSectionQuery(e.target.value)}
+          />
+        </label>
+        {sections
+          .filter(([, label]) =>
+            tr(label)
+              .toLocaleLowerCase(s.language)
+              .includes(sectionQuery.trim().toLocaleLowerCase(s.language)),
+          )
+          .map(([id, label, Icon]) => (
+            <button
+              className={section === id ? 'selected' : ''}
+              key={id}
+              aria-current={section === id ? 'page' : undefined}
+              onClick={() => {
+                setSection(id);
+                void command({ type: 'tab.navigate', input: `browser://settings#${id}` });
+              }}
+            >
+              <Icon size={16} />
+              {tr(label)}
+            </button>
+          ))}
+        {!sections.some(([, label]) =>
+          tr(label)
+            .toLocaleLowerCase(s.language)
+            .includes(sectionQuery.trim().toLocaleLowerCase(s.language)),
+        ) && <p className="settings-search-empty">{tr('No matching sections')}</p>}
       </nav>
       <div className="settings-content">
         <h1>{tr(sections.find((x) => x[0] === section)?.[1] ?? 'General')}</h1>

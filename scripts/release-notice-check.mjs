@@ -4,6 +4,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 const directory = await mkdtemp(join(tmpdir(), 'dot-release-ui-'));
 const { version } = JSON.parse(await readFile('package.json', 'utf8'));
+const releases = JSON.parse(await readFile('src/shared/releases.json', 'utf8'));
+const messages = JSON.parse(await readFile('src/shared/locales.json', 'utf8'));
+const currentNote = messages[releases.find((r) => r.version === version).changes[0]][0];
 const env = {
   ...process.env,
   DOT_TEST_HIDDEN: '1',
@@ -33,7 +36,7 @@ try {
   const dialog = page.getByRole('dialog', { name: 'What’s new?', exact: true });
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText(`Version ${version}`);
-  await expect(dialog).toContainText('Language selection now');
+  await expect(dialog).toContainText(currentNote);
   await page.screenshot({ path: 'test-results/whats-new.png' });
   await page.getByRole('button', { name: 'Got it', exact: true }).click();
   await expect(dialog).toHaveCount(0);
