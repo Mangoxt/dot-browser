@@ -15,3 +15,8 @@ Tests use hidden windows, stubbed file dialogs and disposable profiles. Existing
 
 The same extension lifecycle checks also pass against release/win-unpacked/Dot Browser.exe with DOT_PACKAGED=1, including bundled files under app.asar.unpacked. Automatic installation is disabled in this isolated packaged test.
 
+
+Published release: https://github.com/Mangoxt/dot-browser/releases/tag/v1.0.5
+Installer: Dot-Browser-Setup-1.0.5.exe, 115204943 bytes.
+Installer SHA-256: 256475e0605b92126a1498d8d72777919820e2465d76971cf143eaee2b8dbef5.
+All three public release assets match their local sizes and SHA-256 digests; the public setup link returns HTTP 200. A hidden packaged client with its current version simulated as 1.0.4 resolves the live feed to 1.0.5 and Dot-Browser-Setup-1.0.5.exe. Download and automatic installation were disabled in that verification; no installed user application was updated by the test.
