@@ -11,6 +11,7 @@ import { join } from 'node:path';
 import { BrowserData, dataSchema } from '../shared/models';
 
 export class Storage {
+  releaseNoticeClaimed = false;
   data: BrowserData;
   readonly path: string;
   private timer: ReturnType<typeof setTimeout> | null = null;

@@ -1,0 +1,4 @@
+@media (prefers-color-scheme: dark), (prefers-color-scheme: light) {
+  html { filter: invert(.9) hue-rotate(180deg) !important; background: #fff !important; }
+  img, video, picture, canvas { filter: invert(1) hue-rotate(180deg) !important; }
+}

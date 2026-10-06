@@ -10,13 +10,9 @@ import {
   ShieldAlert,
   SlidersHorizontal,
   Download,
-  UserRound,
-  KeyRound,
-  BookOpen,
+  Puzzle,
   MoreHorizontal,
   PanelLeft,
-  PanelRight,
-  Columns2,
   Search,
   History,
   CornerDownLeft,
@@ -235,47 +231,18 @@ export function Toolbar() {
           </div>
         )}
       </div>
-      <div className="toolbar-extras">
-        <IconButton
-          icon={Search}
-          label="Search tabs (Ctrl+Shift+A)"
-          onClick={() => open('tabsearch')}
-        />
-        <IconButton
-          icon={BookOpen}
-          label="Reading view (Ctrl+Shift+M)"
-          disabled={!isWebURL(tab.url)}
-          onClick={() => open('reader')}
-        />
-        <IconButton
-          icon={Columns2}
-          label="Split view"
-          active={!!state.split}
-          onClick={() => open('split')}
-        />
-        <IconButton
-          icon={PanelRight}
-          label="Toggle side panel"
-          active={!!useBrowser.getState().panel}
-          onClick={() => set({ panel: useBrowser.getState().panel ? null : 'bookmarks' })}
-        />
-      </div>
       <div className="download-indicator">
         <IconButton icon={Download} label="Downloads (Ctrl+J)" onClick={() => open('downloads')} />
         {state.downloads.some((d) => d.status === 'progressing') && (
           <span className="activity-dot" />
         )}
       </div>
-      <IconButton
-        icon={UserRound}
-        label={state.private ? 'Private session' : 'Profile'}
-        onClick={() => open('profile')}
-      />
-      <IconButton icon={KeyRound} label="Saved passwords" onClick={() => open('passwords')} />
+      <IconButton icon={Puzzle} label="Extensions" onClick={() => open('extensions')} />
       <IconButton
         icon={MoreHorizontal}
         label="Browser menu"
-        onClick={() => void command({ type: 'menu.main' })}
+        active={useBrowser.getState().overlay === 'browsermenu'}
+        onClick={() => open(useBrowser.getState().overlay === 'browsermenu' ? null : 'browsermenu')}
       />
       {state.split && (
         <div className="split-toolbar">

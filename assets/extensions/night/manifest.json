@@ -1,0 +1,1 @@
+{"manifest_version":3,"name":"Dot Gece Görünümü","version":"1.0.0","description":"Açık renkli web sayfalarını daha koyu gösterir. Bazı sitelerde renkler farklı görünebilir.","content_scripts":[{"matches":["http://*/*","https://*/*"],"css":["night.css"],"run_at":"document_start"}]}

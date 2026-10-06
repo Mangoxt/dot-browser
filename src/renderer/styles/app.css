@@ -2542,3 +2542,154 @@ form > label select {
   color: var(--text-muted);
   font-size: 11px;
 }
+
+.release-notes details {
+  margin: 14px 0;
+  padding: 14px;
+  background: var(--surface-hover);
+  border-radius: 12px;
+}
+.release-notes summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.release-notes summary small {
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 12px;
+}
+.release-notes li {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+.menu-scrim {
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-top: 90px;
+  background: #0003;
+  backdrop-filter: none;
+}
+.browser-menu-modal {
+  width: 330px;
+  padding: 16px;
+  max-height: calc(100dvh - 110px);
+}
+.browser-menu-modal .modal-heading {
+  margin-bottom: 8px;
+}
+.browser-menu-modal .modal-heading h2 {
+  font-size: 14px;
+}
+.browser-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 9px 10px;
+  border-radius: 8px;
+}
+.browser-menu-item:hover {
+  background: var(--surface-hover);
+}
+.browser-menu-item span {
+  flex: 1;
+}
+.browser-menu-item kbd {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.menu-section + .menu-section,
+.menu-tools {
+  border-top: 1px solid var(--border);
+  margin-top: 7px;
+  padding-top: 7px;
+}
+.menu-tools summary {
+  padding: 10px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+.extensions-modal {
+  width: 700px;
+}
+.extension-manager h3 {
+  margin: 24px 0 12px;
+}
+.extension-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--surface-hover);
+  border-radius: 12px;
+  padding: 18px;
+  margin: 10px 0;
+}
+.extension-card > div {
+  flex: 1;
+  min-width: 0;
+}
+.extension-card p {
+  margin: 8px 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.extension-card strong small {
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+.extension-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+@media (max-width: 650px) {
+  .menu-scrim {
+    padding: 84px 10px 10px;
+  }
+  .extension-card {
+    gap: 10px;
+    padding: 12px;
+  }
+}
+.newtab h1 {
+  font-size: 36px;
+  letter-spacing: -1px;
+  margin-bottom: 28px;
+  line-height: 1.2;
+}
+.newtab-center {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+.newtab-bottom {
+  justify-content: flex-end;
+}
+.menu-zoom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+}
+.menu-zoom span {
+  flex: 1;
+}
+.menu-zoom button {
+  padding: 5px 9px;
+}
+@media (max-height: 650px) {
+  .newtab-center {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .newtab h1 {
+    font-size: 28px;
+    margin-bottom: 18px;
+  }
+}

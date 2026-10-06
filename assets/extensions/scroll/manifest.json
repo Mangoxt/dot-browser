@@ -1,0 +1,1 @@
+{"manifest_version":3,"name":"Dot Başa Dön","version":"1.0.0","description":"Uzun sayfalarda tek tıkla sayfanın başına dönmenizi sağlayan düğme.","content_scripts":[{"matches":["http://*/*","https://*/*"],"js":["scroll.js"],"run_at":"document_idle"}]}

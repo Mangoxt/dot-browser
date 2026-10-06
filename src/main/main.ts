@@ -4,6 +4,7 @@ import { existsSync } from 'node:fs';
 import { autoUpdater } from 'electron-updater';
 import { BrowserController } from './browser';
 import { Storage } from './storage';
+import { ExtensionManager } from './extensions';
 import { BrowserSession } from './session';
 import { commandSchema } from '../shared/ipc';
 import type { WindowRestore } from '../shared/models';
@@ -13,6 +14,7 @@ if (process.env.DOT_TEST_DATA) app.setPath('userData', process.env.DOT_TEST_DATA
 const locked = process.env.DOT_TEST_DATA ? true : app.requestSingleInstanceLock();
 if (!locked) app.quit();
 let storage: Storage;
+let extensions: ExtensionManager;
 const windows = new Map<string, BrowserController>();
 const sessions = new Map<string, BrowserSession>();
 let quitting = false;
@@ -42,6 +44,9 @@ function setupAutomaticUpdates() {
   timer.unref();
 }
 const host = {
+  get extensions() {
+    return extensions;
+  },
   get storage() {
     return storage;
   },
@@ -80,8 +85,10 @@ function senderController(event: Electron.IpcMainInvokeEvent) {
 if (locked)
   void app
     .whenReady()
-    .then(() => {
+    .then(async () => {
       storage = new Storage(app.getPath('userData'));
+      extensions = new ExtensionManager(storage);
+      await extensions.restore();
       storage.onError = (message) => {
         for (const w of windows.values()) w.toast(message);
       };

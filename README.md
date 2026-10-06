@@ -26,7 +26,7 @@ npm run package
 npm run package:setup
 ```
 
-The Windows setup installer is `release/Dot-Browser-Setup-1.0.4.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
+The Windows setup installer is `release/Dot-Browser-Setup-1.0.5.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
 
 ### Automatic updates for installed copies
 
@@ -34,9 +34,9 @@ The setup installer uses `electron-updater` and public GitHub Releases. Before b
 
 Installed copies check on startup and every six hours, automatically download newer releases, then install the downloaded update when the app exits. Downloads do not close browsing windows. Dot stays closed after that installation. Portable builds do not use this installer update flow.
 
-For each release, increase the version in `package.json` and publish the setup executable, its blockmap and `latest.yml` together. `npm run package:setup` builds these files without publishing. `npm run release:setup` publishes them to the configured GitHub repository using a `GH_TOKEN` supplied in the environment. Never put a publishing token in the application or repository. The release workflow can perform this when a matching `v1.0.1` version tag is pushed.
+For each release, increase the version in `package.json`, add that version and its actual changes to `src/shared/releases.json`, and publish the setup executable, its blockmap and `latest.yml` together. `npm run package:setup` builds these files without publishing. `npm run release:setup` publishes them to the configured GitHub repository using a `GH_TOKEN` supplied in the environment. Never put a publishing token in the application or repository. The release workflow can perform this when a matching `v1.0.1` version tag is pushed.
 
-After committing your source changes, run `npm version patch` and `git push origin main --follow-tags` to create the next version tag and start the GitHub release workflow. The first release was uploaded from the validated local build while the Windows runner was queued.
+Run `npm version patch --no-git-tag-version`, add the matching changelog entry, validate and commit the changes, create the matching version tag, then run `git push origin main --follow-tags` to start the GitHub release workflow. The first release was uploaded from the validated local build while the Windows runner was queued.
 
 **Integration tests use hidden windows** to avoid stealing focus, temporary profiles outside the project, and a local HTTP fixture server. They write screenshots and a detailed audit under `test-results/`. The external-site audit uses the current network and does not bypass access restrictions. Running the normal application or development command intentionally opens a browser window.
 
@@ -79,5 +79,13 @@ For custom profile locations, select the profile directory or its parent user-da
 Browser extensions, account sync and additional persistent user profiles are not presented as working features. Automatic password capture and automatic page-load autofill are not implemented. Additional profiles can be added by giving each profile its own Storage and `persist:` session partition; private windows already exercise separate ephemeral sessions.
 
 Protected streaming, OAuth policies, bot challenges and other service-side restrictions may limit custom Electron clients. Do not assume that loading Spotify or YouTube proves protected media playback works. Native print/save dialogs, external-app launches, actual screen sharing, audio hardware, OS focus behavior and 125%/150% multi-monitor scaling require interactive hardware validation. Tests never launch external apps or execute downloaded programs.
+
+
+
+
+After each installed update, Dot shows a one-time **Neler yeni?** changelog. Reopen it from About. Every release must add its actual changes to src/shared/releases.json before building.
+
+
+Extensions: open the puzzle icon or Browser menu → Extensions. Optional bundled Night view and Back to top extensions can be added, disabled or removed. Compatible unpacked Chrome extension folders can be loaded; Chrome Web Store and .crx installation are not supported. Changes apply to pages on reload, and extensions stay disabled in private windows. Keep an external extension's selected folder in place for future launches.
 
 

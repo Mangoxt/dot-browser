@@ -29,6 +29,8 @@ import { Command, CommandResult } from '../shared/ipc';
 import { domainOf, isWebURL, recordVisit, resolveInput, safeFavicon } from '../shared/navigation';
 import { BrowserSession, SessionHost, originOf, rememberRule } from './session';
 import { Storage } from './storage';
+import type { ExtensionManager } from './extensions';
+import { releaseInfo, markReleaseSeen } from './release-notice';
 import { readProfile } from './profile-import';
 import { readingScript } from './reading';
 import { readingSchema } from '../shared/reading';
@@ -51,6 +53,7 @@ interface LiveTab {
   shiftClickAt: number;
 }
 interface BrowserHost {
+  extensions: ExtensionManager;
   storage: Storage;
   sessions: Map<string, BrowserSession>;
   windows: Map<string, BrowserController>;
@@ -1261,6 +1264,38 @@ export class BrowserController implements SessionHost {
         );
         this.browserSession.revoke(c.origin, c.permission);
         break;
+      case 'extension.list':
+        return { ok: true, extensions: this.host.extensions.list() };
+      case 'extension.install': {
+        if (this.privateMode) throw new Error('Eklentileri normal pencerede yönetin.');
+        let path = '';
+        if (!c.builtin) {
+          const result = await dialog.showOpenDialog(this.window, {
+            title: 'Eklenti klasörünü seçin (manifest.json içermeli)',
+            properties: ['openDirectory'],
+          });
+          if (result.canceled || !result.filePaths[0])
+            return { ok: true, extensions: this.host.extensions.list() };
+          path = result.filePaths[0];
+        }
+        return { ok: true, extensions: await this.host.extensions.install(path, c.builtin) };
+      }
+      case 'extension.action':
+        if (this.privateMode) throw new Error('Eklentileri normal pencerede yönetin.');
+        return { ok: true, extensions: await this.host.extensions.action(c.id, c.action) };
+      case 'release.info':
+        return {
+          ok: true,
+          release: releaseInfo(
+            this.host.storage,
+            app.getVersion(),
+            !!c.automatic,
+            this.privateMode,
+          ),
+        };
+      case 'release.seen':
+        markReleaseSeen(this.host.storage, app.getVersion(), this.privateMode);
+        return { ok: true };
       case 'site.info': {
         const url = this.tab().meta.url;
         if (!isWebURL(url)) throw new Error('Open a website to see site information');

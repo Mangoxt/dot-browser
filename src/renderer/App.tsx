@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Minus, Square, Copy, X, Globe, RotateCw, ArrowLeft, Shield, Cpu } from 'lucide-react';
 import { bookmarkCurrent, command, notify, openPage, useBrowser } from './stores/browser';
 import { internalPage } from '../shared/models';
@@ -14,6 +14,7 @@ import { AboutContent } from './pages/About';
 const NewTab = lazy(() => import('./pages/NewTab'));
 const Settings = lazy(() => import('./pages/Settings'));
 export default function App() {
+  const [releasePending, setReleasePending] = useState(false);
   const { state, overlay, omnibox, find, panel, panelWidth, toast, setState, open, set } =
     useBrowser();
   const header = useRef<HTMLElement>(null);
@@ -25,6 +26,9 @@ export default function App() {
       if (!started) {
         started = true;
         if (!next.settings.onboarded) open('onboarding');
+        void command({ type: 'release.info', automatic: true }).then((r) =>
+          setReleasePending(!!r.release?.show),
+        );
       }
     });
     void window.dot.snapshot().then((next) => {
@@ -32,6 +36,9 @@ export default function App() {
       if (!started) {
         started = true;
         if (!next.settings.onboarded) open('onboarding');
+        void command({ type: 'release.info', automatic: true }).then((r) =>
+          setReleasePending(!!r.release?.show),
+        );
       }
     });
     const off = window.dot.onEvent((event) => {
@@ -50,6 +57,25 @@ export default function App() {
       off();
     };
   }, [setState, open, set]);
+  useEffect(() => {
+    if (
+      releasePending &&
+      state?.settings.onboarded &&
+      !overlay &&
+      !omnibox &&
+      !state.permissionRequests.length
+    ) {
+      setReleasePending(false);
+      open('whatsnew');
+    }
+  }, [
+    releasePending,
+    state?.settings.onboarded,
+    state?.permissionRequests.length,
+    overlay,
+    omnibox,
+    open,
+  ]);
   const showSidebar = !!state?.settings.sidebar && window.innerWidth >= 980;
   const sidebarWidth = showSidebar ? (state?.settings.sidebarWidth ?? 224) : 0;
   const vertical = !!state?.settings.verticalTabs && showSidebar;

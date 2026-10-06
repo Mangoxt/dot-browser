@@ -1,16 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Search,
-  Plus,
-  ArrowUpRight,
-  Pencil,
-  X,
-  SlidersHorizontal,
-  History,
-  Star,
-  Download,
-  Command,
-} from 'lucide-react';
+import { Search, Plus, ArrowUpRight, Pencil, X, SlidersHorizontal, Command } from 'lucide-react';
 import { command, openPage, useBrowser } from '../stores/browser';
 import { Favicon, IconButton } from '../components/common';
 import { domainOf } from '../../shared/navigation';
@@ -28,7 +17,7 @@ export default function NewTab() {
       <div className="newtab-top">
         <span>
           <span className="tiny-dot" />
-          YOUR OWN CORNER OF THE INTERNET
+          DOT BROWSER
         </span>
         <div>
           <strong>
@@ -47,21 +36,8 @@ export default function NewTab() {
           </small>
         </div>
       </div>
-      <div className="orbit-art" aria-hidden="true">
-        <div className="orbit orbit-one" />
-        <div className="orbit orbit-two" />
-        <div className="orbit orbit-three" />
-        <div className="orbit-center" />
-        <span className="orbit-point" />
-      </div>
       <div className="newtab-center">
-        <span className="eyebrow">LESS NOISE. MORE POSSIBILITY.</span>
-        <h1>
-          Make room for
-          <br />
-          <span>what’s next.</span>
-        </h1>
-        <p>A fresh perspective starts with a new tab.</p>
+        <h1>Where to next?</h1>
         <form
           className="newtab-search"
           onSubmit={(e) => {
@@ -148,20 +124,6 @@ export default function NewTab() {
         )}
       </div>
       <div className="newtab-bottom">
-        <div>
-          <button onClick={() => openPage('history')}>
-            <History size={14} />
-            History
-          </button>
-          <button onClick={() => openPage('bookmarks')}>
-            <Star size={14} />
-            Bookmarks
-          </button>
-          <button onClick={() => openPage('downloads')}>
-            <Download size={14} />
-            Downloads
-          </button>
-        </div>
         <div>
           <button onClick={() => open('palette')}>
             <Command size={14} />

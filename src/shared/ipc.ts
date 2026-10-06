@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { ReadingArticle } from './reading';
+import type { ExtensionSummary } from './extensions';
 import {
   IMPORT_KINDS,
   type ImportSource,
@@ -28,6 +29,18 @@ const settingsPatchSchema = z.object(
   ),
 ) as z.ZodType<Partial<BrowserSettings>>;
 export const commandSchema = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('extension.list') }),
+  z.object({
+    type: z.literal('extension.install'),
+    builtin: z.enum(['night', 'scroll']).optional(),
+  }),
+  z.object({
+    type: z.literal('extension.action'),
+    id,
+    action: z.enum(['enable', 'disable', 'remove']),
+  }),
+  z.object({ type: z.literal('release.info'), automatic: z.boolean().optional() }),
+  z.object({ type: z.literal('release.seen') }),
   z.object({
     type: z.literal('tab.new'),
     url: z.string().max(8192).optional(),
@@ -176,6 +189,12 @@ export interface CommandResult {
   logins?: LoginSummary[];
   password?: string;
   article?: ReadingArticle;
+  extensions?: ExtensionSummary[];
+  release?: {
+    version: string;
+    show: boolean;
+    releases: { version: string; date: string; changes: string[] }[];
+  };
 }
 export interface BrowserAPI {
   snapshot(): Promise<BrowserWindowState>;

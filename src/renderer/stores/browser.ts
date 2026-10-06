@@ -23,6 +23,9 @@ export type Overlay =
   | 'passwords'
   | 'tabsearch'
   | 'reader'
+  | 'whatsnew'
+  | 'browsermenu'
+  | 'extensions'
   | null;
 interface UIState {
   state: BrowserWindowState | null;

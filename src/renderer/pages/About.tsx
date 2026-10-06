@@ -1,6 +1,6 @@
 import { useBrowser } from '../stores/browser';
 export function AboutContent() {
-  const { state } = useBrowser();
+  const { state, open } = useBrowser();
   if (!state) return null;
   return (
     <div className="about-content">
@@ -9,6 +9,7 @@ export function AboutContent() {
       </span>
       <h2>Dot Browser</h2>
       <p>A considered space for the web.</p>
+      <button onClick={() => open('whatsnew')}>Neler yeni?</button>
       <div className="version-list">
         {[
           ['Dot', state.versions.app],

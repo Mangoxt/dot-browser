@@ -1,0 +1,56 @@
+[
+  {
+    "version": "1.0.5",
+    "date": "2026-10-06",
+    "changes": [
+      "Her güncellemeden sonra, yeni sürüm ilk açıldığında Neler yeni? penceresi gösterilir.",
+      "Aynı sürümün bildirimi tekrar gösterilmez; Hakkında sayfasından değişiklikleri yeniden okuyabilirsiniz.",
+      "Araç çubuğu sadeleştirildi; şifreler, profil, okuma görünümü ve sayfa araçları düzenli menüye taşındı.",
+      "Yeni sekme sayfası arama ve kısayollara odaklanacak şekilde sadeleştirildi.",
+      "Eklenti yönetimi eklendi: uyumlu klasörleri yükleme, etkinleştirme, kapatma ve kaldırma.",
+      "Hazır Gece Görünümü ve Başa Dön eklentileri eklendi."
+    ]
+  },
+  {
+    "version": "1.0.4",
+    "date": "2026-10-06",
+    "changes": [
+      "Tüm çalışma alanlarındaki sekmeler arasında hızlı arama: Ctrl+Shift+A.",
+      "Yazı boyutu ayarlanabilen sade okuma görünümü: Ctrl+Shift+M.",
+      "Sayfaları PDF olarak kaydetme: Ctrl+Shift+S."
+    ]
+  },
+  {
+    "version": "1.0.3",
+    "date": "2026-10-06",
+    "changes": [
+      "Profil aktarımında kilitli veritabanı artık okunabilen diğer verilerin aktarılmasını engellemez.",
+      "Chromium geçmişindeki büyük tarih değerlerinin okunması düzeltildi; kilitli kaynaklar için açıklayıcı hata mesajı eklendi."
+    ]
+  },
+  {
+    "version": "1.0.2",
+    "date": "2026-10-06",
+    "changes": [
+      "Uyumlu Chromium ve Firefox tarayıcılarının profilleri dosya biçimlerine göre bulunur.",
+      "Taşınabilir tarayıcılar ve farklı konumlardaki profiller için klasör seçimi eklendi."
+    ]
+  },
+  {
+    "version": "1.0.1",
+    "date": "2026-10-06",
+    "changes": [
+      "Tarayıcınızdan dışa aktardığınız CSV dosyalarından şifre aktarımı ve şifre yöneticisi eklendi.",
+      "Şifreler işletim sisteminin korumalı deposuyla şifrelenir; siteye doldurma kullanıcı isteğiyle yapılır.",
+      "JSON ve Netscape biçimindeki çerez dosyalarını içe aktarma eklendi."
+    ]
+  },
+  {
+    "version": "1.0.0",
+    "date": "2026-10-05",
+    "changes": [
+      "Dot Browser ilk sürümü: sekmeler, çalışma alanları, bölünmüş görünüm ve yer imleri.",
+      "Tarayıcı profillerinden veri aktarımı ve otomatik güncelleme desteği."
+    ]
+  }
+]

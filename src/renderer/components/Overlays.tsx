@@ -26,6 +26,8 @@ import { IconButton } from './common';
 import { DownloadList } from '../pages/Library';
 import { PasswordManager } from './PasswordManager';
 import { ReadingView, TabSearch } from './Usability';
+import { WhatsNew } from './WhatsNew';
+import { BrowserMenu, Extensions } from './BrowserTools';
 import type { Bookmark, Shortcut, Workspace, TabGroup } from '../../shared/models';
 import type { SiteInfo } from '../../shared/ipc';
 import { isWebURL, resolveInput } from '../../shared/navigation';
@@ -86,17 +88,20 @@ export function Overlays() {
     passwords: 'Saved passwords',
     tabsearch: 'Search tabs',
     reader: 'Reading view',
+    whatsnew: 'Neler yeni?',
+    browsermenu: 'Browser menu',
+    extensions: 'Eklentiler',
   };
   return (
     <div
-      className={`overlay-scrim ${overlay === 'palette' ? 'palette-scrim' : ''}`}
+      className={`overlay-scrim ${overlay === 'palette' ? 'palette-scrim' : ''} ${overlay === 'browsermenu' ? 'menu-scrim' : ''}`}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) open(null);
       }}
     >
       <div
         ref={modal}
-        className={`modal ${overlay === 'palette' ? 'palette-modal' : ''} ${overlay === 'reader' ? 'reader-modal' : ''}`}
+        className={`modal ${overlay === 'palette' ? 'palette-modal' : ''} ${overlay === 'reader' ? 'reader-modal' : ''} ${overlay === 'browsermenu' ? 'browser-menu-modal' : ''} ${overlay === 'extensions' ? 'extensions-modal' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-label={titles[overlay]}
@@ -136,6 +141,9 @@ export function Overlays() {
         {overlay === 'passwords' && <PasswordManager />}
         {overlay === 'tabsearch' && <TabSearch />}
         {overlay === 'reader' && <ReadingView />}
+        {overlay === 'whatsnew' && <WhatsNew />}
+        {overlay === 'browsermenu' && <BrowserMenu />}
+        {overlay === 'extensions' && <Extensions />}
       </div>
     </div>
   );
@@ -846,6 +854,12 @@ function Profile() {
           ? 'Visits, searches and tabs are not saved. Downloaded files remain on your device.'
           : 'Your bookmarks, settings and cookies stay on this device.'}
       </p>
+      {!state?.private && (
+        <button className="full-width" onClick={() => open('import')}>
+          <Download size={16} />
+          Import from another browser
+        </button>
+      )}
       <button
         className="full-width"
         onClick={() => {

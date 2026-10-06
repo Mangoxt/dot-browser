@@ -189,10 +189,35 @@ export const dataSchema = z.object({
   permissions: z.array(permissionSchema).default([]),
   windows: z.array(windowSchema).default([]),
   cleanExit: z.boolean().default(true),
-  logins: z.array(z.object({
-    id: z.string(), origin: z.string(), username: z.string(),
-    encrypted: z.string(), createdAt: z.number(),
-  })).default([]),
+  lastSeenReleaseVersion: z
+    .string()
+    .regex(/^(?:\d+\.\d+\.\d+)?$/)
+    .default(''),
+  extensions: z
+    .array(
+      z.object({
+        id: z.string(),
+        path: z.string(),
+        name: z.string(),
+        version: z.string(),
+        description: z.string(),
+        enabled: z.boolean(),
+        builtin: z.enum(['night', 'scroll']).optional(),
+      }),
+    )
+    .max(20)
+    .default([]),
+  logins: z
+    .array(
+      z.object({
+        id: z.string(),
+        origin: z.string(),
+        username: z.string(),
+        encrypted: z.string(),
+        createdAt: z.number(),
+      }),
+    )
+    .default([]),
 });
 export type BrowserData = z.infer<typeof dataSchema>;
 export interface SplitState {

@@ -9,5 +9,6 @@
     "icon": "assets/dot.ico",
     "artifactName": "Dot-Browser-${version}-portable.exe"
   },
-  "asar": true
+  "asar": true,
+  "asarUnpack": ["assets/extensions/**/*"]
 }

@@ -523,7 +523,9 @@ try {
     await cmd({ type: 'tab.action', action: 'select', id: normalTab });
   });
   await step('Side panel sections and sidebar controls', async () => {
-    await page.getByRole('button', { name: 'Toggle side panel', exact: true }).click();
+    await page.getByRole('button', { name: 'Browser menu', exact: true }).click();
+    await page.getByText('Page tools', { exact: true }).click();
+    await page.getByRole('button', { name: 'Bookmarks side panel', exact: true }).click();
     await expect(page.locator('.side-panel')).toBeVisible();
     for (const section of ['history', 'tabs', 'downloads', 'bookmarks']) {
       await page.getByLabel('Side panel section', { exact: true }).selectOption(section);
@@ -751,6 +753,7 @@ try {
       assert.ok(!JSON.stringify(await snap()).includes(migratedPassword));
       await cmd({ type: 'tab.new', url: base + '/login' });
       await waitState((s) => s.tabs.find((t) => t.id === s.activeId).title === 'Login fixture');
+      await page.getByRole('button', { name: 'Browser menu', exact: true }).click();
       await page.getByRole('button', { name: 'Saved passwords', exact: true }).click();
       const manager = page.getByRole('dialog', { name: 'Saved passwords' });
       await manager.getByRole('button', { name: 'Show', exact: true }).first().click();
