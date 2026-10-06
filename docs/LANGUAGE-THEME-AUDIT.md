@@ -24,6 +24,12 @@ Date: 2026-10-06. Windows x64, Electron 44.5.1. All automated browser windows us
 
 The final local installer is 115,300,302 bytes. SHA-256: `9bc09cc3cb3252f01965a6e8f72669a6c36d50fe61bed88c719c4001af1d06b8`.
 
+## Published build
+
+[Release v1.0.7](https://github.com/Mangoxt/dot-browser/releases/tag/v1.0.7) is public. [Windows setup](https://github.com/Mangoxt/dot-browser/releases/download/v1.0.7/Dot-Browser-Setup-1.0.7.exe), blockmap and `latest.yml` all match the local sizes and SHA-256 digests reported by GitHub. The public setup URL returns HTTP 200. Release source commit: `d5fd6e9b0bd10f5cd74f3f52c37750fa4f9fb665`.
+
+A separate hidden packaged process simulated installed version 1.0.6 with downloads and installation disabled. The actual public GitHub update feed returned version 1.0.7 and `Dot-Browser-Setup-1.0.7.exe`. No user installation was changed or restarted.
+
 ## Boundaries
 
 Website styling remains site-dependent; use a light exception for sites that do not render well. DevTools can temporarily own page emulation until it closes. Actual OS dialogs, installed-user update/relaunch behavior, OS focus and multi-monitor scaling are not driven by the hidden tests. File dialogs and clipboard writes in new integration tests are stubbed where applicable; downloaded programs are never executed.
