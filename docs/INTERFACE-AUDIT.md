@@ -25,3 +25,10 @@ The source motion and language/theme integrations also pass: animation/reduced-m
 
 Installer size: 115,304,221 bytes. SHA-256: `7cb64cff578b70309e5008e7d7b77ff9a32cc7338e3050a0fff6fef0d6532a91`.
 Packaged language/theme integration passes, including restart persistence and four localized menus at 820 × 620. The restart harness now selects the trusted `dist/renderer/index.html` interface explicitly: a restored WebContentsView can be reported before the browser window. Earlier timeouts selected that webpage rather than the interface.
+## Published build
+
+[Release v1.0.8](https://github.com/Mangoxt/dot-browser/releases/tag/v1.0.8) is public. [Windows setup](https://github.com/Mangoxt/dot-browser/releases/download/v1.0.8/Dot-Browser-Setup-1.0.8.exe), blockmap and `latest.yml` match the verified local sizes and SHA-256 digests returned by GitHub. The setup URL returns HTTP 200. Release source commit: `320f39cd1af9ef4e525848265224756a3032c908`.
+
+The real packaged updater, in a separate hidden temporary profile simulating installed version 1.0.7, detects version 1.0.8 and the correct installer filename. Downloads and installation were disabled during this verification. The user installation was not restarted or modified.
+
+Tab-strip keyboard selection was tested on internal tabs. Foreground OS focus and navigation between native webpage views are not driven by these hidden interface tests; selecting a web tab retains the existing native-page focus behavior.
