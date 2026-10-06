@@ -20,3 +20,8 @@ The source motion and release-notice integrations pass. Recent-history selection
 The interface integration also passes against the final `release/win-unpacked/Dot Browser.exe`, including the real saved-page link, first-run empty shelf, four home-page languages, background choices, large text, overflowing tabs and the left new-tab button. Turkish dark home and populated cards were visually inspected. Hidden native captures wait for two rendering frames after waking the compositor so they contain the current interface rather than an earlier onboarding frame.
 
 Installer size: 115,307,800 bytes. SHA-256: `37d2ac7324fd8a859c0f77e5db2fabad14f556e6ddfdee6dc9ed6f61056857d3`.
+## Published build
+
+[Release v1.0.9](https://github.com/Mangoxt/dot-browser/releases/tag/v1.0.9) is public. [Windows setup](https://github.com/Mangoxt/dot-browser/releases/download/v1.0.9/Dot-Browser-Setup-1.0.9.exe), blockmap and `latest.yml` match the local sizes and SHA-256 digests returned by GitHub. The setup URL returns HTTP 200. Release source commit: `6b8fc1ecf93b55844318723991aeee1e7baac912`.
+
+The real packaged updater, in a separate hidden temporary profile simulating installed version 1.0.8, detects version 1.0.9 and the correct installer filename. Downloads and installation were disabled during the check; the user's existing installation was not changed or restarted.
