@@ -14,3 +14,7 @@ All tests use hidden windows and isolated profiles. No installed user applicatio
 
 The 31 local integration workflows pass with step boundaries waiting for visual exits. The final scoped-cleanup change is covered by creating a new import preview during an older dialog's exit, waiting for unmount, and successfully applying the new token.
 
+
+Published: https://github.com/Mangoxt/dot-browser/releases/tag/v1.0.6
+Setup size: 115206607 bytes; SHA-256: 8a8dd329ce1db44f2342cbadb388963081098c1c706c1e67db8b45f1f5102d30.
+The public setup, blockmap and latest.yml match the local asset sizes and digests. Setup download returns HTTP 200. The packaged updater, simulated as version 1.0.5, resolves the live feed to 1.0.6. Download and automatic installation were disabled for this isolated verification.
