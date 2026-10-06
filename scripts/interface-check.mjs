@@ -3,6 +3,13 @@ import { strict as assert } from 'node:assert';
 import { mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { createServer } from 'node:http';
+const server = createServer((_req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+  res.end('<title>Owned home fixture</title><h1>Saved page fixture</h1>');
+});
+await new Promise((r) => server.listen(0, '127.0.0.1', r));
+const fixture = `http://127.0.0.1:${server.address().port}/`;
 const directory = await mkdtemp(join(tmpdir(), 'dot-interface-'));
 const env = {
   ...process.env,
@@ -45,6 +52,12 @@ try {
   const win = await app.browserWindow(page);
   const capture = async (path) => {
     if (!process.env.DOT_PACKAGED) return page.screenshot({ path, animations: 'disabled' });
+    await win.evaluate(async (w) => {
+      await w.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true });
+    });
+    await page.evaluate(
+      () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))),
+    );
     const bytes = await win.evaluate(async (w) => {
       const image = await w.webContents.capturePage(undefined, {
         stayHidden: true,
@@ -56,6 +69,41 @@ try {
     await writeFile(path.replace('.png', '-packaged.png'), Buffer.from(bytes));
   };
   await cmd({ type: 'settings', patch: { animations: false, sidebar: false } });
+  await expect(page.locator('.newtab-reading-empty')).toBeVisible();
+  await cmd({ type: 'settings', patch: { language: 'tr-TR' } });
+  await expect(page.locator('.newtab-hero h1')).toHaveText('Yeni sekme');
+  await capture('test-results/home-empty-tr.png');
+  await cmd({ type: 'settings', patch: { language: 'en-US' } });
+  await capture('test-results/home-empty.png');
+  await cmd({
+    type: 'bookmark.save',
+    bookmark: {
+      id: 'owned-reading',
+      title: 'A saved article for the reading list',
+      url: fixture,
+      favicon: '',
+      folder: 'Reading list',
+      createdAt: Date.now(),
+    },
+  });
+  await expect(page.locator('.newtab-reading-items')).toContainText(
+    'A saved article for the reading list',
+  );
+  await page.locator('.newtab-reading-items button').click();
+  await expect.poll(activeURL).toBe(fixture);
+  await expect
+    .poll(async () => {
+      const s = await snap();
+      return s.tabs.find((t) => t.id === s.activeId).title;
+    })
+    .toBe('Owned home fixture');
+  await cmd({ type: 'tab.new', url: 'browser://newtab' });
+  await expect(page.locator('.recent-sites')).toContainText('Owned home fixture');
+  for (const background of ['plain', 'grid', 'orbital']) {
+    await cmd({ type: 'settings', patch: { background } });
+    if (background === 'orbital') await expect(page.locator('.newtab-orbit')).toBeVisible();
+    else await expect(page.locator('.newtab-orbit')).toBeHidden();
+  }
   for (let i = 0; i < 6; i++)
     await cmd({
       type: 'shortcut.save',
@@ -83,6 +131,12 @@ try {
   await cmd({ type: 'settings', patch: { textScale: 1.3 } });
   await expect(page.locator('.speed-open').first()).toBeVisible();
   assert.ok(await page.locator('.page-content').evaluate((e) => e.scrollWidth <= e.clientWidth));
+  for (const language of ['tr-TR', 'de-DE', 'fr-FR', 'en-US']) {
+    await cmd({ type: 'settings', patch: { language } });
+    await expect(page.locator('.newtab-hero')).toBeVisible();
+    assert.ok(await page.locator('.page-content').evaluate((e) => e.scrollWidth <= e.clientWidth));
+  }
+  await capture('test-results/home-narrow.png');
   await page
     .locator('.newtab-library')
     .getByRole('button', { name: 'Bookmarks', exact: true })
@@ -113,6 +167,17 @@ try {
   );
   await cmd({ type: 'settings', patch: { language: 'en-US', textScale: 1, theme: 'dark' } });
   for (let i = 0; i < 18; i++) await cmd({ type: 'tab.new', url: 'browser://newtab' });
+  const create = page.getByRole('button', { name: 'New tab (Ctrl+T)', exact: true });
+  await expect(create).toHaveCount(1);
+  const createBox = await create.boundingBox();
+  const scrollBox = await page.locator('.tab-scroll').boundingBox();
+  assert.ok(
+    createBox.x + createBox.width <= scrollBox.x,
+    'new-tab button stays left of the tab strip',
+  );
+  const tabCount = (await snap()).tabs.length;
+  await create.click();
+  await expect.poll(async () => (await snap()).tabs.length).toBe(tabCount + 1);
   await expect(page.getByRole('button', { name: 'Scroll tabs left', exact: true })).toBeEnabled();
   const activeBox = await page.locator('.tab.selected').boundingBox();
   const strip = await page.locator('.tab-scroll').boundingBox();
@@ -151,6 +216,7 @@ try {
   await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1280);
   await expect(page.locator('.tabs-container.vertical')).toHaveCount(1);
   await expect(page.locator('.titlebar .tabs-container')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'New tab (Ctrl+T)', exact: true })).toHaveCount(1);
   await page.locator('.tab.selected').focus();
   await page.keyboard.press('Home');
   await page.keyboard.press('ArrowDown');
@@ -169,8 +235,9 @@ try {
     ),
   );
   console.log(
-    'PASS: site cards, light/dark captures, library shortcut, localized settings section search, section links, 130% narrow layout, readable overflow tabs, active visibility, manual scroll preservation, keyboard navigation, actual tab search and responsive vertical tabs; every window hidden',
+    'PASS: home reading list opens a real saved page, recent history, three background options, four languages at 130%, left new-tab button creates a tab and stays visible during overflow, site cards, light/dark captures, library access, settings search, keyboard navigation and responsive vertical tabs; every window hidden',
   );
 } finally {
   await app.close().catch(() => {});
+  await new Promise((r) => server.close(r));
 }

@@ -1,5 +1,14 @@
 [
   {
+    "version": "1.0.9",
+    "date": "2026-10-07",
+    "changes": [
+      "Ana sayfa yenilendi: belirgin arama alanı, saat ve tarih, hafif halka detayları ve daha derinlikli site kartları.",
+      "Okuma listesi ana sayfaya eklendi. Sonra oku ile kaydedilen sayfalar buradan açılabilir.",
+      "Yeni sekme (+) düğmesi yatay sekme çubuğunun soluna taşındı; sekmeler taşsa da görünür kalır."
+    ]
+  },
+  {
     "version": "1.0.8",
     "date": "2026-10-07",
     "changes": [

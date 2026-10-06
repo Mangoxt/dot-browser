@@ -2294,5 +2294,54 @@
     "Sekme arama düğmesi düzeltildi; pencere boyutu değişirken dikey sekmelerin yerleşimi güncellenir.",
     "Die Tabsuche wurde korrigiert. Vertikale Tabs passen sich beim Ändern der Fenstergröße an.",
     "Le bouton de recherche d’onglets a été corrigé. Les onglets verticaux s’adaptent au redimensionnement de la fenêtre."
+  ],
+  "Search, shortcuts and saved pages.": [
+    "Search, shortcuts and saved pages.",
+    "Arama, kısayollar ve kaydettiğin sayfalar.",
+    "Suche, Verknüpfungen und gespeicherte Seiten.",
+    "Recherche, raccourcis et pages enregistrées."
+  ],
+  "Shortcuts": ["Shortcuts", "Kısayollar", "Verknüpfungen", "Raccourcis"],
+  "Drag to reorder": [
+    "Drag to reorder",
+    "Sıralamak için sürükle",
+    "Zum Sortieren ziehen",
+    "Glisser pour réorganiser"
+  ],
+  "Open bookmarks": [
+    "Open bookmarks",
+    "Yer imlerini aç",
+    "Lesezeichen öffnen",
+    "Ouvrir les favoris"
+  ],
+  "Keep a page for later": [
+    "Keep a page for later",
+    "Bir sayfayı sonraya sakla",
+    "Eine Seite für später speichern",
+    "Garder une page pour plus tard"
+  ],
+  "Choose Read later in Page tools. Your saved pages appear here.": [
+    "Choose Read later in Page tools. Your saved pages appear here.",
+    "Sayfa araçlarından Sonra oku seçeneğini kullan. Kaydettiğin sayfalar burada görünür.",
+    "Wähle Später lesen in den Seitenwerkzeugen. Gespeicherte Seiten erscheinen hier.",
+    "Choisissez Lire plus tard dans les outils de page. Vos pages enregistrées apparaissent ici."
+  ],
+  "Ana sayfa yenilendi: belirgin arama alanı, saat ve tarih, hafif halka detayları ve daha derinlikli site kartları.": [
+    "The home page has a framed search area, clock and date, subtle orbital details and site cards with more depth.",
+    "Ana sayfa yenilendi: belirgin arama alanı, saat ve tarih, hafif halka detayları ve daha derinlikli site kartları.",
+    "Die Startseite bietet einen klaren Suchbereich, Uhrzeit und Datum, dezente Kreisdetails und plastischere Website-Karten.",
+    "La page d’accueil propose une recherche mise en valeur, l’heure et la date, de discrets détails circulaires et des cartes de sites plus profondes."
+  ],
+  "Okuma listesi ana sayfaya eklendi. Sonra oku ile kaydedilen sayfalar buradan açılabilir.": [
+    "The reading list is on the home page. Pages saved with Read later can be opened from here.",
+    "Okuma listesi ana sayfaya eklendi. Sonra oku ile kaydedilen sayfalar buradan açılabilir.",
+    "Die Leseliste ist auf der Startseite verfügbar. Mit Später lesen gespeicherte Seiten können hier geöffnet werden.",
+    "La liste de lecture est sur la page d’accueil. Les pages enregistrées avec Lire plus tard peuvent être ouvertes ici."
+  ],
+  "Yeni sekme (+) düğmesi yatay sekme çubuğunun soluna taşındı; sekmeler taşsa da görünür kalır.": [
+    "The new tab (+) button moved to the left of the horizontal tab strip and remains visible when tabs overflow.",
+    "Yeni sekme (+) düğmesi yatay sekme çubuğunun soluna taşındı; sekmeler taşsa da görünür kalır.",
+    "Die Taste für neue Tabs (+) befindet sich links in der horizontalen Tableiste und bleibt bei überlaufenden Tabs sichtbar.",
+    "Le bouton de nouvel onglet (+) est à gauche de la barre d’onglets horizontale et reste visible lorsque les onglets débordent."
   ]
 }
