@@ -74,6 +74,7 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
       aria-selected={tab.id === state.activeId}
       tabIndex={tab.id === focusId ? 0 : -1}
       title={tab.title}
+      data-tab-id={tab.id}
       draggable
       onDragStart={(e) => e.dataTransfer.setData('dot/tab', tab.id)}
       onDragOver={(e) => e.preventDefault()}
@@ -105,7 +106,8 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
                   : (index + (e.key === next ? 1 : -1) + visible.length) % visible.length
             ];
           target?.focus({ preventScroll: true });
-          target?.click();
+          const id = target?.dataset.tabId;
+          if (id) void command({ type: 'tab.action', action: 'select', id, focusChrome: true });
           return;
         }
         if (e.key === 'Enter' || e.key === ' ') {

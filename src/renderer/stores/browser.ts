@@ -31,6 +31,7 @@ interface UIState {
   state: BrowserWindowState | null;
   overlay: Overlay;
   overlayClosing: boolean;
+  overlayOpener: HTMLElement | null;
   editing: Bookmark | Shortcut | Workspace | TabGroup | null;
   panel: 'bookmarks' | 'history' | 'downloads' | 'tabs' | null;
   panelWidth: number;
@@ -47,6 +48,7 @@ export const useBrowser = create<UIState>((set, get) => ({
   state: null,
   overlay: null,
   overlayClosing: false,
+  overlayOpener: null,
   editing: null,
   panel: null,
   panelWidth: 300,
@@ -58,6 +60,11 @@ export const useBrowser = create<UIState>((set, get) => ({
     const current = get();
     if (!overlay && current.overlayClosing) return;
     clearTimeout(overlayTimer);
+    if (overlay && !current.overlay)
+      set({
+        overlayOpener:
+          document.activeElement instanceof HTMLElement ? document.activeElement : null,
+      });
     if (
       !overlay &&
       current.overlay &&

@@ -63,6 +63,7 @@ export function BrowserMenu() {
   return (
     <div className="browser-menu-content">
       <div className="menu-section">
+        <p className="menu-section-label">{tr('Tabs and windows')}</p>
         {item(Plus, 'New tab', () => run({ type: 'tab.new' }), 'Ctrl T')}
         {item(Plus, 'New window', () => run({ type: 'window', action: 'new' }), 'Ctrl N')}
         {item(
@@ -80,11 +81,46 @@ export function BrowserMenu() {
         {item(Search, 'Search tabs', overlay('tabsearch'), 'Ctrl Shift A')}
       </div>
       <div className="menu-section">
+        <p className="menu-section-label">{tr('Library')}</p>
         {item(History, 'History', () => page('history'), 'Ctrl H')}
         {item(Star, 'Bookmarks', () => page('bookmarks'))}
         {item(Download, 'Downloads', overlay('downloads'), 'Ctrl J')}
         {item(KeyRound, 'Saved passwords', overlay('passwords'))}
         {item(Puzzle, 'Extensions', overlay('extensions'))}
+      </div>
+      <div className="menu-zoom">
+        <span>{tr('Zoom')}</span>
+        <button
+          aria-label={tr('Zoom out')}
+          disabled={!web || tab.zoom <= 0.25}
+          onClick={() =>
+            void command({
+              type: 'zoom',
+              value: Math.max(0.25, Math.round((tab.zoom - 0.1) * 100) / 100),
+            })
+          }
+        >
+          −
+        </button>
+        <button
+          aria-label={tr('Reset zoom')}
+          disabled={!web}
+          onClick={() => void command({ type: 'zoom', value: 1 })}
+        >
+          {Math.round(tab.zoom * 100)}%
+        </button>
+        <button
+          aria-label={tr('Zoom in')}
+          disabled={!web || tab.zoom >= 3}
+          onClick={() =>
+            void command({
+              type: 'zoom',
+              value: Math.min(3, Math.round((tab.zoom + 0.1) * 100) / 100),
+            })
+          }
+        >
+          +
+        </button>
       </div>
       <details className="menu-tools">
         <summary>{tr('Page tools')}</summary>
@@ -137,42 +173,10 @@ export function BrowserMenu() {
           undefined,
           !web,
         )}
-        <div className="menu-zoom">
-          <span>{tr('Zoom')}</span>
-          <button
-            aria-label={tr('Zoom out')}
-            disabled={tab.zoom <= 0.25}
-            onClick={() =>
-              void command({
-                type: 'zoom',
-                value: Math.max(0.25, Math.round((tab.zoom - 0.1) * 100) / 100),
-              })
-            }
-          >
-            −
-          </button>
-          <button
-            aria-label={tr('Reset zoom')}
-            onClick={() => void command({ type: 'zoom', value: 1 })}
-          >
-            {Math.round(tab.zoom * 100)}%
-          </button>
-          <button
-            aria-label={tr('Zoom in')}
-            disabled={tab.zoom >= 3}
-            onClick={() =>
-              void command({
-                type: 'zoom',
-                value: Math.min(3, Math.round((tab.zoom + 0.1) * 100) / 100),
-              })
-            }
-          >
-            +
-          </button>
-        </div>
         {item(Trash2, 'Clear browsing data', overlay('clear'))}
       </details>
       <div className="menu-section">
+        <p className="menu-section-label">{tr('Browser')}</p>
         {item(
           UserRound,
           state.private ? 'Private session' : 'Profile and import',

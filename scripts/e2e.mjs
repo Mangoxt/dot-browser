@@ -224,7 +224,7 @@ try {
     await cmd({ type: 'settings', patch: { askDownload: false, downloadPath: directory } });
   });
   await step('Real Chromium navigation from the visible omnibox', async () => {
-    const address = page.getByRole('textbox', { name: 'Address and search', exact: true });
+    const address = page.getByRole('combobox', { name: 'Address and search', exact: true });
     await address.fill(base + '/first');
     await address.press('Enter');
     await waitState((s) => s.tabs.some((t) => t.title === 'First test page' && !t.loading));

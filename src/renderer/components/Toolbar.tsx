@@ -1,5 +1,5 @@
 import { tr } from '../i18n';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -9,7 +9,7 @@ import {
   Star,
   ShieldCheck,
   ShieldAlert,
-  SlidersHorizontal,
+  Globe,
   Download,
   Puzzle,
   MoreHorizontal,
@@ -37,24 +37,56 @@ export function Toolbar() {
       ref.current?.select();
     }
   }, [omnibox]);
-  if (!state || !tab) return null;
   const q = input.toLowerCase().trim();
-  const suggestions = [
-    ...state.tabs
-      .filter((t) => t.id !== tab.id && q && `${t.title} ${t.url}`.toLowerCase().includes(q))
-      .map((t) => ({ title: t.title, url: t.url, favicon: t.favicon, kind: 'tab', id: t.id })),
-    ...state.bookmarks
-      .filter((b) => q && `${b.title} ${b.url}`.toLowerCase().includes(q))
-      .map((b) => ({ ...b, kind: 'bookmark' })),
-    ...state.history
-      .filter((h) => !q || `${h.title} ${h.url}`.toLowerCase().includes(q))
-      .slice(0, 5)
-      .map((h) => ({ ...h, kind: 'history' })),
-    ...state.searches
-      .filter((s) => !q || s.toLowerCase().includes(q))
-      .slice(0, 3)
-      .map((s) => ({ title: s, url: s, favicon: '', kind: 'search', id: s })),
-  ].slice(0, 8);
+  const suggestions = useMemo(() => {
+    const result: { title: string; url: string; favicon: string; kind: string; id: string }[] = [];
+    if (!state || !tab || !omnibox) return result;
+    const seen = new Set<string>();
+    const matches = (item: { title: string; url: string }) =>
+      `${item.title} ${item.url}`.toLowerCase().includes(q);
+    if (q) {
+      for (const t of state.tabs) {
+        if (t.id !== tab.id && matches(t)) {
+          result.push({ title: t.title, url: t.url, favicon: t.favicon, kind: 'tab', id: t.id });
+          seen.add(t.url);
+          if (result.length === 8) return result;
+        }
+      }
+      for (const b of state.bookmarks) {
+        if (!seen.has(b.url) && matches(b)) {
+          result.push({ ...b, kind: 'bookmark' });
+          seen.add(b.url);
+          if (result.length === 8) return result;
+        }
+      }
+    }
+    let historyCount = 0;
+    for (const h of state.history) {
+      if (!seen.has(h.url) && (!q || matches(h))) {
+        result.push({ ...h, kind: 'history' });
+        seen.add(h.url);
+        if (result.length === 8 || ++historyCount === 5) break;
+      }
+    }
+    if (result.length < 8) {
+      let searchCount = 0;
+      for (const s of state.searches) {
+        if (!seen.has(s) && (!q || s.toLowerCase().includes(q))) {
+          result.push({ title: s, url: s, favicon: '', kind: 'search', id: s });
+          seen.add(s);
+          if (result.length === 8 || ++searchCount === 3) break;
+        }
+      }
+    }
+    return result;
+  }, [state?.tabs, state?.bookmarks, state?.history, state?.searches, tab?.id, q, omnibox]);
+  useEffect(() => {
+    if (omnibox)
+      document
+        .getElementById(`address-option-${Math.min(index, suggestions.length)}`)
+        ?.scrollIntoView({ block: 'nearest' });
+  }, [index, omnibox, suggestions.length]);
+  if (!state || !tab) return null;
   const submit = (url = input, tabId?: string) => {
     set({ omnibox: false });
     if (tabId) void command({ type: 'tab.action', action: 'select', id: tabId });
@@ -119,11 +151,7 @@ export function Toolbar() {
       >
         <IconButton
           icon={
-            isWebURL(tab.url)
-              ? tab.connection === 'https'
-                ? ShieldCheck
-                : ShieldAlert
-              : SlidersHorizontal
+            isWebURL(tab.url) ? (tab.connection === 'https' ? ShieldCheck : ShieldAlert) : Globe
           }
           label={tr('Site information')}
           disabled={!isWebURL(tab.url)}
@@ -132,6 +160,13 @@ export function Toolbar() {
         <input
           ref={ref}
           aria-label={tr('Address and search')}
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded={omnibox}
+          aria-controls={omnibox ? 'address-suggestions' : undefined}
+          aria-activedescendant={
+            omnibox ? `address-option-${Math.min(index, suggestions.length)}` : undefined
+          }
           placeholder={tr('Search {engine} or enter an address', {
             engine:
               state.settings.engines.find((e) => e.id === state.settings.engine)?.name ??
@@ -143,7 +178,10 @@ export function Toolbar() {
             setInput(e.target.value);
             setIndex(0);
           }}
-          onFocus={() => set({ omnibox: true })}
+          onFocus={() => {
+            setIndex(0);
+            set({ omnibox: true });
+          }}
           onKeyDown={(e) => {
             if (e.key === 'Escape') {
               set({ omnibox: false });
@@ -181,9 +219,15 @@ export function Toolbar() {
           onClick={bookmarkCurrent}
         />
         {omnibox && (
-          <div className="suggestions" role="listbox" aria-label={tr('Address suggestions')}>
+          <div
+            id="address-suggestions"
+            className="suggestions"
+            role="listbox"
+            aria-label={tr('Address suggestions')}
+          >
             <button
               role="option"
+              id="address-option-0"
               aria-selected={index === 0}
               className={`suggestion ${index === 0 ? 'highlighted' : ''}`}
               onMouseDown={(e) => e.preventDefault()}
@@ -204,6 +248,7 @@ export function Toolbar() {
               <button
                 key={`${s.kind}-${s.id}`}
                 role="option"
+                id={`address-option-${i + 1}`}
                 aria-selected={index === i + 1}
                 className={`suggestion ${index === i + 1 ? 'highlighted' : ''}`}
                 onMouseEnter={() => setIndex(i + 1)}
@@ -214,7 +259,7 @@ export function Toolbar() {
                 <span>
                   <strong>{highlight(s.title)}</strong>
                   <small>
-                    {highlight(s.kind === 'search' ? 'Recent search' : domainOf(s.url))}
+                    {highlight(s.kind === 'search' ? tr('Recent search') : domainOf(s.url))}
                   </small>
                 </span>
                 <small className="suggestion-kind">
@@ -310,17 +355,19 @@ export function BookmarkBar() {
   if (!state?.settings.bookmarkBar) return null;
   return (
     <div className="bookmark-bar">
-      {state.bookmarks.slice(0, 16).map((b) => (
-        <button
-          key={b.id}
-          title={b.url}
-          onClick={() => void command({ type: 'tab.navigate', input: b.url })}
-        >
-          <Favicon url={b.favicon} />
-          <span>{b.title}</span>
-        </button>
-      ))}
-      <button onClick={() => openPage('bookmarks')}>
+      <div className="bookmark-links">
+        {state.bookmarks.slice(0, 16).map((b) => (
+          <button
+            key={b.id}
+            title={b.url}
+            onClick={() => void command({ type: 'tab.navigate', input: b.url })}
+          >
+            <Favicon url={b.favicon} />
+            <span>{b.title}</span>
+          </button>
+        ))}
+      </div>
+      <button className="all-bookmarks" onClick={() => openPage('bookmarks')}>
         <Star size={13} />
         {tr('All bookmarks')}
       </button>

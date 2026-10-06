@@ -159,8 +159,8 @@ mark {
   --surface-active: #30303d;
   --border: #2b2d34;
   --text-primary: #ededf2;
-  --text-secondary: #9a9ba7;
-  --text-muted: #666976;
+  --text-secondary: #adb0bd;
+  --text-muted: #858a9c;
   --accent: #b5a6f7;
   --accent-soft: #b5a6f718;
   --danger: #f78087;
@@ -181,8 +181,8 @@ mark {
   --surface-active: #dfdce7;
   --border: #dedbd7;
   --text-primary: #282730;
-  --text-secondary: #6a6876;
-  --text-muted: #93909a;
+  --text-secondary: #606674;
+  --text-muted: #747886;
   --accent: #7460bd;
   --accent-soft: #7460bd16;
   --danger: #bd394c;
@@ -3562,5 +3562,201 @@ form > label select {
   }
   .newtab-sections {
     margin-top: 20px;
+  }
+}
+
+/* Consistent chrome sizing and readable controls, including large text and compact mode. */
+.toolbar {
+  height: 54px;
+  padding: 7px 12px;
+  gap: 6px;
+}
+.toolbar > .icon-button,
+.navigation-buttons .icon-button,
+.download-indicator .icon-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+}
+.omnibox {
+  height: 38px;
+  margin: 0 8px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--surface) 85%, var(--background));
+  border-color: color-mix(in srgb, var(--border) 80%, var(--text-muted));
+  transition:
+    border-color var(--motion-fast),
+    box-shadow var(--motion-fast);
+}
+.omnibox.focused {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.omnibox input {
+  font-size: calc(13px * var(--text-scale, 1));
+}
+.suggestions {
+  top: calc(100% + 7px);
+  min-width: min(360px, calc(100vw - 32px));
+  max-height: calc(100dvh - var(--chrome-height, 95px) - 24px);
+  overflow-y: auto;
+  border-radius: 13px;
+  padding: 7px;
+}
+.suggestion {
+  padding: 10px 11px;
+  border-radius: 8px;
+}
+.suggestion strong {
+  font-size: calc(13px * var(--text-scale, 1));
+}
+.suggestion small,
+.suggestion-footer {
+  font-size: calc(11px * var(--text-scale, 1));
+}
+.suggestion > span {
+  min-width: 0;
+}
+.suggestion strong,
+.suggestion > span > small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.omnibox-scrim {
+  inset: var(--chrome-height, 95px) 0 0;
+}
+.bookmark-bar {
+  gap: 10px;
+  height: 34px;
+}
+.bookmark-links {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: 5px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.bookmark-links::-webkit-scrollbar {
+  display: none;
+}
+.bookmark-bar button {
+  font-size: calc(11px * var(--text-scale, 1));
+  padding: 5px 8px;
+}
+.bookmark-bar .all-bookmarks {
+  flex: none;
+  max-width: none;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  padding-left: 13px;
+}
+.toolbar .split-toolbar {
+  top: 100%;
+}
+.compact .toolbar > .icon-button,
+.compact .navigation-buttons .icon-button,
+.compact .download-indicator .icon-button {
+  width: 28px;
+  height: 28px;
+}
+.menu-scrim {
+  padding: calc(var(--chrome-height, 95px) + 7px) 12px 12px;
+}
+.browser-menu-modal {
+  width: 354px;
+  padding: 13px;
+  border-radius: 14px;
+  max-height: calc(100dvh - var(--chrome-height, 95px) - 19px);
+  scrollbar-gutter: stable;
+}
+.browser-menu-modal .modal-heading {
+  padding: 2px 8px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.browser-menu-modal .modal-heading h2 {
+  font-size: calc(14px * var(--text-scale, 1));
+  font-weight: 600;
+}
+.menu-section-label {
+  padding: 9px 10px 4px;
+  margin: 0;
+  font-size: calc(10px * var(--text-scale, 1));
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.browser-menu-item {
+  padding: 9px 10px;
+  font-size: calc(12px * var(--text-scale, 1));
+  gap: 11px;
+}
+.browser-menu-item > svg {
+  color: var(--text-secondary);
+  flex: none;
+}
+.browser-menu-item kbd {
+  font-size: calc(10px * var(--text-scale, 1));
+  white-space: nowrap;
+}
+.menu-tools summary {
+  color: var(--text-primary);
+  font-size: calc(12px * var(--text-scale, 1));
+  border-radius: 8px;
+}
+.menu-tools summary:hover {
+  background: var(--surface-hover);
+}
+.menu-tools + .menu-section,
+.menu-zoom {
+  border-top: 1px solid var(--border);
+  margin-top: 7px;
+}
+.menu-zoom {
+  font-size: calc(12px * var(--text-scale, 1));
+  padding-top: 12px;
+}
+.menu-zoom button {
+  min-width: 32px;
+  min-height: 29px;
+  border-radius: 7px;
+}
+.menu-zoom button[aria-label]:nth-of-type(2) {
+  min-width: 58px;
+  font-variant-numeric: tabular-nums;
+}
+.newtab-library button,
+.newtab-reading-empty p {
+  font-size: calc(12px * var(--text-scale, 1));
+}
+.speed-caption strong,
+.newtab-reading-items strong,
+.newtab-reading-empty strong {
+  font-size: calc(13px * var(--text-scale, 1));
+}
+.speed-caption small,
+.newtab-reading-items small,
+.newtab-section-heading > span {
+  font-size: calc(11px * var(--text-scale, 1));
+}
+.newtab-section-heading h2 {
+  font-size: calc(15px * var(--text-scale, 1));
+}
+@media (max-width: 979px) {
+  .toolbar {
+    padding-left: 8px;
+    padding-right: 8px;
+    gap: 3px;
+  }
+  .omnibox {
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+  .suggestion-kind {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

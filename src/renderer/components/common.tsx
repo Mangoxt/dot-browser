@@ -18,7 +18,7 @@ export function IconButton({
       title={tr(label)}
       aria-label={tr(label)}
     >
-      <Icon size={16} />
+      <Icon size={18} />
     </button>
   );
 }

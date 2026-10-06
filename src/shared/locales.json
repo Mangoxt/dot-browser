@@ -1,4 +1,11 @@
 {
+  "Tabs and windows": [
+    "Tabs and windows",
+    "Sekmeler ve pencereler",
+    "Tabs und Fenster",
+    "Onglets et fenêtres"
+  ],
+  "Browser": ["Browser", "Tarayıcı", "Browser", "Navigateur"],
   "General": ["General", "Genel", "Allgemein", "Général"],
   "Appearance": ["Appearance", "Görünüm", "Darstellung", "Apparence"],
   "Search engines": ["Search engines", "Arama motorları", "Suchmaschinen", "Moteurs de recherche"],
@@ -2343,5 +2350,23 @@
     "Yeni sekme (+) düğmesi yatay sekme çubuğunun soluna taşındı; sekmeler taşsa da görünür kalır.",
     "Die Taste für neue Tabs (+) befindet sich links in der horizontalen Tableiste und bleibt bei überlaufenden Tabs sichtbar.",
     "Le bouton de nouvel onglet (+) est à gauche de la barre d’onglets horizontale et reste visible lorsque les onglets débordent."
+  ],
+  "Yazılar, simgeler ve adres alanı daha okunaklı hale getirildi; menüler bölüm başlıklarıyla düzenlendi.": [
+    "Text, icons and the address field are easier to read; menus are organized with section headings.",
+    "Yazılar, simgeler ve adres alanı daha okunaklı hale getirildi; menüler bölüm başlıklarıyla düzenlendi.",
+    "Texte, Symbole und Adressfeld sind besser lesbar; Menüs sind durch Abschnittstitel gegliedert.",
+    "Les textes, les icônes et la barre d’adresse sont plus lisibles ; les menus sont organisés par sections."
+  ],
+  "Menüler arasında geçişte ve sekmelerde klavyeyle gezinirken odak korunur. Sayfa yakınlaştırması menüde doğrudan erişilebilir.": [
+    "Focus is preserved when switching menus and navigating tabs with the keyboard. Page zoom is directly accessible in the menu.",
+    "Menüler arasında geçişte ve sekmelerde klavyeyle gezinirken odak korunur. Sayfa yakınlaştırması menüde doğrudan erişilebilir.",
+    "Der Fokus bleibt beim Wechsel zwischen Menüs und bei der Tastaturnavigation durch Tabs erhalten. Der Seitenzoom ist direkt im Menü erreichbar.",
+    "Le focus est conservé entre les menus et lors de la navigation au clavier dans les onglets. Le zoom est directement accessible dans le menu."
+  ],
+  "Yer imi çubuğu taşınca tüm yer imleri düğmesi görünür kalır. Adres önerilerinde yinelenen sayfalar azaltıldı; yeni sekmeler boş arama alanıyla açılır.": [
+    "All bookmarks stays visible when the bookmarks bar overflows. Address suggestions show fewer duplicate pages; new tabs start with an empty search field.",
+    "Yer imi çubuğu taşınca tüm yer imleri düğmesi görünür kalır. Adres önerilerinde yinelenen sayfalar azaltıldı; yeni sekmeler boş arama alanıyla açılır.",
+    "Alle Lesezeichen bleibt bei einer vollen Lesezeichenleiste sichtbar. Adressvorschläge enthalten weniger doppelte Seiten; neue Tabs beginnen mit einem leeren Suchfeld.",
+    "Tous les favoris reste visible quand la barre est pleine. Les suggestions d’adresse affichent moins de doublons ; les nouveaux onglets s’ouvrent avec un champ de recherche vide."
   ]
 }

@@ -599,7 +599,7 @@ export class BrowserController implements SessionHost {
     this.layout();
     this.changed();
   }
-  select(tab: LiveTab) {
+  select(tab: LiveTab, focusPage = true) {
     this.workspaceId = tab.meta.workspaceId;
     this.activeId = tab.meta.id;
     tab.lastUsed = Date.now();
@@ -611,7 +611,8 @@ export class BrowserController implements SessionHost {
     }
     this.createView(tab);
     this.layout();
-    tab.view?.webContents.focus();
+    if (focusPage) tab.view?.webContents.focus();
+    else this.window.webContents.focus();
     this.changed();
   }
   destroyView(tab: LiveTab) {
@@ -759,7 +760,7 @@ export class BrowserController implements SessionHost {
         }
         const t = this.tab(c.id),
           wc = t.view?.webContents;
-        if (c.action === 'select') this.select(t);
+        if (c.action === 'select') this.select(t, !c.focusChrome);
         if (c.action === 'close') this.close(t);
         if (c.action === 'duplicate') this.addTab(t.meta.url, false, t.meta.workspaceId);
         if (c.action === 'pin') {

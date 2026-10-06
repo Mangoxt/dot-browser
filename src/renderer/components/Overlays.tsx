@@ -1,5 +1,5 @@
 import { tr } from '../i18n';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   X,
   Search,
@@ -37,30 +37,41 @@ import type { ImportKind, ImportPreview, ImportSource } from '../../shared/impor
 export function Overlays() {
   const { overlay, overlayClosing, open } = useBrowser();
   const modal = useRef<HTMLDivElement>(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!overlay) return;
-    const previous = document.activeElement;
+    const previous = useBrowser.getState().overlayOpener;
+    const items = () =>
+      [
+        ...(modal.current?.querySelectorAll<HTMLElement>(
+          'button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, [tabindex="0"]',
+        ) ?? []),
+      ].filter(
+        (el) =>
+          el.getClientRects().length &&
+          !el.closest('[inert]') &&
+          getComputedStyle(el).visibility !== 'hidden',
+      );
+    if (!modal.current?.contains(document.activeElement)) (items()[0] ?? modal.current)?.focus();
     const key = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault();
         open(null);
       }
       if (e.key === 'Tab') {
-        const items = [
-          ...(modal.current?.querySelectorAll<HTMLElement>(
-            'button:not(:disabled), input, select, textarea, [tabindex="0"]',
-          ) ?? []),
-        ];
-        if (!items.length) return;
-        const first = items[0],
-          last = items[items.length - 1];
+        const controls = items();
+        if (!controls.length) return;
+        const first = controls[0],
+          last = controls[controls.length - 1];
         if (
           e.shiftKey &&
           (document.activeElement === first || !modal.current?.contains(document.activeElement))
         ) {
           e.preventDefault();
           last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
+        } else if (
+          !e.shiftKey &&
+          (document.activeElement === last || !modal.current?.contains(document.activeElement))
+        ) {
           e.preventDefault();
           first.focus();
         }
@@ -69,7 +80,8 @@ export function Overlays() {
     document.addEventListener('keydown', key);
     return () => {
       document.removeEventListener('keydown', key);
-      if (previous instanceof HTMLElement) previous.focus();
+      if (!useBrowser.getState().overlay && previous?.isConnected)
+        previous.focus({ preventScroll: true });
     };
   }, [overlay, open]);
   if (!overlay) return null;
@@ -107,6 +119,7 @@ export function Overlays() {
         role="dialog"
         aria-modal="true"
         aria-label={tr(titles[overlay])}
+        tabIndex={-1}
       >
         {overlay !== 'palette' && (
           <div className="modal-heading">

@@ -68,6 +68,7 @@ export const commandSchema = z.discriminatedUnion('type', [
       'suspend',
     ]),
     id: id.optional(),
+    focusChrome: z.boolean().optional(),
   }),
   z.object({
     type: z.literal('tab.move'),

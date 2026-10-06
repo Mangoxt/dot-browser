@@ -114,9 +114,11 @@ export default function App() {
       const width = window.innerWidth;
       const left = state.settings.sidebar && width >= 980 ? state.settings.sidebarWidth : 0;
       const right = panel && width >= 1100 ? panelWidth : 0;
+      const top = header.current!.getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--chrome-height', `${top}px`);
       void command({
         type: 'layout',
-        top: header.current!.getBoundingClientRect().height,
+        top,
         left,
         right,
         overlay: !!overlay || omnibox || state.permissionRequests.length > 0,
@@ -185,7 +187,7 @@ export default function App() {
           </div>
         </div>
       );
-    if (page === 'newtab') return <NewTab />;
+    if (page === 'newtab') return <NewTab key={tab.id} />;
     if (page === 'settings') return <Settings key={tab.id} />;
     if (page === 'history') return <HistoryPage />;
     if (page === 'bookmarks') return <BookmarksPage />;

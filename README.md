@@ -26,7 +26,7 @@ npm run package
 npm run package:setup
 ```
 
-The Windows setup installer is `release/Dot-Browser-Setup-1.0.9.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
+The Windows setup installer is `release/Dot-Browser-Setup-1.0.10.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
 
 ### Automatic updates for installed copies
 
@@ -93,3 +93,5 @@ Language: Settings → Languages changes menus, settings, dialogs, native contex
 Webpage theme: Settings → Appearance → Dark webpages is enabled by default. Chromium's native dark renderer and color-scheme preference follow the browser's dark/light/system theme. Use Site information → Keep this site light for per-origin exceptions. Switching themes preserves live page state. The optional Night view extension only inverts light-mode pages, avoiding a second inversion of native dark pages. Some sites may need an exception; DevTools can temporarily own page emulation until closed.
 
 Browser menu → Page tools offers Copy page link and Read later. Reading-list entries are local bookmarks in the Reading list folder; saving the same URL twice does not create duplicate reading-list entries.
+
+Interface: the address field exposes keyboard suggestions to assistive tools, menus group tab/window and library actions, and zoom is available without expanding Page tools. Bookmark-bar links scroll independently while All bookmarks remains visible. Arrow/Home/End tab selection keeps keyboard focus in the interface; normal tab activation focuses the webpage. Menus retain their original opener through nested dialogs.

@@ -1,5 +1,14 @@
 [
   {
+    "version": "1.0.10",
+    "date": "2026-10-07",
+    "changes": [
+      "Yazılar, simgeler ve adres alanı daha okunaklı hale getirildi; menüler bölüm başlıklarıyla düzenlendi.",
+      "Menüler arasında geçişte ve sekmelerde klavyeyle gezinirken odak korunur. Sayfa yakınlaştırması menüde doğrudan erişilebilir.",
+      "Yer imi çubuğu taşınca tüm yer imleri düğmesi görünür kalır. Adres önerilerinde yinelenen sayfalar azaltıldı; yeni sekmeler boş arama alanıyla açılır."
+    ]
+  },
+  {
     "version": "1.0.9",
     "date": "2026-10-07",
     "changes": [

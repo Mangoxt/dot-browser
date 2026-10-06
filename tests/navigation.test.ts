@@ -121,4 +121,14 @@ describe('boundary validation', () => {
         .success,
     ).toBe(false);
   });
+  it('validates the optional keyboard focus preference for tab selection', () => {
+    expect(
+      commandSchema.safeParse({ type: 'tab.action', action: 'select', focusChrome: true }).success,
+    ).toBe(true);
+    expect(commandSchema.safeParse({ type: 'tab.action', action: 'select' }).success).toBe(true);
+    expect(
+      commandSchema.safeParse({ type: 'tab.action', action: 'select', focusChrome: 'true' })
+        .success,
+    ).toBe(false);
+  });
 });
