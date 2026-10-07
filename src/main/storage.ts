@@ -9,6 +9,7 @@ import {
 } from 'node:fs';
 import { join } from 'node:path';
 import { BrowserData, dataSchema } from '../shared/models';
+import { webOrigin } from '../shared/site-preferences';
 
 export class Storage {
   releaseNoticeClaimed = false;
@@ -20,10 +21,15 @@ export class Storage {
     mkdirSync(directory, { recursive: true });
     this.path = join(directory, 'browser-data.json');
     this.data = dataSchema.parse({});
+    let hasSiteZoom = false;
     for (const path of [this.path, `${this.path}.bak`]) {
       if (!existsSync(path)) continue;
       try {
         const raw: unknown = JSON.parse(readFileSync(path, 'utf8'));
+        const settings =
+          raw && typeof raw === 'object' ? (raw as { settings?: unknown }).settings : undefined;
+        hasSiteZoom =
+          !!settings && typeof settings === 'object' && Object.hasOwn(settings, 'siteZoom');
         const result = dataSchema.safeParse(raw);
         if (result.success) {
           this.data = result.data;
@@ -46,6 +52,22 @@ export class Storage {
       } catch (error) {
         this.log('storage-read-failed', String(error));
       }
+    }
+    if (!hasSiteZoom) {
+      const zoom = new Map<string, number>();
+      for (const window of this.data.windows) {
+        const tabs = [
+          ...window.tabs.filter((t) => t.id !== window.activeId),
+          ...window.tabs.filter((t) => t.id === window.activeId),
+        ];
+        for (const tab of tabs) {
+          const origin = webOrigin(tab.url);
+          if (origin && tab.zoom !== 1) zoom.set(origin, tab.zoom);
+        }
+      }
+      this.data.settings.siteZoom = [...zoom]
+        .slice(0, 500)
+        .map(([origin, value]) => ({ origin, value }));
     }
     this.data.downloads = this.data.downloads.map((d) =>
       ['progressing', 'paused'].includes(d.status) ? { ...d, status: 'interrupted', speed: 0 } : d,

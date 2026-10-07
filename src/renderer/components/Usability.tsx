@@ -1,5 +1,5 @@
 import { tr } from '../i18n';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReadingArticle } from '../../shared/reading';
 import { command, useBrowser } from '../stores/browser';
 import { Favicon } from './common';
@@ -8,21 +8,70 @@ export function TabSearch() {
   const { state, open } = useBrowser();
   const [query, setQuery] = useState('');
   const [index, setIndex] = useState(0);
-  const tabs = (state?.tabs ?? []).filter((tab) =>
-    `${tab.title} ${tab.url} ${state?.workspaces.find((space) => space.id === tab.workspaceId)?.name ?? ''}`
-      .toLowerCase()
-      .includes(query.toLowerCase()),
-  );
-  const selected = Math.min(index, Math.max(0, tabs.length - 1));
+  const [mode, setMode] = useState<'open' | 'closed'>('open');
+  const [filter, setFilter] = useState('all');
+  const results = useRef<HTMLDivElement>(null);
+  const tabs = (state?.tabs ?? [])
+    .filter((tab) =>
+      filter === 'workspace'
+        ? tab.workspaceId === state?.workspaceId
+        : filter === 'audio'
+          ? tab.audio
+          : filter === 'sleeping'
+            ? tab.suspended
+            : true,
+    )
+    .filter((tab) =>
+      `${tab.title} ${tab.url} ${state?.workspaces.find((space) => space.id === tab.workspaceId)?.name ?? ''}`
+        .toLowerCase()
+        .includes(query.toLowerCase()),
+    );
+  const closed = (state?.closedTabs ?? [])
+    .map((item) => item.tab)
+    .filter((tab) => `${tab.title} ${tab.url}`.toLowerCase().includes(query.toLowerCase()));
+  const items = mode === 'open' ? tabs : closed;
+  const selected = Math.min(index, Math.max(0, items.length - 1));
+  useEffect(() => {
+    results.current
+      ?.querySelector<HTMLElement>('[aria-selected="true"]')
+      ?.scrollIntoView({ block: 'nearest' });
+  }, [selected, query, filter, mode]);
   const choose = async (id: string) => {
-    const result = await command({ type: 'tab.action', action: 'select', id });
+    const result = await command({
+      type: 'tab.action',
+      action: mode === 'open' ? 'select' : 'restore',
+      id,
+    });
     if (result.ok) open(null);
   };
   return (
     <div className="form-stack">
+      <div className="tab-search-modes">
+        <button
+          aria-pressed={mode === 'open'}
+          onClick={() => {
+            setMode('open');
+            setIndex(0);
+          }}
+        >
+          {tr('Open tabs')}
+        </button>
+        <button
+          aria-pressed={mode === 'closed'}
+          onClick={() => {
+            setMode('closed');
+            setIndex(0);
+          }}
+        >
+          {tr('Recently closed')}
+        </button>
+      </div>
       <input
         autoFocus
-        aria-label={tr('Search open tabs')}
+        role="combobox"
+        aria-expanded={true}
+        aria-autocomplete="list"
+        aria-label={tr(mode === 'open' ? 'Search open tabs' : 'Search closed tabs')}
         placeholder={tr('Search title, address or workspace')}
         value={query}
         onChange={(event) => {
@@ -35,25 +84,41 @@ export function TabSearch() {
             setIndex(
               Math.max(
                 0,
-                Math.min(tabs.length - 1, selected + (event.key === 'ArrowDown' ? 1 : -1)),
+                Math.min(items.length - 1, selected + (event.key === 'ArrowDown' ? 1 : -1)),
               ),
             );
           }
-          if (event.key === 'Enter' && tabs[selected]) {
+          if (event.key === 'Enter' && items[selected]) {
             event.preventDefault();
-            void choose(tabs[selected].id);
+            void choose(items[selected].id);
           }
         }}
         aria-controls="tab-search-results"
-        aria-activedescendant={tabs[selected] ? `search-tab-${tabs[selected].id}` : undefined}
+        aria-activedescendant={items[selected] ? `search-tab-${items[selected].id}` : undefined}
       />
+      {mode === 'open' && (
+        <select
+          aria-label={tr('Filter tabs')}
+          value={filter}
+          onChange={(e) => {
+            setFilter(e.target.value);
+            setIndex(0);
+          }}
+        >
+          <option value="all">{tr('All tabs')}</option>
+          <option value="workspace">{tr('This workspace')}</option>
+          <option value="audio">{tr('Playing audio')}</option>
+          <option value="sleeping">{tr('Sleeping')}</option>
+        </select>
+      )}
       <div
+        ref={results}
         className="tab-search-results"
         id="tab-search-results"
         role="listbox"
-        aria-label={tr('Open tabs')}
+        aria-label={tr(mode === 'open' ? 'Open tabs' : 'Recently closed')}
       >
-        {tabs.map((tab, position) => (
+        {items.map((tab, position) => (
           <button
             id={`search-tab-${tab.id}`}
             key={tab.id}
@@ -63,7 +128,7 @@ export function TabSearch() {
             onMouseEnter={() => setIndex(position)}
             onClick={() => void choose(tab.id)}
           >
-            <Favicon url={tab.favicon} />
+            <Favicon url={'favicon' in tab && typeof tab.favicon === 'string' ? tab.favicon : ''} />
             <span>
               <strong>{tab.title}</strong>
               <small>
@@ -71,14 +136,27 @@ export function TabSearch() {
               </small>
             </span>
             <small>
-              {tab.suspended ? tr('Sleeping') : tab.id === state?.activeId ? tr('Current') : ''}
+              {mode === 'closed'
+                ? tr('Restore')
+                : 'suspended' in tab && tab.suspended
+                  ? tr('Sleeping')
+                  : tab.id === state?.activeId
+                    ? tr('Current')
+                    : ''}
             </small>
           </button>
         ))}
       </div>
-      {!tabs.length && <p>{tr('No open tabs match.')}</p>}
+      {!items.length && (
+        <p>{tr(mode === 'open' ? 'No open tabs match.' : 'No closed tabs match.')}</p>
+      )}
       <p className="modal-hint">
-        {tr('{count} tabs · ↑ ↓ to choose · Enter to switch', { count: tabs.length })}
+        {tr(
+          mode === 'open'
+            ? '{count} tabs · ↑ ↓ to choose · Enter to switch'
+            : '{count} tabs · ↑ ↓ to choose · Enter to restore',
+          { count: items.length },
+        )}
       </p>
     </div>
   );

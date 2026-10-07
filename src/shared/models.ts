@@ -14,6 +14,22 @@ export const engineSchema = z.object({
   }, 'Use a valid HTTPS URL containing %s, without credentials'),
 });
 export type SearchEngine = z.infer<typeof engineSchema>;
+export const siteOriginSchema = z
+  .string()
+  .max(8192)
+  .refine((value) => {
+    try {
+      const url = new URL(value);
+      return (
+        ['http:', 'https:'].includes(url.protocol) &&
+        !url.username &&
+        !url.password &&
+        url.origin === value
+      );
+    } catch {
+      return false;
+    }
+  }, 'Use an HTTP or HTTPS origin without a path');
 export const ENGINES: SearchEngine[] = [
   { id: 'google', name: 'Google', keyword: 'g', template: 'https://www.google.com/search?q=%s' },
   { id: 'bing', name: 'Bing', keyword: 'b', template: 'https://www.bing.com/search?q=%s' },
@@ -52,6 +68,11 @@ export const settingsSchema = z.object({
   startup: z.enum(['newtab', 'restore', 'pages']).default('restore'),
   startupPages: z.array(z.string()).default([]),
   memorySaver: z.enum(['off', 'balanced', 'aggressive']).default('balanced'),
+  keepAwakeSites: z.array(siteOriginSchema).max(500).default([]),
+  siteZoom: z
+    .array(z.object({ origin: siteOriginSchema, value: z.number().min(0.25).max(3) }))
+    .max(500)
+    .default([]),
   protection: z.enum(['off', 'balanced', 'strict']).default('off'),
   blockedDomains: z.array(z.string()).default([]),
   popupAllowlist: z.array(z.string()).default([]),
@@ -117,6 +138,40 @@ export const tabRestoreSchema = z.object({
   zoom: z.number().min(0.25).max(3).default(1),
 });
 export type TabRestore = z.infer<typeof tabRestoreSchema>;
+export const savedSessionSchema = z
+  .object({
+    id: z.string().min(1).max(100),
+    name: z.string().trim().min(1).max(60),
+    createdAt: z.number().int().nonnegative(),
+    workspace: workspaceSchema.omit({ id: true }),
+    groups: z.array(groupSchema.omit({ workspaceId: true })).max(200),
+    activeTab: z.number().int().min(0).max(199),
+    tabs: z
+      .array(
+        tabRestoreSchema.omit({ id: true, workspaceId: true }).extend({
+          title: z.string().max(500),
+          url: z
+            .string()
+            .max(8192)
+            .refine((value) => {
+              if (value.startsWith('browser://')) return internalPage(value) !== 'error';
+              try {
+                const url = new URL(value.startsWith('view-source:') ? value.slice(12) : value);
+                return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password;
+              } catch {
+                return false;
+              }
+            }),
+        }),
+      )
+      .min(1)
+      .max(200),
+  })
+  .refine(
+    (session) => session.activeTab < session.tabs.length,
+    'The active tab must belong to the saved session',
+  );
+export type SavedSession = z.infer<typeof savedSessionSchema>;
 export interface BrowserTab extends TabRestore {
   connection: 'internal' | 'pending' | 'https' | 'http' | 'error';
   favicon: string;
@@ -190,6 +245,7 @@ export const dataSchema = z.object({
   downloads: z.array(downloadSchema).default([]),
   permissions: z.array(permissionSchema).default([]),
   windows: z.array(windowSchema).default([]),
+  savedSessions: z.array(savedSessionSchema).max(40).default([]),
   cleanExit: z.boolean().default(true),
   lastSeenReleaseVersion: z
     .string()
@@ -235,6 +291,8 @@ export interface BrowserWindowState {
   tabs: BrowserTab[];
   workspaces: Workspace[];
   groups: TabGroup[];
+  closedTabs: ClosedTab[];
+  savedSessions: SavedSession[];
   activeId: string;
   workspaceId: string;
   split: SplitState | null;

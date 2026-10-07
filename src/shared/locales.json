@@ -2368,5 +2368,296 @@
     "Yer imi çubuğu taşınca tüm yer imleri düğmesi görünür kalır. Adres önerilerinde yinelenen sayfalar azaltıldı; yeni sekmeler boş arama alanıyla açılır.",
     "Alle Lesezeichen bleibt bei einer vollen Lesezeichenleiste sichtbar. Adressvorschläge enthalten weniger doppelte Seiten; neue Tabs beginnen mit einem leeren Suchfeld.",
     "Tous les favoris reste visible quand la barre est pleine. Les suggestions d’adresse affichent moins de doublons ; les nouveaux onglets s’ouvrent avec un champ de recherche vide."
+  ],
+  "Saved sessions": [
+    "Saved sessions",
+    "Kayıtlı oturumlar",
+    "Gespeicherte Sitzungen",
+    "Sessions enregistrées"
+  ],
+  "Session name": ["Session name", "Oturum adı", "Sitzungsname", "Nom de la session"],
+  "Save current workspace": [
+    "Save current workspace",
+    "Çalışma alanını kaydet",
+    "Arbeitsbereich speichern",
+    "Enregistrer l’espace"
+  ],
+  "Save {count} tabs from {workspace}": [
+    "Save {count} tabs from {workspace}",
+    "{workspace} alanından {count} sekme kaydedilir",
+    "{count} Tabs aus {workspace} speichern",
+    "Enregistrer {count} onglets de {workspace}"
+  ],
+  "Save tabs and groups for later. Opening a session creates a new workspace; it does not replace your current tabs.": [
+    "Save tabs and groups for later. Opening a session creates a new workspace; it does not replace your current tabs.",
+    "Sekmeleri ve grupları daha sonra açmak için kaydet. Bir oturumu açtığında yeni çalışma alanı oluşturulur; mevcut sekmelerin korunur.",
+    "Tabs und Gruppen für später speichern. Eine Sitzung öffnet einen neuen Arbeitsbereich; bestehende Tabs bleiben erhalten.",
+    "Enregistrez les onglets et groupes pour plus tard. Une session s’ouvre dans un nouvel espace ; les onglets actuels restent ouverts."
+  ],
+  "Saved sessions store addresses and tab groups. Page content, cookies and passwords are not included.": [
+    "Saved sessions store addresses and tab groups. Page content, cookies and passwords are not included.",
+    "Oturum kaydı adresleri ve sekme gruplarını saklar. Sayfa içerikleri, çerezler ve şifreler kayda dahil edilmez.",
+    "Gespeichert werden Adressen und Tabgruppen. Seiteninhalte, Cookies und Passwörter sind nicht enthalten.",
+    "Les sessions conservent les adresses et groupes d’onglets. Le contenu des pages, les cookies et les mots de passe ne sont pas inclus."
+  ],
+  "Search saved sessions": [
+    "Search saved sessions",
+    "Kayıtlı oturumlarda ara",
+    "Gespeicherte Sitzungen suchen",
+    "Rechercher des sessions"
+  ],
+  "No saved sessions match.": [
+    "No saved sessions match.",
+    "Eşleşen oturum yok.",
+    "Keine passenden Sitzungen.",
+    "Aucune session correspondante."
+  ],
+  "No saved sessions yet.": [
+    "No saved sessions yet.",
+    "Henüz kayıtlı oturum yok.",
+    "Noch keine gespeicherten Sitzungen.",
+    "Aucune session enregistrée."
+  ],
+  "{count} tabs": ["{count} tabs", "{count} sekme", "{count} Tabs", "{count} onglets"],
+  "Open session": ["Open session", "Oturumu aç", "Sitzung öffnen", "Ouvrir la session"],
+  "View saved tabs": [
+    "View saved tabs",
+    "Kayıtlı sekmeleri gör",
+    "Gespeicherte Tabs ansehen",
+    "Voir les onglets enregistrés"
+  ],
+  "Rename": ["Rename", "Yeniden adlandır", "Umbenennen", "Renommer"],
+  "New session name": [
+    "New session name",
+    "Yeni oturum adı",
+    "Neuer Sitzungsname",
+    "Nouveau nom de la session"
+  ],
+  "Delete this saved copy? Open tabs will stay open.": [
+    "Delete this saved copy? Open tabs will stay open.",
+    "Bu oturum kaydı silinsin mi? Açık sekmelerin korunur.",
+    "Diese gespeicherte Kopie löschen? Offene Tabs bleiben geöffnet.",
+    "Supprimer cette copie ? Les onglets ouverts resteront ouverts."
+  ],
+  "Delete saved session": [
+    "Delete saved session",
+    "Oturum kaydını sil",
+    "Gespeicherte Sitzung löschen",
+    "Supprimer la session"
+  ],
+  "Manage saved sessions in a normal window": [
+    "Manage saved sessions in a normal window",
+    "Kayıtlı oturumları normal pencerede yönet.",
+    "Gespeicherte Sitzungen in einem normalen Fenster verwalten.",
+    "Gérez les sessions dans une fenêtre normale."
+  ],
+  "Remove a saved session before adding more": [
+    "Remove a saved session before adding more",
+    "Yeni bir oturum kaydetmeden önce eski kayıtlardan birini sil.",
+    "Vor dem Speichern eine alte Sitzung entfernen.",
+    "Supprimez une ancienne session avant d’en ajouter une."
+  ],
+  "Some tabs cannot be saved. Close unsupported pages and try again.": [
+    "Some tabs cannot be saved. Close unsupported pages and try again.",
+    "Bazı sekmeler kaydedilemiyor. Desteklenmeyen sayfaları kapatıp tekrar dene.",
+    "Einige Tabs können nicht gespeichert werden. Nicht unterstützte Seiten schließen und erneut versuchen.",
+    "Certains onglets ne peuvent pas être enregistrés. Fermez les pages non prises en charge et réessayez."
+  ],
+  "Session saved": [
+    "Session saved",
+    "Oturum kaydedildi",
+    "Sitzung gespeichert",
+    "Session enregistrée"
+  ],
+  "Saved session no longer exists": [
+    "Saved session no longer exists",
+    "Bu oturum kaydı artık yok.",
+    "Diese Sitzung existiert nicht mehr.",
+    "Cette session n’existe plus."
+  ],
+  "Enter a session name": [
+    "Enter a session name",
+    "Bir oturum adı gir.",
+    "Einen Sitzungsnamen eingeben.",
+    "Saisissez un nom de session."
+  ],
+  "Session opened in a new workspace": [
+    "Session opened in a new workspace",
+    "Oturum yeni çalışma alanında açıldı",
+    "Sitzung in einem neuen Arbeitsbereich geöffnet",
+    "Session ouverte dans un nouvel espace"
+  ],
+  "Recently closed": [
+    "Recently closed",
+    "Son kapatılanlar",
+    "Kürzlich geschlossen",
+    "Fermés récemment"
+  ],
+  "Search closed tabs": [
+    "Search closed tabs",
+    "Kapanan sekmelerde ara",
+    "Geschlossene Tabs suchen",
+    "Rechercher les onglets fermés"
+  ],
+  "Filter tabs": ["Filter tabs", "Sekmeleri filtrele", "Tabs filtern", "Filtrer les onglets"],
+  "All tabs": ["All tabs", "Tüm sekmeler", "Alle Tabs", "Tous les onglets"],
+  "This workspace": ["This workspace", "Bu çalışma alanı", "Dieser Arbeitsbereich", "Cet espace"],
+  "Playing audio": ["Playing audio", "Ses çalanlar", "Audiowiedergabe", "Lecture audio"],
+  "Restore": ["Restore", "Geri getir", "Wiederherstellen", "Restaurer"],
+  "No closed tabs match.": [
+    "No closed tabs match.",
+    "Eşleşen kapanmış sekme yok.",
+    "Keine passenden geschlossenen Tabs.",
+    "Aucun onglet fermé correspondant."
+  ],
+  "{count} tabs · ↑ ↓ to choose · Enter to restore": [
+    "{count} tabs · ↑ ↓ to choose · Enter to restore",
+    "{count} sekme · ↑ ↓ ile seç · Enter ile geri getir",
+    "{count} Tabs · ↑ ↓ auswählen · Enter wiederherstellen",
+    "{count} onglets · ↑ ↓ choisir · Entrée restaurer"
+  ],
+  "Copy clean link": [
+    "Copy clean link",
+    "Temiz bağlantıyı kopyala",
+    "Bereinigten Link kopieren",
+    "Copier le lien nettoyé"
+  ],
+  "Clean link copied": [
+    "Clean link copied",
+    "Temiz bağlantı kopyalandı",
+    "Bereinigter Link kopiert",
+    "Lien nettoyé copié"
+  ],
+  "Site preferences": [
+    "Site preferences",
+    "Site ayarları",
+    "Website-Einstellungen",
+    "Préférences du site"
+  ],
+  "Never put this site to sleep": [
+    "Never put this site to sleep",
+    "Bu siteyi hiçbir zaman uyutma",
+    "Diese Website nie in den Ruhezustand versetzen",
+    "Ne jamais mettre ce site en veille"
+  ],
+  "Remembered zoom": [
+    "Remembered zoom",
+    "Kayıtlı yakınlaştırma",
+    "Gespeicherter Zoom",
+    "Zoom mémorisé"
+  ],
+  "Remembered site zoom": [
+    "Remembered site zoom",
+    "Siteye özel yakınlaştırma",
+    "Gespeicherter Website-Zoom",
+    "Zoom mémorisé par site"
+  ],
+  "Zoom is remembered for each site. Other sites use 100%.": [
+    "Zoom is remembered for each site. Other sites use 100%.",
+    "Yakınlaştırma her site için ayrı kaydedilir. Diğer siteler %100 kullanır.",
+    "Der Zoom wird pro Website gespeichert. Andere Websites verwenden 100 %.",
+    "Le zoom est mémorisé par site. Les autres sites utilisent 100 %."
+  ],
+  "Reset zoom for {site}": [
+    "Reset zoom for {site}",
+    "{site} yakınlaştırmasını sıfırla",
+    "Zoom für {site} zurücksetzen",
+    "Réinitialiser le zoom pour {site}"
+  ],
+  "Keep a named copy of your current workspace for later.": [
+    "Keep a named copy of your current workspace for later.",
+    "Çalışma alanını bir ad vererek daha sonra açmak için kaydet.",
+    "Eine benannte Kopie des Arbeitsbereichs für später speichern.",
+    "Conservez une copie nommée de votre espace pour plus tard."
+  ],
+  "Manage saved sessions": [
+    "Manage saved sessions",
+    "Oturumları yönet",
+    "Sitzungen verwalten",
+    "Gérer les sessions"
+  ],
+  "Sites kept awake": [
+    "Sites kept awake",
+    "Uyutulmayan siteler",
+    "Websites ohne Ruhezustand",
+    "Sites maintenus actifs"
+  ],
+  "Choose sites from Site information. Pinned tabs also stay awake.": [
+    "Choose sites from Site information. Pinned tabs also stay awake.",
+    "Site bilgileri ekranından site ekleyebilirsin. Sabitlenmiş sekmeler de uyutulmaz.",
+    "Websites über Website-Informationen auswählen. Angeheftete Tabs bleiben ebenfalls aktiv.",
+    "Choisissez les sites dans Informations du site. Les onglets épinglés restent également actifs."
+  ],
+  "No sites added.": [
+    "No sites added.",
+    "Henüz site eklenmedi.",
+    "Noch keine Websites hinzugefügt.",
+    "Aucun site ajouté."
+  ],
+  "Remove a saved zoom setting before adding more": [
+    "Remove a saved zoom setting before adding more",
+    "Yeni kayıt eklemeden önce bir yakınlaştırma ayarını sil.",
+    "Vor dem Hinzufügen einen gespeicherten Zoom entfernen.",
+    "Supprimez un zoom mémorisé avant d’en ajouter un."
+  ],
+  "Open a website first": [
+    "Open a website first",
+    "Önce bir web sitesi aç.",
+    "Zuerst eine Website öffnen.",
+    "Ouvrez d’abord un site."
+  ],
+  "Çalışma alanları adlandırılmış oturumlar olarak kaydedilebilir. Sekmeler ve gruplar mevcut sekmeler korunarak yeni bir çalışma alanında açılır.": [
+    "Workspaces can be saved as named sessions. Tabs and groups open in a new workspace while your current tabs stay open.",
+    "Çalışma alanları adlandırılmış oturumlar olarak kaydedilebilir. Sekmeler ve gruplar mevcut sekmeler korunarak yeni bir çalışma alanında açılır.",
+    "Arbeitsbereiche können als benannte Sitzungen gespeichert werden. Tabs und Gruppen öffnen in einem neuen Arbeitsbereich, während bestehende Tabs erhalten bleiben.",
+    "Les espaces peuvent être enregistrés comme sessions nommées. Les onglets et groupes s’ouvrent dans un nouvel espace sans fermer les onglets actuels."
+  ],
+  "Sekme aramasına son kapatılan sekmeler ve çalışma alanı, ses çalanlar ve uyuyanlar filtreleri eklendi.": [
+    "Tab search now includes recently closed tabs and filters for workspace, audio and sleeping tabs.",
+    "Sekme aramasına son kapatılan sekmeler ve çalışma alanı, ses çalanlar ve uyuyanlar filtreleri eklendi.",
+    "Die Tabsuche bietet kürzlich geschlossene Tabs und Filter für Arbeitsbereich, Audio und Ruhezustand.",
+    "La recherche d’onglets inclut les onglets récemment fermés et des filtres pour l’espace, l’audio et la veille."
+  ],
+  "Sayfa yakınlaştırması siteye göre hatırlanır; yeni sekmelerde, yönlendirmelerde ve tarayıcı yeniden açıldığında uygulanır.": [
+    "Page zoom is remembered per site and applied to new tabs, navigation and browser restarts.",
+    "Sayfa yakınlaştırması siteye göre hatırlanır; yeni sekmelerde, yönlendirmelerde ve tarayıcı yeniden açıldığında uygulanır.",
+    "Der Seitenzoom wird pro Website gespeichert und auf neue Tabs, Navigation und Browserneustarts angewendet.",
+    "Le zoom est mémorisé par site et appliqué aux nouveaux onglets, à la navigation et au redémarrage du navigateur."
+  ],
+  "Site bilgilerine bu siteyi hiçbir zaman uyutma seçeneği eklendi. Sabitlenmiş sekmeler otomatik uyutulmaz.": [
+    "Site information includes an option to keep a site awake. Pinned tabs are no longer put to sleep automatically.",
+    "Site bilgilerine bu siteyi hiçbir zaman uyutma seçeneği eklendi. Sabitlenmiş sekmeler otomatik uyutulmaz.",
+    "Website-Informationen bieten eine Option gegen den Ruhezustand. Angeheftete Tabs werden nicht mehr automatisch in den Ruhezustand versetzt.",
+    "Les informations du site permettent de le maintenir actif. Les onglets épinglés ne sont plus mis en veille automatiquement."
+  ],
+  "Sayfa araçlarına temiz bağlantıyı kopyala eklendi. Yaygın takip parametreleri kaldırılır; normal bağlantı kopyalama korunur.": [
+    "Page tools now includes Copy clean link. Common tracking parameters are removed; regular link copying remains available.",
+    "Sayfa araçlarına temiz bağlantıyı kopyala eklendi. Yaygın takip parametreleri kaldırılır; normal bağlantı kopyalama korunur.",
+    "Die Seitenwerkzeuge bieten Bereinigten Link kopieren. Übliche Tracking-Parameter werden entfernt; normales Kopieren bleibt verfügbar.",
+    "Les outils de page proposent Copier le lien nettoyé. Les paramètres de suivi courants sont retirés ; la copie normale reste disponible."
+  ],
+  "Could not complete this action. Try again.": [
+    "Could not complete this action. Try again.",
+    "İşlem tamamlanamadı. Tekrar dene.",
+    "Diese Aktion konnte nicht abgeschlossen werden. Erneut versuchen.",
+    "Cette action n’a pas pu être terminée. Réessayez."
+  ],
+  "Named sessions are kept. Delete them from Saved sessions.": [
+    "Named sessions are kept. Delete them from Saved sessions.",
+    "Adlandırılmış oturumlar korunur. Bunları Kayıtlı oturumlar ekranından silebilirsin.",
+    "Benannte Sitzungen bleiben erhalten. Sie können unter Gespeicherte Sitzungen gelöscht werden.",
+    "Les sessions nommées sont conservées. Supprimez-les dans Sessions enregistrées."
+  ],
+  "Close some tabs before opening more": [
+    "Close some tabs before opening more",
+    "Yeni sekme açmadan önce bazı sekmeleri kapat.",
+    "Vor dem Öffnen weitere Tabs schließen.",
+    "Fermez quelques onglets avant d’en ouvrir davantage."
+  ],
+  "Tab no longer exists": [
+    "Tab no longer exists",
+    "Bu sekme artık yok.",
+    "Dieser Tab existiert nicht mehr.",
+    "Cet onglet n’existe plus."
   ]
 }

@@ -380,7 +380,7 @@ try {
       const target = before.tabs.find((tab) => tab.id === normalTab);
       await key('A', ['control', 'shift']);
       const modal = page.getByRole('dialog', { name: 'Search tabs', exact: true });
-      const input = modal.getByRole('textbox', { name: 'Search open tabs' });
+      const input = modal.getByRole('combobox', { name: 'Search open tabs' });
       await input.fill(target.url);
       await expect(modal.getByRole('option')).not.toHaveCount(0);
       await input.press('Enter');

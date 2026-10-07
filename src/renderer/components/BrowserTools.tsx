@@ -20,6 +20,7 @@ import {
   Info,
   Sparkles,
   Link,
+  FolderClock,
   type LucideIcon,
 } from 'lucide-react';
 import type { ExtensionSummary } from '../../shared/extensions';
@@ -84,6 +85,7 @@ export function BrowserMenu() {
         <p className="menu-section-label">{tr('Library')}</p>
         {item(History, 'History', () => page('history'), 'Ctrl H')}
         {item(Star, 'Bookmarks', () => page('bookmarks'))}
+        {item(FolderClock, 'Saved sessions', overlay('sessions'))}
         {item(Download, 'Downloads', overlay('downloads'), 'Ctrl J')}
         {item(KeyRound, 'Saved passwords', overlay('passwords'))}
         {item(Puzzle, 'Extensions', overlay('extensions'))}
@@ -128,6 +130,13 @@ export function BrowserMenu() {
           Link,
           'Copy page link',
           () => run({ type: 'page', action: 'copyLink' }),
+          undefined,
+          !web,
+        )}
+        {item(
+          Link,
+          'Copy clean link',
+          () => run({ type: 'page', action: 'copyCleanLink' }),
           undefined,
           !web,
         )}

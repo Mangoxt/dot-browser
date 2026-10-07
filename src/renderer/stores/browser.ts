@@ -26,6 +26,7 @@ export type Overlay =
   | 'whatsnew'
   | 'browsermenu'
   | 'extensions'
+  | 'sessions'
   | null;
 interface UIState {
   state: BrowserWindowState | null;

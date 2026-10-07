@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.1.0",
+    "date": "2026-10-07",
+    "changes": [
+      "Çalışma alanları adlandırılmış oturumlar olarak kaydedilebilir. Sekmeler ve gruplar mevcut sekmeler korunarak yeni bir çalışma alanında açılır.",
+      "Sekme aramasına son kapatılan sekmeler ve çalışma alanı, ses çalanlar ve uyuyanlar filtreleri eklendi.",
+      "Sayfa yakınlaştırması siteye göre hatırlanır; yeni sekmelerde, yönlendirmelerde ve tarayıcı yeniden açıldığında uygulanır.",
+      "Site bilgilerine bu siteyi hiçbir zaman uyutma seçeneği eklendi. Sabitlenmiş sekmeler otomatik uyutulmaz.",
+      "Sayfa araçlarına temiz bağlantıyı kopyala eklendi. Yaygın takip parametreleri kaldırılır; normal bağlantı kopyalama korunur."
+    ]
+  },
+  {
     "version": "1.0.10",
     "date": "2026-10-07",
     "changes": [

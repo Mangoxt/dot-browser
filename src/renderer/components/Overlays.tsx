@@ -29,6 +29,7 @@ import { PasswordManager } from './PasswordManager';
 import { ReadingView, TabSearch } from './Usability';
 import { WhatsNew } from './WhatsNew';
 import { BrowserMenu, Extensions } from './BrowserTools';
+import { SavedSessions } from './SavedSessions';
 import type { Bookmark, Shortcut, Workspace, TabGroup } from '../../shared/models';
 import type { SiteInfo } from '../../shared/ipc';
 import { isWebURL, resolveInput } from '../../shared/navigation';
@@ -104,6 +105,7 @@ export function Overlays() {
     whatsnew: 'Neler yeni?',
     browsermenu: 'Browser menu',
     extensions: 'Eklentiler',
+    sessions: 'Saved sessions',
   };
   return (
     <div
@@ -159,6 +161,7 @@ export function Overlays() {
         {overlay === 'whatsnew' && <WhatsNew />}
         {overlay === 'browsermenu' && <BrowserMenu />}
         {overlay === 'extensions' && <Extensions />}
+        {overlay === 'sessions' && <SavedSessions />}
       </div>
     </div>
   );
@@ -777,7 +780,8 @@ function ClearForm() {
         </label>
       ))}
       <p className="modal-hint">
-        {tr('Site data removal may sign you out. Open tabs continue to be saved for recovery.')}
+        {tr('Site data removal may sign you out. Open tabs continue to be saved for recovery.')}{' '}
+        {tr('Named sessions are kept. Delete them from Saved sessions.')}
       </p>
       <div className="form-actions">
         <button type="button" onClick={() => open(null)}>
@@ -825,7 +829,7 @@ function SiteInformation() {
             ? tr('Connection information will be available after this page finishes loading.')
             : tr('Avoid sharing sensitive information on this connection.')}
       </p>
-      <h4>{tr('Permissions')}</h4>
+      <h4>{tr('Site preferences')}</h4>
       <label className="checkbox-label">
         <input
           type="checkbox"
@@ -840,6 +844,41 @@ function SiteInformation() {
         />
         {tr('Keep this site light')}
       </label>
+      <label className="checkbox-label">
+        <input
+          type="checkbox"
+          checked={state?.settings.keepAwakeSites.includes(site.origin) ?? false}
+          disabled={
+            state?.settings.keepAwakeSites.length === 500 &&
+            !state.settings.keepAwakeSites.includes(site.origin)
+          }
+          onChange={(e) =>
+            patchSettings({
+              keepAwakeSites: e.target.checked
+                ? [...new Set([...(state?.settings.keepAwakeSites ?? []), site.origin])]
+                : state?.settings.keepAwakeSites.filter((origin) => origin !== site.origin),
+            })
+          }
+        />
+        {tr('Never put this site to sleep')}
+      </label>
+      <div className="site-zoom-setting">
+        <span>
+          {tr('Remembered zoom')} ·{' '}
+          {Math.round(
+            (state?.settings.siteZoom.find((rule) => rule.origin === site.origin)?.value ?? 1) *
+              100,
+          )}
+          %
+        </span>
+        <button
+          disabled={!state?.settings.siteZoom.some((rule) => rule.origin === site.origin)}
+          onClick={() => void command({ type: 'site.zoom.reset', origin: site.origin })}
+        >
+          {tr('Reset')}
+        </button>
+      </div>
+      <h4>{tr('Permissions')}</h4>
       {site.permissions.length ? (
         site.permissions.map((p) => (
           <div className="site-permission" key={p.permission}>

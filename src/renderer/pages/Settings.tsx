@@ -258,6 +258,29 @@ export default function Settings() {
               </Row>
             )}
             <Row title={tr('Compact toolbar')}>{toggle('compact', 'Compact toolbar')}</Row>
+            {!!s.siteZoom.length && (
+              <Row
+                title={tr('Remembered site zoom')}
+                detail={tr('Zoom is remembered for each site. Other sites use 100%.')}
+              >
+                <div className="site-settings-list">
+                  {s.siteZoom.map((rule) => (
+                    <div key={rule.origin}>
+                      <span title={rule.origin}>
+                        {rule.origin} · {Math.round(rule.value * 100)}%
+                      </span>
+                      <IconButton
+                        icon={Trash2}
+                        label={tr('Reset zoom for {site}', { site: rule.origin })}
+                        onClick={() =>
+                          void command({ type: 'site.zoom.reset', origin: rule.origin })
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </Row>
+            )}
             <Row title={tr('Sidebar')}>{toggle('sidebar', 'Show sidebar')}</Row>
             <Row title={tr('Animations')}>{toggle('animations', 'Enable animations')}</Row>
             <Row title={tr('New tab background')}>
@@ -413,6 +436,37 @@ export default function Settings() {
                 <Plus size={15} />
                 {tr('New workspace')}
               </button>
+            </Row>
+            <Row
+              title={tr('Saved sessions')}
+              detail={tr('Keep a named copy of your current workspace for later.')}
+            >
+              <button onClick={() => open('sessions')}>{tr('Manage saved sessions')}</button>
+            </Row>
+            <Row
+              title={tr('Sites kept awake')}
+              detail={tr('Choose sites from Site information. Pinned tabs also stay awake.')}
+            >
+              <div className="site-settings-list">
+                {s.keepAwakeSites.length ? (
+                  s.keepAwakeSites.map((origin) => (
+                    <div key={origin}>
+                      <span title={origin}>{origin}</span>
+                      <IconButton
+                        icon={Trash2}
+                        label={tr('Remove exception')}
+                        onClick={() =>
+                          patchSettings({
+                            keepAwakeSites: s.keepAwakeSites.filter((site) => site !== origin),
+                          })
+                        }
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <span className="muted">{tr('No sites added.')}</span>
+                )}
+              </div>
             </Row>
             <Row
               title={tr('Tab groups')}

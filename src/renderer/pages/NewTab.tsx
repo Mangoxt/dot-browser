@@ -13,6 +13,7 @@ import {
   Download,
   BookOpen,
   Layers,
+  FolderClock,
 } from 'lucide-react';
 import { command, openPage, useBrowser } from '../stores/browser';
 import { Favicon, IconButton } from '../components/common';
@@ -120,6 +121,12 @@ export default function NewTab() {
               <Download size={15} />
               {tr('Downloads')}
             </button>
+            {!state.private && (
+              <button onClick={() => open('sessions')}>
+                <FolderClock size={15} />
+                {tr('Saved sessions')}
+              </button>
+            )}
           </nav>
         </section>
         <div className="newtab-sections">

@@ -16,6 +16,7 @@ import {
   settingsSchema,
   shortcutSchema,
   workspaceSchema,
+  siteOriginSchema,
 } from './models';
 const id = z.string().min(1).max(100);
 // Zod 4 applies nested defaults inside partial objects. A patch must never reset
@@ -29,6 +30,14 @@ const settingsPatchSchema = z.object(
   ),
 ) as z.ZodType<Partial<BrowserSettings>>;
 export const commandSchema = z.discriminatedUnion('type', [
+  z.object({ type: z.literal('session.save'), name: z.string().trim().min(1).max(60) }),
+  z.object({
+    type: z.literal('session.action'),
+    id,
+    action: z.enum(['restore', 'remove', 'rename']),
+    name: z.string().trim().min(1).max(60).optional(),
+  }),
+  z.object({ type: z.literal('site.zoom.reset'), origin: siteOriginSchema }),
   z.object({ type: z.literal('extension.list') }),
   z.object({
     type: z.literal('extension.install'),
@@ -162,7 +171,16 @@ export const commandSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('reader.extract') }),
   z.object({
     type: z.literal('page'),
-    action: z.enum(['print', 'save', 'pdf', 'devtools', 'source', 'copyLink', 'readLater']),
+    action: z.enum([
+      'print',
+      'save',
+      'pdf',
+      'devtools',
+      'source',
+      'copyLink',
+      'copyCleanLink',
+      'readLater',
+    ]),
   }),
   z.object({
     type: z.literal('window'),

@@ -24,6 +24,7 @@ import {
   WindowRestore,
   Workspace,
   internalPage,
+  savedSessionSchema,
 } from '../shared/models';
 import { Command, CommandResult } from '../shared/ipc';
 import { domainOf, isWebURL, recordVisit, resolveInput, safeFavicon } from '../shared/navigation';
@@ -36,6 +37,7 @@ import { readingScript } from './reading';
 import { readingSchema } from '../shared/reading';
 import { PageTheme } from './page-theme';
 import { translate } from '../shared/i18n';
+import { canAutoSleep, cleanLink, siteZoom, webOrigin } from '../shared/site-preferences';
 import { discoverProfiles } from './profile-discovery';
 import type { ImportSource, ImportReport } from '../shared/import';
 import {
@@ -93,6 +95,7 @@ export class BrowserController implements SessionHost {
   >();
   private findResult = { matches: 0, active: 0 };
   private pending = false;
+  private pendingPageFocus = false;
   private memoryTimer: ReturnType<typeof setInterval>;
   private htmlFullscreen = false;
   private importSources = new Map<string, ImportSource>();
@@ -110,6 +113,7 @@ export class BrowserController implements SessionHost {
       this.data.downloads = [];
       this.data.permissions = [];
       this.data.windows = [];
+      this.data.savedSessions = [];
     }
     this.workspaces = restore?.workspaces ?? [newWorkspace()];
     this.groups = restore?.groups ?? [];
@@ -160,6 +164,8 @@ export class BrowserController implements SessionHost {
       },
     });
     this.window.setMenuBarVisibility(false);
+    this.window.webContents.setZoomMode('isolated');
+    this.window.webContents.setZoomFactor(1);
     host.windows.set(this.id, this);
     this.browserSession.attach();
     this.window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
@@ -256,6 +262,16 @@ export class BrowserController implements SessionHost {
       })),
       workspaces: this.workspaces,
       groups: this.groups,
+      closedTabs: this.closedTabs.map((item) => ({
+        ...item,
+        tab: {
+          ...item.tab,
+          title: internalPage(item.tab.url)
+            ? this.tr(this.internalTitle(item.tab.url))
+            : item.tab.title,
+        },
+      })),
+      savedSessions: this.privateMode ? [] : this.data.savedSessions,
       activeId: this.split?.focused ?? this.activeId,
       workspaceId: this.workspaceId,
       split: this.split,
@@ -360,7 +376,7 @@ export class BrowserController implements SessionHost {
       pinned: restore?.pinned ?? false,
       muted: restore?.muted ?? false,
       groupId: restore?.groupId ?? null,
-      zoom: restore?.zoom ?? 1,
+      zoom: siteZoom(this.data.settings, url),
       favicon: '',
       loading: false,
       canGoBack: false,
@@ -428,6 +444,7 @@ export class BrowserController implements SessionHost {
       tab.pageTheme?.update(this.data.settings, tab.meta.url);
     });
     wc.setAudioMuted(tab.meta.muted);
+    wc.setZoomMode('isolated');
     wc.setZoomFactor(tab.meta.zoom);
     const sync = () => {
       if (wc.isDestroyed()) return;
@@ -448,6 +465,8 @@ export class BrowserController implements SessionHost {
       this.browserSession.revokeContents(wc.id);
       this.cancelPermissions(wc.id);
       tab.meta.url = url;
+      tab.meta.zoom = siteZoom(this.data.settings, url);
+      wc.setZoomFactor(tab.meta.zoom);
       tab.pageTheme?.invalidate();
       tab.meta.error = null;
       sync();
@@ -575,6 +594,7 @@ export class BrowserController implements SessionHost {
         ...this.data.searches.filter((s) => s !== result.query),
       ].slice(0, 100);
     const wasInternal = internalPage(tab.meta.url);
+    tab.meta.zoom = siteZoom(this.data.settings, result.url);
     tab.meta.error = null;
     if (internalPage(result.url)) {
       if (tab.view) this.destroyView(tab);
@@ -610,6 +630,7 @@ export class BrowserController implements SessionHost {
       if (g) g.collapsed = false;
     }
     this.createView(tab);
+    this.pendingPageFocus = focusPage && this.layoutState.overlay && !!tab.view;
     this.layout();
     if (focusPage) tab.view?.webContents.focus();
     else this.window.webContents.focus();
@@ -694,6 +715,11 @@ export class BrowserController implements SessionHost {
         place(s.right, { x, y: y + cut + 6, width: w, height: h - cut - 6 });
       }
     }
+    if (this.pendingPageFocus) {
+      this.pendingPageFocus = false;
+      const tab = this.active();
+      if (tab?.view?.getVisible() && !tab.meta.error) tab.view.webContents.focus();
+    }
   }
   manageMemory() {
     const mode = this.data.settings.memorySaver;
@@ -701,11 +727,13 @@ export class BrowserController implements SessionHost {
     const age = (mode === 'aggressive' ? 5 : 20) * 60000;
     for (const t of this.tabs)
       if (
-        t.meta.id !== this.activeId &&
-        ![this.split?.left, this.split?.right].includes(t.meta.id) &&
+        canAutoSleep(
+          t.meta,
+          this.activeId,
+          [this.split?.left, this.split?.right],
+          this.data.settings.keepAwakeSites,
+        ) &&
         t.view &&
-        !t.meta.audio &&
-        !t.meta.loading &&
         Date.now() - t.lastUsed > age
       ) {
         this.destroyView(t);
@@ -714,9 +742,28 @@ export class BrowserController implements SessionHost {
     this.emit();
   }
   zoom(tab: LiveTab, value: number) {
-    tab.meta.zoom = Math.min(3, Math.max(0.25, Math.round(value * 100) / 100));
-    tab.view?.webContents.setZoomFactor(tab.meta.zoom);
+    const origin = webOrigin(tab.meta.url);
+    if (!origin) return;
+    const next = Math.min(3, Math.max(0.25, Math.round(value * 100) / 100));
+    const rules = this.data.settings.siteZoom.filter((rule) => rule.origin !== origin);
+    if (next !== 1) {
+      if (rules.length >= 500) throw new Error('Remove a saved zoom setting before adding more');
+      rules.push({ origin, value: next });
+    }
+    this.data.settings.siteZoom = rules;
+    this.applySiteZoom();
     this.changed();
+  }
+  private applySiteZoom() {
+    const windows = this.privateMode
+      ? [this]
+      : [...this.host.windows.values()].filter((w) => !w.privateMode);
+    for (const window of windows) {
+      for (const tab of window.tabs) {
+        tab.meta.zoom = siteZoom(window.data.settings, tab.meta.url);
+        tab.view?.webContents.setZoomFactor(tab.meta.zoom);
+      }
+    }
   }
   async external(url: string) {
     if (!/^(mailto|tel|discord|steam):/i.test(url) || url.length > 8192) {
@@ -736,6 +783,84 @@ export class BrowserController implements SessionHost {
   async execute(command: Command): Promise<CommandResult> {
     const c = command;
     switch (c.type) {
+      case 'session.save': {
+        if (this.privateMode) throw new Error('Manage saved sessions in a normal window');
+        if (this.data.savedSessions.length >= 40)
+          throw new Error('Remove a saved session before adding more');
+        const workspace = this.workspaces.find((w) => w.id === this.workspaceId)!;
+        const tabs = this.tabs.filter((t) => t.meta.workspaceId === this.workspaceId);
+        const result = savedSessionSchema.safeParse({
+          id: randomUUID(),
+          name: c.name,
+          createdAt: Date.now(),
+          workspace: { name: workspace.name, color: workspace.color, icon: workspace.icon },
+          groups: this.groups
+            .filter(
+              (g) =>
+                g.workspaceId === this.workspaceId && tabs.some((t) => t.meta.groupId === g.id),
+            )
+            .map((g) => ({ id: g.id, name: g.name, color: g.color, collapsed: g.collapsed })),
+          activeTab: Math.max(
+            0,
+            tabs.findIndex((t) => t.meta.id === this.active()?.meta.id),
+          ),
+          tabs: tabs.map(({ meta: t }) => ({
+            url: t.url,
+            title: t.title.slice(0, 500),
+            pinned: t.pinned,
+            muted: t.muted,
+            groupId: t.groupId,
+            zoom: t.zoom,
+          })),
+        });
+        if (!result.success)
+          throw new Error('Some tabs cannot be saved. Close unsupported pages and try again.');
+        this.data.savedSessions.unshift(result.data);
+        this.toast('Session saved');
+        break;
+      }
+      case 'session.action': {
+        if (this.privateMode) throw new Error('Manage saved sessions in a normal window');
+        const saved = this.data.savedSessions.find((s) => s.id === c.id);
+        if (!saved) throw new Error('Saved session no longer exists');
+        if (c.action === 'remove')
+          this.data.savedSessions = this.data.savedSessions.filter((s) => s.id !== c.id);
+        if (c.action === 'rename') {
+          if (!c.name) throw new Error('Enter a session name');
+          saved.name = c.name;
+        }
+        if (c.action === 'restore') {
+          if (this.tabs.length + saved.tabs.length > 200)
+            throw new Error('Close some tabs before opening more');
+          const workspace = { ...saved.workspace, name: saved.name.slice(0, 40), id: randomUUID() };
+          const groupIds = new Map(saved.groups.map((g) => [g.id, randomUUID()]));
+          this.workspaces.push(workspace);
+          this.groups.push(
+            ...saved.groups.map((g) => ({
+              ...g,
+              id: groupIds.get(g.id)!,
+              workspaceId: workspace.id,
+            })),
+          );
+          const restored = saved.tabs.map((tab) =>
+            this.addTab(tab.url, true, workspace.id, {
+              ...tab,
+              id: randomUUID(),
+              workspaceId: workspace.id,
+              groupId: tab.groupId ? (groupIds.get(tab.groupId) ?? null) : null,
+            }),
+          );
+          this.select(restored[Math.min(saved.activeTab, restored.length - 1)]);
+          this.toast('Session opened in a new workspace');
+        }
+        break;
+      }
+      case 'site.zoom.reset':
+        this.data.settings.siteZoom = this.data.settings.siteZoom.filter(
+          (rule) => rule.origin !== c.origin,
+        );
+        this.applySiteZoom();
+        break;
       case 'tab.new':
         this.addTab(c.url, c.background, c.workspaceId);
         break;
@@ -744,16 +869,21 @@ export class BrowserController implements SessionHost {
         break;
       case 'tab.action': {
         if (c.action === 'restore') {
-          const closed = this.closedTabs.shift();
+          if (this.tabs.length >= 200) throw new Error('Close some tabs before opening more');
+          const index = c.id ? this.closedTabs.findIndex((item) => item.tab.id === c.id) : 0;
+          if (c.id && index < 0) throw new Error('Tab no longer exists');
+          const closed = index >= 0 ? this.closedTabs.splice(index, 1)[0] : undefined;
           if (closed) {
             if (!this.workspaces.some((w) => w.id === closed.tab.workspaceId))
               closed.tab.workspaceId = this.workspaceId;
+            if (!this.groups.some((g) => g.id === closed.tab.groupId)) closed.tab.groupId = null;
             const t = this.addTab(closed.tab.url, false, closed.tab.workspaceId, {
               ...closed.tab,
               id: randomUUID(),
             });
             this.tabs.splice(this.tabs.indexOf(t), 1);
             this.tabs.splice(Math.min(closed.index, this.tabs.length), 0, t);
+            this.sortPinned();
             this.toast('Tab restored');
           }
           break;
@@ -1226,6 +1356,7 @@ export class BrowserController implements SessionHost {
         if (c.patch.startupPages)
           for (const page of c.patch.startupPages) resolveInput(page, this.data.settings);
         Object.assign(this.data.settings, c.patch);
+        if (c.patch.siteZoom) this.applySiteZoom();
         break;
       }
       case 'engine.save': {
@@ -1417,11 +1548,11 @@ export class BrowserController implements SessionHost {
     const t = this.tab(),
       wc = t.view?.webContents;
     if (!wc) throw new Error('Open a webpage first');
-    if (action === 'copyLink') {
+    if (action === 'copyLink' || action === 'copyCleanLink') {
       const url = wc.getURL();
       if (!isWebURL(url)) throw new Error('Open a webpage first');
-      await clipboard.writeText(url);
-      this.toast('Link copied');
+      await clipboard.writeText(action === 'copyCleanLink' ? cleanLink(url) : url);
+      this.toast(action === 'copyCleanLink' ? 'Clean link copied' : 'Link copied');
       return;
     }
     if (action === 'readLater') {

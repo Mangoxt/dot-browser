@@ -26,7 +26,7 @@ npm run package
 npm run package:setup
 ```
 
-The Windows setup installer is `release/Dot-Browser-Setup-1.0.10.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
+The Windows setup installer is `release/Dot-Browser-Setup-1.1.0.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
 
 ### Automatic updates for installed copies
 
@@ -95,3 +95,16 @@ Webpage theme: Settings → Appearance → Dark webpages is enabled by default. 
 Browser menu → Page tools offers Copy page link and Read later. Reading-list entries are local bookmarks in the Reading list folder; saving the same URL twice does not create duplicate reading-list entries.
 
 Interface: the address field exposes keyboard suggestions to assistive tools, menus group tab/window and library actions, and zoom is available without expanding Page tools. Bookmark-bar links scroll independently while All bookmarks remains visible. Arrow/Home/End tab selection keeps keyboard focus in the interface; normal tab activation focuses the webpage. Menus retain their original opener through nested dialogs.
+
+
+Saved sessions: Browser menu or the home library → Saved sessions saves the current workspace's addresses, pinned/muted flags, tab groups and active tab. Copies can be searched, renamed, previewed, opened in a new workspace and deleted. Live DOM/form state, page navigation stacks, cookies and passwords are not part of these copies. Saving and managing persisted sessions is unavailable in private windows. A maximum of 40 copies and 200 open tabs is enforced before restore starts; background restored webpages load when selected.
+
+Search tabs → Recently closed can restore a selected entry from the current window's 30-item in-memory closed-tab list. Open-tab filters cover the current workspace, playing audio and sleeping tabs. This list is cleared on restart or when clearing session data.
+
+Site zoom: changes are remembered for the exact scheme/host/port and shared across normal windows. Navigation to another origin uses that origin's zoom or 100%. Reset via Site information or Settings → Appearance. Private-window changes stay in memory. Legacy restored zoom factors migrate to site preferences when upgrading.
+
+Memory saver skips pinned tabs and origins marked Never put this site to sleep in Site information. Active, split, loading and audible tabs remain protected. Pages that do sleep reload on selection; keep sites with ongoing forms or background tasks awake if their live state is needed.
+
+Copy clean link is an explicit Page tools action that removes common utm_, fbclid, gclid, dclid, msclkid and email-campaign query parameters. Other query keys and fragments remain intact. Ordinary Copy page link preserves the original address. No navigation is rewritten automatically.
+
+Each trusted interface and native webpage uses Electron 44 [isolated zoom mode](https://www.electronjs.org/docs/latest/api/web-contents#contentssetzoommodemode). Dot applies its own exact-origin preferences to normal windows, preventing one frame’s initial or changed zoom from affecting unrelated pages or the interface.

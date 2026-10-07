@@ -3760,3 +3760,186 @@ form > label select {
     white-space: nowrap;
   }
 }
+
+/* Session library and lightweight tab filters share the existing dialog language. */
+.modal:has(.saved-sessions) {
+  width: 710px;
+}
+.saved-sessions > input[type='search'] {
+  width: 100%;
+  margin: 8px 0;
+}
+.saved-sessions > p {
+  font-size: calc(12px * var(--text-scale, 1));
+}
+.tab-search-modes {
+  display: flex;
+  gap: 6px;
+}
+.tab-search-modes button {
+  flex: 1;
+  background: transparent;
+  font-size: calc(12px * var(--text-scale, 1));
+}
+.tab-search-modes button[aria-pressed='true'] {
+  background: var(--surface-active);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.session-save {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 8px 12px;
+  padding: 16px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.session-save label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+.session-save > small {
+  grid-column: 1 / -1;
+  color: var(--text-secondary);
+}
+.session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.session-card {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 15px;
+}
+.session-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.session-card-heading > svg {
+  color: var(--accent);
+}
+.session-card-heading > div {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+.session-card-heading strong {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.session-card small {
+  color: var(--text-secondary);
+  font-size: calc(11px * var(--text-scale, 1));
+}
+.session-card-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+.session-card-tools button {
+  border: 0;
+  background: transparent;
+  padding: 6px 8px;
+  font-size: calc(11px * var(--text-scale, 1));
+  color: var(--text-secondary);
+}
+.session-card-tools button:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+.session-tab-preview {
+  max-height: 220px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  border-top: 1px solid var(--border);
+}
+.session-tab-preview li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 9px 2px;
+}
+.session-tab-preview strong {
+  font-weight: 500;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.session-inline-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.session-inline-form input {
+  flex: 1;
+  min-width: 140px;
+}
+.session-delete-confirm {
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+  padding-top: 12px;
+}
+.session-delete-confirm p {
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+}
+.session-delete-confirm button {
+  margin-right: 8px;
+}
+.session-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  padding: 30px 15px;
+  color: var(--text-secondary);
+}
+.site-zoom-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 15px;
+}
+.site-settings-list {
+  width: 100%;
+  max-width: 330px;
+}
+.site-settings-list > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+.site-settings-list span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 800px) {
+  .session-save {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .session-card-heading {
+    flex-wrap: wrap;
+  }
+  .session-card-heading > div {
+    min-width: 150px;
+  }
+}
