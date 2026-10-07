@@ -1,4 +1,5 @@
-import { _electron as electron, expect } from '@playwright/test';
+import { _electron as electron, expect as baseExpect } from '@playwright/test';
+const expect = baseExpect.configure({ timeout: 15000 });
 import { strict as assert } from 'node:assert';
 import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -35,14 +36,14 @@ try {
     const path = `test-results/${name}${process.env.DOT_PACKAGED ? '-packaged' : ''}.png`;
     if (!process.env.DOT_PACKAGED) return page.screenshot({ path, animations: 'disabled' });
     await win.evaluate(async (window) =>
-      window.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true }),
+      window.webContents.capturePage(undefined, { stayHidden: false, stayAwake: true }),
     );
     await page.evaluate(
       () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
     );
     const bytes = await win.evaluate(async (window) => [
       ...(
-        await window.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true })
+        await window.webContents.capturePage(undefined, { stayHidden: false, stayAwake: true })
       ).toPNG(),
     ]);
     await writeFile(path, Buffer.from(bytes));

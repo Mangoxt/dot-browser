@@ -835,6 +835,34 @@ function SiteInformation() {
             : tr('Avoid sharing sensitive information on this connection.')}
       </p>
       <h4>{tr('Site preferences')}</h4>
+      <p className="muted">
+        {tr('Blocked requests: {count}', {
+          count: state?.tabs.find((t) => t.id === state.activeId)?.blockedRequests ?? 0,
+        })}
+      </p>
+      <label className="checkbox-label">
+        <input
+          type="checkbox"
+          checked={
+            state?.settings.adblock !== 'off' &&
+            !state?.settings.adblockExceptions.includes(site.origin)
+          }
+          disabled={
+            state?.settings.adblock === 'off' ||
+            (state?.settings.adblockExceptions.length === 500 &&
+              !state.settings.adblockExceptions.includes(site.origin))
+          }
+          onChange={(e) =>
+            patchSettings({
+              adblockExceptions: e.target.checked
+                ? state?.settings.adblockExceptions.filter((origin) => origin !== site.origin)
+                : [...new Set([...(state?.settings.adblockExceptions ?? []), site.origin])],
+            })
+          }
+        />
+        {tr('Block ads on this site')}
+      </label>
+      <p className="modal-hint">{tr('Reload to apply request blocking changes.')}</p>
       <label className="checkbox-label">
         <input
           type="checkbox"

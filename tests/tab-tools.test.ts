@@ -19,6 +19,7 @@ const tab = (id: string, patch: Partial<BrowserTab> = {}): BrowserTab => ({
   canGoForward: false,
   connection: 'https',
   blockedPopups: 0,
+  blockedRequests: 0,
   processId: null,
   webContentsId: null,
   error: null,

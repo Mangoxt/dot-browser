@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.3.0",
+    "date": "2026-10-07",
+    "changes": [
+      "Yeni sekme (+) düğmesi sekmelerle hizalandı; klasik ve yumuşak görünüm, sade ana sayfa ve saat seçenekleri eklendi.",
+      "Chrome Web Store kurulumu ve daha geniş Chrome eklenti desteği eklendi: sekme işlemleri, araç çubuğu düğmeleri, açılır pencereler ve sağ tık menüleri.",
+      "EasyList ve EasyPrivacy ile reklam ve izleyici engelleme eklendi. Siteye özel kapatma, engellenen istek sayacı ve filtre güncelleme seçenekleri sunulur.",
+      "Chrome eklenti desteğini genişletmek için Dot GPL-3.0 lisansına geçti; kaynak kod ve lisanslar Hakkında sayfasından erişilebilir."
+    ]
+  },
+  {
     "version": "1.2.0",
     "date": "2026-10-07",
     "changes": [

@@ -54,6 +54,9 @@ export const settingsSchema = z.object({
   darkSiteExceptions: z.array(z.string().url().max(8192)).max(500).default([]),
   accent: z.enum(['violet', 'blue', 'green', 'rose', 'amber']).default('violet'),
   compact: z.boolean().default(false),
+  chromeStyle: z.enum(['classic', 'soft']).default('classic'),
+  newTabLayout: z.enum(['simple', 'dashboard']).default('simple'),
+  showNewTabClock: z.boolean().default(true),
   animations: z.boolean().default(true),
   glass: z.number().min(0).max(1).default(0.8),
   radius: z.number().min(4).max(14).default(9),
@@ -75,6 +78,8 @@ export const settingsSchema = z.object({
     .max(500)
     .default([]),
   protection: z.enum(['off', 'balanced', 'strict']).default('off'),
+  adblock: z.enum(['off', 'ads', 'strict']).default('ads'),
+  adblockExceptions: z.array(siteOriginSchema).max(500).default([]),
   blockedDomains: z.array(z.string()).default([]),
   popupAllowlist: z.array(z.string()).default([]),
   downloadPath: z.string().default(''),
@@ -182,6 +187,7 @@ export interface BrowserTab extends TabRestore {
   audio: boolean;
   suspended: boolean;
   blockedPopups: number;
+  blockedRequests: number;
   error: string | null;
   processId: number | null;
   webContentsId: number | null;
@@ -262,6 +268,7 @@ export const dataSchema = z.object({
         description: z.string(),
         enabled: z.boolean(),
         builtin: z.enum(['night', 'scroll']).optional(),
+        source: z.enum(['folder', 'store']).optional(),
       }),
     )
     .max(20)

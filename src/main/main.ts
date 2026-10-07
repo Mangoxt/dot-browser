@@ -6,6 +6,9 @@ import { BrowserController } from './browser';
 import { Storage } from './storage';
 import { ExtensionManager } from './extensions';
 import { BrowserSession } from './session';
+import { AdBlock } from './adblock';
+import { createExtensionBridge } from './extension-bridge';
+import type { ElectronChromeExtensions } from 'electron-chrome-extensions';
 import { commandSchema } from '../shared/ipc';
 import type { WindowRestore } from '../shared/models';
 
@@ -15,6 +18,8 @@ const locked = process.env.DOT_TEST_DATA ? true : app.requestSingleInstanceLock(
 if (!locked) app.quit();
 let storage: Storage;
 let extensions: ExtensionManager;
+let bridge: ElectronChromeExtensions;
+let adblock: AdBlock;
 const windows = new Map<string, BrowserController>();
 const sessions = new Map<string, BrowserSession>();
 let quitting = false;
@@ -44,6 +49,12 @@ function setupAutomaticUpdates() {
   timer.unref();
 }
 const host = {
+  get bridge() {
+    return bridge;
+  },
+  get adblock() {
+    return adblock;
+  },
   get extensions() {
     return extensions;
   },
@@ -88,7 +99,27 @@ if (locked)
     .then(async () => {
       storage = new Storage(app.getPath('userData'));
       extensions = new ExtensionManager(storage);
+      adblock = new AdBlock(
+        join(app.getPath('userData'), 'adblock'),
+        join(app.getAppPath(), 'assets/filter-lists'),
+      );
+      await adblock.initialize();
+      bridge = await createExtensionBridge(host);
       await extensions.restore();
+      if (!process.env.DOT_TEST_HIDDEN) {
+        const updateFilters = () => {
+          if (Date.now() - adblock.info().updatedAt > 24 * 60 * 60 * 1000)
+            void adblock
+              .update()
+              .then(() => {
+                for (const w of windows.values()) w.refreshBlocking();
+              })
+              .catch((error) => storage.log('filter-update-failed', String(error)));
+        };
+        const timer = setInterval(updateFilters, 60 * 60 * 1000);
+        timer.unref();
+        updateFilters();
+      }
       storage.onError = (message) => {
         for (const w of windows.values()) w.toast(message);
       };

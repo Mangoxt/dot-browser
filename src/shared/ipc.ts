@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { ReadingArticle } from './reading';
 import type { ExtensionSummary } from './extensions';
+import { chromeStoreId } from './extensions';
 import {
   IMPORT_KINDS,
   type ImportSource,
@@ -54,6 +55,15 @@ export const commandSchema = z.discriminatedUnion('type', [
   }),
   z.object({ type: z.literal('site.zoom.reset'), origin: siteOriginSchema }),
   z.object({ type: z.literal('extension.list') }),
+  z.object({
+    type: z.literal('extension.store'),
+    url: z
+      .string()
+      .max(2048)
+      .refine((value) => !!chromeStoreId(value)),
+  }),
+  z.object({ type: z.literal('adblock.info') }),
+  z.object({ type: z.literal('adblock.update') }),
   z.object({
     type: z.literal('extension.install'),
     builtin: z.enum(['night', 'scroll']).optional(),
@@ -224,6 +234,7 @@ export interface CommandResult {
   password?: string;
   article?: ReadingArticle;
   extensions?: ExtensionSummary[];
+  adblock?: { updatedAt: number; updating: boolean; rules: number };
   release?: {
     version: string;
     show: boolean;

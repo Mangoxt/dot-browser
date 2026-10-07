@@ -38,12 +38,55 @@ const sections: [string, string, LucideIcon][] = [
 ];
 const fieldLabels: Partial<Record<keyof BrowserSettings, string>> = {
   theme: 'Theme',
+  chromeStyle: 'Browser style',
+  newTabLayout: 'New tab layout',
+  adblock: 'Ad blocking',
   background: 'New tab background',
   memorySaver: 'Memory saver',
   protection: 'Request blocking',
   startup: 'When Dot starts',
   language: 'Browser language',
 };
+function FilterStatus({ privateMode }: { privateMode: boolean }) {
+  const [info, setInfo] = useState<{ updatedAt: number; rules: number }>();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  useEffect(() => {
+    void command({ type: 'adblock.info' }).then((result) => setInfo(result.adblock));
+  }, []);
+  return (
+    <Row
+      title={tr('Filter lists')}
+      detail={
+        info?.updatedAt
+          ? tr('Updated {date}', {
+              date: new Date(info.updatedAt).toLocaleDateString(
+                useBrowser.getState().state?.settings.language,
+              ),
+            })
+          : tr('Bundled lists are available offline.')
+      }
+    >
+      <button
+        disabled={busy || privateMode}
+        onClick={async () => {
+          setBusy(true);
+          setError('');
+          try {
+            const result = await command({ type: 'adblock.update' });
+            if (result.adblock) setInfo(result.adblock);
+            else setError(tr('Filter update failed. Existing lists remain active.'));
+          } finally {
+            setBusy(false);
+          }
+        }}
+      >
+        {tr(busy ? 'Updating…' : 'Update filters')}
+      </button>
+      {error && <span role="alert">{error}</span>}
+    </Row>
+  );
+}
 function Row({
   title,
   detail,
@@ -129,6 +172,7 @@ export default function Settings() {
       | 'compact'
       | 'animations'
       | 'forceDarkPages'
+      | 'showNewTabClock'
       | 'sidebar'
       | 'bookmarkBar'
       | 'verticalTabs'
@@ -259,6 +303,21 @@ export default function Settings() {
               </Row>
             )}
             <Row title={tr('Compact toolbar')}>{toggle('compact', 'Compact toolbar')}</Row>
+            <Row title={tr('Browser style')}>
+              {select('chromeStyle', [
+                ['classic', 'Classic'],
+                ['soft', 'Soft'],
+              ])}
+            </Row>
+            <Row title={tr('New tab layout')}>
+              {select('newTabLayout', [
+                ['simple', 'Simple'],
+                ['dashboard', 'Dashboard'],
+              ])}
+            </Row>
+            <Row title={tr('Clock on new tabs')}>
+              {toggle('showNewTabClock', 'Clock on new tabs')}
+            </Row>
             {!!s.siteZoom.length && (
               <Row
                 title={tr('Remembered site zoom')}
@@ -486,6 +545,41 @@ export default function Settings() {
         {section === 'privacy' && (
           <>
             <p className="section-description">{tr('Site permissions and browsing data.')}</p>
+            <Row
+              title={tr('Ad blocking')}
+              detail={tr(
+                'EasyList blocks ads. Add EasyPrivacy to block more trackers. Site exceptions are available from the address bar icon.',
+              )}
+            >
+              {select('adblock', [
+                ['off', 'Off'],
+                ['ads', 'Ads'],
+                ['strict', 'Ads and trackers'],
+              ])}
+            </Row>
+            <FilterStatus privateMode={state.private} />
+            {!!s.adblockExceptions.length && (
+              <Row title={tr('Ad blocking exceptions')}>
+                <div className="site-settings-list">
+                  {s.adblockExceptions.map((origin) => (
+                    <div key={origin}>
+                      <span>{origin}</span>
+                      <IconButton
+                        icon={Trash2}
+                        label={tr('Remove exception')}
+                        onClick={() =>
+                          patchSettings({
+                            adblockExceptions: s.adblockExceptions.filter(
+                              (item) => item !== origin,
+                            ),
+                          })
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </Row>
+            )}
             <Row
               title={tr('Clear browsing data')}
               detail={tr('History, site data, cache and restore records.')}

@@ -18,7 +18,6 @@ import {
   Printer,
   Trash2,
   Info,
-  Sparkles,
   Link,
   FolderClock,
   Copy,
@@ -26,6 +25,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import type { ExtensionSummary } from '../../shared/extensions';
+import { chromeStoreId } from '../../shared/extensions';
 import { command, openPage, useBrowser, type Overlay } from '../stores/browser';
 import type { Command } from '../../shared/ipc';
 import { isWebURL } from '../../shared/navigation';
@@ -196,7 +196,7 @@ export function BrowserMenu() {
           overlay('profile'),
         )}
         {item(Settings2, 'Settings', () => page('settings'))}
-        {item(Sparkles, 'Neler yeni?', overlay('whatsnew'))}
+        {item(History, 'Neler yeni?', overlay('whatsnew'))}
         {item(Info, 'About Dot', () => page('about'))}
       </div>
     </div>
@@ -216,6 +216,7 @@ const builtins = [
   },
 ];
 export function Extensions() {
+  const [storeURL, setStoreURL] = useState('');
   const { state } = useBrowser();
   const [items, setItems] = useState<ExtensionSummary[]>([]);
   const [busy, setBusy] = useState(false);
@@ -248,9 +249,38 @@ export function Extensions() {
     <div className="extension-manager">
       <p className="muted">
         {tr(
-          "Hazır eklentilerden seçin veya manifest.json içeren bir eklenti klasörü ekleyin. Chrome Web Store'dan doğrudan kurulum desteklenmez; bazı Chrome eklentileri uyumlu olmayabilir.",
+          'Add extensions from the Chrome Web Store or a folder. Some Chrome APIs are unavailable; compatibility varies by extension.',
         )}
       </p>
+      <button
+        className="primary"
+        disabled={disabled}
+        onClick={() => {
+          void command({ type: 'tab.new', url: 'https://chromewebstore.google.com/' });
+          useBrowser.getState().open(null);
+        }}
+      >
+        <Puzzle size={15} />
+        {tr('Open Chrome Web Store')}
+      </button>{' '}
+      <form
+        className="store-install-form"
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (chromeStoreId(storeURL)) void run({ type: 'extension.store', url: storeURL });
+        }}
+      >
+        <input
+          aria-label={tr('Chrome Web Store link')}
+          placeholder={tr('Paste an extension link')}
+          value={storeURL}
+          onChange={(event) => setStoreURL(event.target.value.trim())}
+          disabled={disabled}
+        />
+        <button type="submit" disabled={disabled || !chromeStoreId(storeURL)}>
+          {tr(busy ? 'Loading…' : 'Add extension')}
+        </button>
+      </form>
       {state?.private && (
         <p className="modal-hint">
           {tr('Eklentiler gizli pencerelerde çalışmaz. Yönetmek için normal pencereye geçin.')}

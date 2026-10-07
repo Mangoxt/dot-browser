@@ -2830,5 +2830,167 @@
     "Eklentisiz ekran görüntüsü eklendi: görünen alanı veya tam sayfayı PNG olarak kaydet ya da görüntüyü kopyala.",
     "Integrierte Bildschirmfotos: sichtbaren Bereich oder ganze Seite als PNG speichern oder das Bild kopieren.",
     "Captures intégrées : enregistrez la zone visible ou la page entière en PNG, ou copiez l’image."
-  ]
+  ],
+  "Browser style": ["Browser style", "Tarayıcı stili", "Browserstil", "Style du navigateur"],
+  "Classic": ["Classic", "Klasik", "Klassisch", "Classique"],
+  "Soft": ["Soft", "Yumuşak", "Weich", "Doux"],
+  "New tab layout": [
+    "New tab layout",
+    "Yeni sekme düzeni",
+    "Neuer-Tab-Layout",
+    "Disposition du nouvel onglet"
+  ],
+  "Simple": ["Simple", "Sade", "Schlicht", "Simple"],
+  "Dashboard": ["Dashboard", "Ayrıntılı", "Übersicht", "Tableau de bord"],
+  "Clock on new tabs": [
+    "Clock on new tabs",
+    "Yeni sekmelerde saat",
+    "Uhr auf neuen Tabs",
+    "Horloge sur les nouveaux onglets"
+  ],
+  "Ad blocking": ["Ad blocking", "Reklam engelleme", "Werbeblocker", "Blocage des publicités"],
+  "Ads": ["Ads", "Reklamlar", "Werbung", "Publicités"],
+  "Ads and trackers": [
+    "Ads and trackers",
+    "Reklamlar ve izleyiciler",
+    "Werbung und Tracker",
+    "Publicités et traqueurs"
+  ],
+  "EasyList blocks ads. Add EasyPrivacy to block more trackers. Site exceptions are available from the address bar icon.": [
+    "EasyList blocks ads. Add EasyPrivacy to block more trackers. Site exceptions are available from the address bar icon.",
+    "EasyList reklamları engeller. Daha fazla izleyiciyi engellemek için EasyPrivacy ekleyin. Adres çubuğundaki simgeden siteye özel istisna ekleyebilirsiniz.",
+    "EasyList blockiert Werbung. EasyPrivacy blockiert zusätzliche Tracker. Ausnahmen finden Sie am Symbol in der Adressleiste.",
+    "EasyList bloque les publicités. EasyPrivacy bloque davantage de traqueurs. Les exceptions sont accessibles depuis l’icône de la barre d’adresse."
+  ],
+  "Ad blocking exceptions": [
+    "Ad blocking exceptions",
+    "Reklam engelleme istisnaları",
+    "Werbeblocker-Ausnahmen",
+    "Exceptions du blocage des publicités"
+  ],
+  "Blocked requests: {count}": [
+    "Blocked requests: {count}",
+    "Engellenen istekler: {count}",
+    "Blockierte Anfragen: {count}",
+    "Requêtes bloquées : {count}"
+  ],
+  "Block ads on this site": [
+    "Block ads on this site",
+    "Bu sitede reklamları engelle",
+    "Werbung auf dieser Website blockieren",
+    "Bloquer les publicités sur ce site"
+  ],
+  "Reload to apply request blocking changes.": [
+    "Reload to apply request blocking changes.",
+    "İstek engelleme değişikliklerini uygulamak için sayfayı yenileyin.",
+    "Laden Sie die Seite neu, um Änderungen anzuwenden.",
+    "Rechargez la page pour appliquer les modifications du blocage."
+  ],
+  "Filter lists": ["Filter lists", "Filtre listeleri", "Filterlisten", "Listes de filtres"],
+  "Bundled lists are available offline.": [
+    "Bundled lists are available offline.",
+    "Dahili listeler çevrimdışı da çalışır.",
+    "Mitgelieferte Listen funktionieren offline.",
+    "Les listes intégrées fonctionnent hors ligne."
+  ],
+  "Updated {date}": [
+    "Updated {date}",
+    "Güncelleme: {date}",
+    "Aktualisiert am {date}",
+    "Mis à jour le {date}"
+  ],
+  "Update filters": [
+    "Update filters",
+    "Filtreleri güncelle",
+    "Filter aktualisieren",
+    "Mettre à jour les filtres"
+  ],
+  "Updating…": ["Updating…", "Güncelleniyor…", "Wird aktualisiert…", "Mise à jour…"],
+  "Filter update failed. Existing lists remain active.": [
+    "Filter update failed. Existing lists remain active.",
+    "Filtreler güncellenemedi. Mevcut listeler çalışmaya devam ediyor.",
+    "Aktualisierung fehlgeschlagen. Vorhandene Listen bleiben aktiv.",
+    "Échec de la mise à jour. Les listes existantes restent actives."
+  ],
+  "Open Chrome Web Store": [
+    "Open Chrome Web Store",
+    "Chrome Web Store’u aç",
+    "Chrome Web Store öffnen",
+    "Ouvrir le Chrome Web Store"
+  ],
+  "Add extensions from the Chrome Web Store or a folder. Some Chrome APIs are unavailable; compatibility varies by extension.": [
+    "Add extensions from the Chrome Web Store or a folder. Some Chrome APIs are unavailable; compatibility varies by extension.",
+    "Chrome Web Store’dan veya klasörden eklenti ekleyin. Bazı Chrome işlevleri desteklenmediği için uyumluluk eklentiye göre değişir.",
+    "Erweiterungen aus dem Chrome Web Store oder einem Ordner hinzufügen. Einige Chrome-APIs fehlen; die Kompatibilität hängt von der Erweiterung ab.",
+    "Ajoutez des extensions depuis le Chrome Web Store ou un dossier. Certaines API Chrome sont indisponibles ; la compatibilité dépend de l’extension."
+  ],
+  "Allow extension permissions?": [
+    "Allow extension permissions?",
+    "Eklenti izinlerine onay verilsin mi?",
+    "Erweiterungsberechtigungen erlauben?",
+    "Autoriser les permissions de l’extension ?"
+  ],
+  "Add {name}?": ["Add {name}?", "{name} eklensin mi?", "{name} hinzufügen?", "Ajouter {name} ?"],
+  "Requested access": [
+    "Requested access",
+    "İstenen erişimler",
+    "Angeforderter Zugriff",
+    "Accès demandé"
+  ],
+  "Add extension": [
+    "Add extension",
+    "Eklenti ekle",
+    "Erweiterung hinzufügen",
+    "Ajouter l’extension"
+  ],
+  "Source code and licenses": [
+    "Source code and licenses",
+    "Kaynak kod ve lisanslar",
+    "Quellcode und Lizenzen",
+    "Code source et licences"
+  ],
+  "Dot source: GPL-3.0. Chrome extension bridge: GPL-3.0. Adblock engine: MPL-2.0. Filter lists: GPL-3.0. Electron and React: MIT. Chromium and other dependency licenses are included with the application.": [
+    "Dot source: GPL-3.0. Chrome extension bridge: GPL-3.0. Adblock engine: MPL-2.0. Filter lists: GPL-3.0. Electron and React: MIT. Chromium and other dependency licenses are included with the application.",
+    "Dot kaynak kodu: GPL-3.0. Chrome eklenti desteği: GPL-3.0. Reklam engelleme motoru: MPL-2.0. Filtre listeleri: GPL-3.0. Electron ve React: MIT. Chromium ve diğer bağımlılıkların lisansları uygulamayla birlikte sunulur.",
+    "Dot-Quellcode: GPL-3.0. Chrome-Erweiterungsbrücke: GPL-3.0. Werbeblocker: MPL-2.0. Filterlisten: GPL-3.0. Electron und React: MIT. Weitere Lizenzen werden mitgeliefert.",
+    "Code source de Dot : GPL-3.0. Compatibilité Chrome : GPL-3.0. Moteur de blocage : MPL-2.0. Filtres : GPL-3.0. Electron et React : MIT. Les autres licences sont incluses."
+  ],
+  "Yeni sekme (+) düğmesi sekmelerle hizalandı; klasik ve yumuşak görünüm, sade ana sayfa ve saat seçenekleri eklendi.": [
+    "The new-tab (+) button is aligned with tabs. Classic and Soft styles, a Simple home layout and an optional clock are available.",
+    "Yeni sekme (+) düğmesi sekmelerle hizalandı; klasik ve yumuşak görünüm, sade ana sayfa ve saat seçenekleri eklendi.",
+    "Die Neue-Tab-Schaltfläche (+) ist ausgerichtet. Klassischer und weicher Stil, eine schlichte Startseite und eine optionale Uhr sind verfügbar.",
+    "Le bouton de nouvel onglet (+) est aligné. Styles classique et doux, accueil simple et horloge facultative disponibles."
+  ],
+  "Chrome Web Store kurulumu ve daha geniş Chrome eklenti desteği eklendi: sekme işlemleri, araç çubuğu düğmeleri, açılır pencereler ve sağ tık menüleri.": [
+    "Chrome Web Store installation and broader Chrome extension support: tab operations, toolbar actions, popups and context menus.",
+    "Chrome Web Store kurulumu ve daha geniş Chrome eklenti desteği eklendi: sekme işlemleri, araç çubuğu düğmeleri, açılır pencereler ve sağ tık menüleri.",
+    "Chrome Web Store und erweiterte Chrome-Unterstützung: Tab-Aktionen, Symbolleistenschaltflächen, Popups und Kontextmenüs.",
+    "Installation depuis le Chrome Web Store et compatibilité élargie : onglets, boutons, fenêtres et menus contextuels."
+  ],
+  "EasyList ve EasyPrivacy ile reklam ve izleyici engelleme eklendi. Siteye özel kapatma, engellenen istek sayacı ve filtre güncelleme seçenekleri sunulur.": [
+    "Ad and tracker blocking with EasyList and EasyPrivacy. Per-site exceptions, blocked-request counts and filter updates are available.",
+    "EasyList ve EasyPrivacy ile reklam ve izleyici engelleme eklendi. Siteye özel kapatma, engellenen istek sayacı ve filtre güncelleme seçenekleri sunulur.",
+    "Werbe- und Trackerblockierung mit EasyList und EasyPrivacy. Website-Ausnahmen, Anfragezähler und Filteraktualisierungen sind verfügbar.",
+    "Blocage des publicités et traqueurs avec EasyList et EasyPrivacy. Exceptions par site, compteur et mise à jour des filtres disponibles."
+  ],
+  "Chrome eklenti desteğini genişletmek için Dot GPL-3.0 lisansına geçti; kaynak kod ve lisanslar Hakkında sayfasından erişilebilir.": [
+    "Dot is now GPL-3.0 to expand Chrome extension support. Source code and licenses are accessible from About.",
+    "Chrome eklenti desteğini genişletmek için Dot GPL-3.0 lisansına geçti; kaynak kod ve lisanslar Hakkında sayfasından erişilebilir.",
+    "Dot nutzt GPL-3.0 für erweiterte Chrome-Unterstützung. Quellcode und Lizenzen sind unter Über Dot erreichbar.",
+    "Dot passe à GPL-3.0 pour élargir la compatibilité Chrome. Code source et licences accessibles depuis À propos."
+  ],
+  "Chrome Web Store link": [
+    "Chrome Web Store link",
+    "Chrome Web Store bağlantısı",
+    "Chrome-Web-Store-Link",
+    "Lien Chrome Web Store"
+  ],
+  "Paste an extension link": [
+    "Paste an extension link",
+    "Eklenti bağlantısını yapıştırın",
+    "Erweiterungslink einfügen",
+    "Collez un lien d’extension"
+  ],
+  "Add to Dot": ["Add to Dot", "Dot’a ekle", "Zu Dot hinzufügen", "Ajouter à Dot"],
+  "Loading…": ["Loading…", "Yükleniyor…", "Wird geladen…", "Chargement…"]
 }

@@ -30,12 +30,27 @@ await writeFile(
     manifest_version: 3,
     name: 'Test fixture extension',
     version: '1.0',
+    permissions: ['tabs', 'contextMenus'],
+    background: { service_worker: 'worker.js' },
+    action: { default_popup: 'popup.html', default_title: 'Fixture action' },
     content_scripts: [{ matches: ['http://127.0.0.1/*'], js: ['content.js'] }],
   }),
 );
 await writeFile(
   join(custom, 'content.js'),
-  'document.documentElement.dataset.dotExtensionFixture="working"',
+  'document.documentElement.dataset.dotExtensionFixture="working"; chrome.runtime.sendMessage({kind:"tabs"}, response=>{document.documentElement.dataset.dotTabs=JSON.stringify(response);});',
+);
+await writeFile(
+  join(custom, 'worker.js'),
+  'chrome.action.setBadgeText({text:"OK"}); chrome.contextMenus.create({id:"fixture-menu",title:"Fixture menu",contexts:["page"]}); chrome.runtime.onMessage.addListener((message,sender,reply)=>{ if(message.kind==="tabs") chrome.tabs.query({},tabs=>reply({tabs,error:chrome.runtime.lastError?.message})); else if(message.kind==="create") chrome.tabs.create({url:message.url,active:false},tab=>reply({tab,error:chrome.runtime.lastError?.message})); return true; });',
+);
+await writeFile(
+  join(custom, 'popup.html'),
+  '<!doctype html><html><body style="width:240px;height:140px"><h1>Fixture popup</h1><button id="create">Create a tab</button><script src="popup.js"></script></body></html>',
+);
+await writeFile(
+  join(custom, 'popup.js'),
+  `document.getElementById('create').onclick=()=>chrome.runtime.sendMessage({kind:'create',url:${JSON.stringify(url + 'extension-created')}},r=>document.body.dataset.result=JSON.stringify(r));`,
 );
 let app, page;
 async function launch() {
@@ -126,6 +141,53 @@ try {
   await expect
     .poll(() => web('document.documentElement.dataset.dotExtensionFixture'))
     .toBe('working');
+  await expect
+    .poll(() => web('!!document.documentElement.dataset.dotTabs'), { timeout: 15000 })
+    .toBe(true);
+  const realTabs = await web('JSON.parse(document.documentElement.dataset.dotTabs)');
+  assert.equal(realTabs.error, undefined);
+  const normal = await page.evaluate(() => window.dot.snapshot());
+  assert.ok(
+    realTabs.tabs.some(
+      (t) =>
+        t.id === normal.tabs.find((t) => t.id === normal.activeId).webContentsId &&
+        t.active &&
+        t.url === url,
+    ),
+  );
+  assert.ok(
+    !realTabs.tabs.some((t) => t.url.startsWith('file:')),
+    'trusted interface is never exposed as a browser tab',
+  );
+  await expect(page.locator('browser-action-list button').first()).toBeVisible();
+  const popupWait = app.waitForEvent('window');
+  await page.locator('browser-action-list button').first().click();
+  const popup = await popupWait;
+  await expect(popup.locator('h1')).toHaveText('Fixture popup');
+  await popup.locator('#create').click();
+  await expect.poll(() => popup.evaluate(() => document.body.dataset.result)).toBeTruthy();
+  const created = await popup.evaluate(() => JSON.parse(document.body.dataset.result));
+  assert.equal(created.error, undefined);
+  assert.ok(created.tab.id > 0);
+  assert.equal(
+    (await page.evaluate(() => window.dot.snapshot())).activeId,
+    normal.activeId,
+    'background extension tabs must preserve the active tab',
+  );
+  await expect
+    .poll(async () =>
+      (await page.evaluate(() => window.dot.snapshot())).tabs.some(
+        (t) => t.url === url + 'extension-created',
+      ),
+    )
+    .toBe(true);
+  assert.equal(
+    await app.evaluate(({ BrowserWindow }) =>
+      BrowserWindow.getAllWindows().some((w) => w.isVisible()),
+    ),
+    false,
+  );
+  await (await app.browserWindow(popup)).evaluate((window) => window.close());
   const duplicate = await page.evaluate(() =>
     window.dot.command({ type: 'extension.install', builtin: 'scroll' }),
   );
@@ -191,8 +253,21 @@ try {
     rect.x >= 0 && rect.y >= 0 && rect.x + rect.width <= (await page.evaluate(() => innerWidth)),
   );
   console.log(
-    'PASS: clean menu, builtin DOM/CSS injection, toggle/remove, custom folder, persistence, private rejection, narrow menu',
+    'PASS: clean menu, builtin DOM/CSS injection, toggle/remove, MV3 service worker real tabs.query, action popup, background tabs.create, isolated interface, persistence, private rejection, narrow menu; every window hidden',
   );
+} catch (error) {
+  if (app) {
+    console.error(
+      'Extension worker diagnostics:',
+      await app
+        .evaluate(({ session }) => ({
+          workers: session.fromPartition('persist:dot-personal').serviceWorkers.getAllRunning(),
+          preloads: session.fromPartition('persist:dot-personal').getPreloadScripts(),
+        }))
+        .catch(() => null),
+    );
+  }
+  throw error;
 } finally {
   if (app) await app.close().catch(() => {});
   await new Promise((r) => server.close(r));

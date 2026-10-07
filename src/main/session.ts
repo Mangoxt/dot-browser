@@ -13,21 +13,25 @@ import { existsSync } from 'node:fs';
 import { extname } from 'node:path';
 import { BrowserData, DownloadItem, PermissionRequest, PermissionRule } from '../shared/models';
 import { isWebURL } from '../shared/navigation';
+import type { AdBlock } from './adblock';
 
 export interface SessionHost {
   data: BrowserData;
   changed(): void;
   permission(request: PermissionRequest, callback: (allowed: boolean) => void): void;
   toast(message: string): void;
+  blocked(contentsId: number): void;
 }
 export class BrowserSession {
   readonly session: Session;
   readonly liveDownloads = new Map<string, ElectronDownloadItem>();
   private permissionsOnce = new Map<string, Set<number>>();
   private attached = false;
+  private cosmetics = new Map<number, { key?: string }>();
   constructor(
     readonly partition: string,
     readonly hostFor: (contents: WebContents | null) => SessionHost | undefined,
+    private readonly adblock: AdBlock,
   ) {
     this.session = session.fromPartition(partition);
   }
@@ -76,22 +80,7 @@ export class BrowserSession {
     });
     // Hardware/device and display capture remain denied until a proper chooser exists.
     this.session.setDevicePermissionHandler(() => false);
-    this.session.webRequest.onBeforeRequest((details, callback) => {
-      const host = this.hostFor(details.webContents ?? null);
-      if (!host || host.data.settings.protection === 'off') {
-        callback({});
-        return;
-      }
-      const hostname = new URL(details.url).hostname;
-      const blocked = host.data.settings.blockedDomains.some(
-        (domain) => hostname === domain || hostname.endsWith(`.${domain}`),
-      );
-      callback({
-        cancel:
-          blocked &&
-          (host.data.settings.protection === 'strict' || details.resourceType !== 'mainFrame'),
-      });
-    });
+    this.configureBlocking();
     this.session.on('will-download', (_event, item, contents) => {
       const host = this.hostFor(contents);
       if (!host) {
@@ -160,6 +149,72 @@ export class BrowserSession {
       host.toast(`Downloading ${filename}`);
     });
   }
+  configureBlocking() {
+    const settings = this.hostFor(null)?.data.settings;
+    if (!settings || (settings.adblock === 'off' && settings.protection === 'off')) {
+      this.session.webRequest.onBeforeRequest(null);
+      return;
+    }
+    this.session.webRequest.onBeforeRequest((details, callback) => {
+      const contents = details.webContents ?? null;
+      const host = this.hostFor(contents);
+      let blocked = false;
+      if (host && contents && isWebURL(details.url)) {
+        const settings = host.data.settings;
+        const hostname = new URL(details.url).hostname;
+        blocked =
+          settings.protection !== 'off' &&
+          settings.blockedDomains.some(
+            (domain) => hostname === domain || hostname.endsWith(`.${domain}`),
+          ) &&
+          (settings.protection === 'strict' || details.resourceType !== 'mainFrame');
+        blocked ||= this.adblock.shouldBlock(
+          settings,
+          details.url,
+          contents.getURL(),
+          details.resourceType,
+        );
+        if (blocked) host.blocked(contents.id);
+      }
+      callback({ cancel: blocked });
+    });
+  }
+  resetBlocking(id: number) {
+    this.cosmetics.delete(id);
+  }
+  async applyCosmetics(contents: WebContents) {
+    if (contents.isDestroyed()) return;
+    const host = this.hostFor(contents);
+    if (!host) return;
+    const url = contents.getURL();
+    const previous = this.cosmetics.get(contents.id);
+    const state: { key?: string } = {};
+    this.cosmetics.set(contents.id, state);
+    try {
+      if (previous?.key) await contents.removeInsertedCSS(previous.key);
+      if (!isWebURL(url)) return;
+      const dom = await contents.executeJavaScript(
+        `(() => {const classes=new Set(), ids=new Set(); for(const el of Array.from(document.querySelectorAll('[class],[id]')).slice(0,10000)) { for(const cls of el.classList) if(classes.size<2000)classes.add(cls); if(el.id&&ids.size<1000)ids.add(el.id); } return {classes:[...classes],ids:[...ids]};})()`,
+      );
+      if (
+        contents.isDestroyed() ||
+        contents.getURL() !== url ||
+        this.cosmetics.get(contents.id) !== state
+      )
+        return;
+      const css = this.adblock.cosmetics(host.data.settings, url, dom.classes, dom.ids);
+      if (!css) return;
+      // Electron 44 fails to remove user-origin sheets. Author-origin !important
+      // rules stay removable when the user exempts a site or disables blocking.
+      const key = await contents.insertCSS(css, { cssOrigin: 'author' });
+      if (contents.isDestroyed()) return;
+      if (contents.getURL() !== url || this.cosmetics.get(contents.id) !== state)
+        await contents.removeInsertedCSS(key);
+      else state.key = key;
+    } catch {
+      /* Navigation may destroy a frame while styles are being applied. */
+    }
+  }
   revoke(origin: string, permission: string) {
     this.permissionsOnce.delete(`${origin}:${permission}`);
   }
@@ -220,6 +275,7 @@ export class BrowserSession {
     this.permissionsOnce.clear();
   }
   async cleanup() {
+    this.cosmetics.clear();
     this.permissionsOnce.clear();
     await this.session.clearStorageData();
     await this.session.clearCache();

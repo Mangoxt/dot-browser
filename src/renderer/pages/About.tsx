@@ -27,9 +27,19 @@ export function AboutContent() {
       <p>{tr('Built with Electron, Chromium, React, TypeScript, Zustand, Zod and Lucide.')}</p>
       <p className="muted">
         {tr(
-          'Dot source: MIT. Electron: MIT. React: MIT. Zustand: MIT. Zod: MIT. Lucide: ISC. Chromium uses BSD and third-party licenses included with the application distribution.',
+          'Dot source: GPL-3.0. Chrome extension bridge: GPL-3.0. Adblock engine: MPL-2.0. Filter lists: GPL-3.0. Electron and React: MIT. Chromium and other dependency licenses are included with the application.',
         )}
       </p>
+      <button
+        onClick={() =>
+          void window.dot.command({
+            type: 'tab.new',
+            url: 'https://github.com/Mangoxt/dot-browser',
+          })
+        }
+      >
+        {tr('Source code and licenses')}
+      </button>
     </div>
   );
 }

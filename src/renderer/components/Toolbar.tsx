@@ -22,11 +22,13 @@ import {
 import { bookmarkCurrent, command, openPage, patchSettings, useBrowser } from '../stores/browser';
 import { Favicon, IconButton } from './common';
 import { domainOf, isWebURL } from '../../shared/navigation';
+import { chromeStoreId } from '../../shared/extensions';
 export function Toolbar() {
   const { state, omnibox, set, open } = useBrowser();
   const tab = state?.tabs.find((t) => t.id === state.activeId);
   const [input, setInput] = useState('');
   const [index, setIndex] = useState(0);
+  const [installing, setInstalling] = useState(false);
   const ref = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (!omnibox) setInput(tab?.url.startsWith('browser://') ? '' : (tab?.url ?? ''));
@@ -297,6 +299,33 @@ export function Toolbar() {
         )}
       </div>
       <IconButton icon={Puzzle} label={tr('Extensions')} onClick={() => open('extensions')} />
+      {!state.private && chromeStoreId(tab.url) && (
+        <button
+          className="store-install-button"
+          disabled={installing}
+          onClick={async () => {
+            setInstalling(true);
+            try {
+              const result = await command({ type: 'extension.store', url: tab.url });
+              if (result.extensions?.some((e) => e.id === chromeStoreId(tab.url)))
+                open('extensions');
+            } finally {
+              setInstalling(false);
+            }
+          }}
+        >
+          <Puzzle size={15} />
+          {tr(installing ? 'Loading…' : 'Add to Dot')}
+        </button>
+      )}
+      {!state.private && tab.webContentsId && (
+        <browser-action-list
+          className="extension-actions"
+          partition="persist:dot-personal"
+          tab={String(tab.webContentsId)}
+          alignment="bottom left"
+        />
+      )}
       <IconButton
         icon={MoreHorizontal}
         label={tr('Browser menu')}

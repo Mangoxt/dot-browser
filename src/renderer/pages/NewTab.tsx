@@ -38,7 +38,9 @@ export default function NewTab() {
     if (recent.length === 3) break;
   }
   return (
-    <div className={`newtab background-${state.settings.background}`}>
+    <div
+      className={`newtab background-${state.settings.background} newtab-${state.settings.newTabLayout}`}
+    >
       <div className="newtab-top">
         <span>
           <span className="tiny-dot" />
@@ -54,33 +56,43 @@ export default function NewTab() {
       </div>
       <div className="newtab-center">
         <section className="newtab-hero" aria-labelledby="newtab-title">
-          <div className="newtab-hero-copy">
-            <span className="newtab-home-label">{tr('Home')}</span>
-            <h1 id="newtab-title">{tr('New tab')}</h1>
-            <p>{tr('Search, shortcuts and saved pages.')}</p>
-          </div>
-          <div className="newtab-clock">
-            <strong>
-              {now.toLocaleTimeString(state.settings.language, {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false,
-              })}
-            </strong>
-            <small>
-              {now.toLocaleDateString(state.settings.language, {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </small>
-          </div>
-          <div className="newtab-orbit" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <i />
-          </div>
+          {state.settings.newTabLayout === 'simple' ? (
+            <h1 id="newtab-title" className="sr-only">
+              {tr('New tab')}
+            </h1>
+          ) : (
+            <div className="newtab-hero-copy">
+              <span className="newtab-home-label">{tr('Home')}</span>
+              <h1 id="newtab-title">{tr('New tab')}</h1>
+              <p>{tr('Search, shortcuts and saved pages.')}</p>
+            </div>
+          )}
+          {state.settings.showNewTabClock && (
+            <div className="newtab-clock">
+              <strong>
+                {now.toLocaleTimeString(state.settings.language, {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                })}
+              </strong>
+              <small>
+                {now.toLocaleDateString(state.settings.language, {
+                  weekday: 'long',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </small>
+            </div>
+          )}
+          {state.settings.newTabLayout === 'dashboard' && (
+            <div className="newtab-orbit" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+              <i />
+            </div>
+          )}
           <form
             className="newtab-search"
             onSubmit={(e) => {
@@ -133,7 +145,7 @@ export default function NewTab() {
           <section className="newtab-shortcuts" aria-labelledby="shortcuts-title">
             <div className="newtab-section-heading">
               <h2 id="shortcuts-title">{tr('Shortcuts')}</h2>
-              <span>{tr('Drag to reorder')}</span>
+              {state.settings.newTabLayout === 'dashboard' && <span>{tr('Drag to reorder')}</span>}
             </div>
             <div className="speed-dial">
               {state.shortcuts.map((s, i) => (
@@ -211,43 +223,45 @@ export default function NewTab() {
               </div>
             )}
           </section>
-          <section className="newtab-reading" aria-labelledby="reading-title">
-            <div className="newtab-section-heading">
-              <h2 id="reading-title">
-                <BookOpen size={17} />
-                {tr('Reading list')}
-              </h2>
-              <IconButton
-                icon={ArrowUpRight}
-                label={tr('Open bookmarks')}
-                onClick={() => openPage('bookmarks')}
-              />
-            </div>
-            {reading.length ? (
-              <div className="newtab-reading-items">
-                {reading.map((b) => (
-                  <button
-                    key={b.id}
-                    title={b.url}
-                    onClick={() => void command({ type: 'tab.navigate', input: b.url })}
-                  >
-                    <Favicon url={b.favicon} size={18} />
-                    <span>
-                      <strong>{b.title}</strong>
-                      <small>{domainOf(b.url)}</small>
-                    </span>
-                    <ArrowUpRight size={13} />
-                  </button>
-                ))}
+          {(reading.length > 0 || state.settings.newTabLayout === 'dashboard') && (
+            <section className="newtab-reading" aria-labelledby="reading-title">
+              <div className="newtab-section-heading">
+                <h2 id="reading-title">
+                  <BookOpen size={17} />
+                  {tr('Reading list')}
+                </h2>
+                <IconButton
+                  icon={ArrowUpRight}
+                  label={tr('Open bookmarks')}
+                  onClick={() => openPage('bookmarks')}
+                />
               </div>
-            ) : (
-              <div className="newtab-reading-empty">
-                <BookOpen size={30} />
-                <strong>{tr('Keep a page for later')}</strong>
-                <p>{tr('Choose Read later in Page tools. Your saved pages appear here.')}</p>
-              </div>
-            )}
-          </section>
+              {reading.length ? (
+                <div className="newtab-reading-items">
+                  {reading.map((b) => (
+                    <button
+                      key={b.id}
+                      title={b.url}
+                      onClick={() => void command({ type: 'tab.navigate', input: b.url })}
+                    >
+                      <Favicon url={b.favicon} size={18} />
+                      <span>
+                        <strong>{b.title}</strong>
+                        <small>{domainOf(b.url)}</small>
+                      </span>
+                      <ArrowUpRight size={13} />
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="newtab-reading-empty">
+                  <BookOpen size={30} />
+                  <strong>{tr('Keep a page for later')}</strong>
+                  <p>{tr('Choose Read later in Page tools. Your saved pages appear here.')}</p>
+                </div>
+              )}
+            </section>
+          )}
         </div>
       </div>
       <div className="newtab-bottom">

@@ -32,6 +32,10 @@ import { domainOf, isWebURL, recordVisit, resolveInput, safeFavicon } from '../s
 import { BrowserSession, SessionHost, originOf, rememberRule } from './session';
 import { Storage } from './storage';
 import type { ExtensionManager } from './extensions';
+import { chromeStoreId } from '../shared/extensions';
+import type { ElectronChromeExtensions } from 'electron-chrome-extensions';
+import type { AdBlock } from './adblock';
+import { allowedExtensionURL } from './extension-bridge';
 import { releaseInfo, markReleaseSeen } from './release-notice';
 import { readProfile } from './profile-import';
 import { readingScript } from './reading';
@@ -60,7 +64,9 @@ interface LiveTab {
   shiftClickAt: number;
   pageTheme?: PageTheme;
 }
-interface BrowserHost {
+export interface BrowserHost {
+  bridge: ElectronChromeExtensions;
+  adblock: AdBlock;
   extensions: ExtensionManager;
   storage: Storage;
   sessions: Map<string, BrowserSession>;
@@ -129,10 +135,13 @@ export class BrowserController implements SessionHost {
     const partition = privateMode ? `private-${this.id}` : 'persist:dot-personal';
     let browserSession = host.sessions.get(partition);
     if (!browserSession) {
-      browserSession = new BrowserSession(partition, (contents) =>
-        [...host.windows.values()].find((w) =>
-          contents ? w.ownsContents(contents.id) : w.browserSession?.partition === partition,
-        ),
+      browserSession = new BrowserSession(
+        partition,
+        (contents) =>
+          [...host.windows.values()].find((w) =>
+            contents ? w.ownsContents(contents.id) : w.browserSession?.partition === partition,
+          ),
+        host.adblock,
       );
       host.sessions.set(partition, browserSession);
     }
@@ -374,7 +383,7 @@ export class BrowserController implements SessionHost {
   ) {
     if (!this.workspaces.some((w) => w.id === workspaceId)) throw new Error('Unknown workspace');
     if (this.tabs.length >= 200) throw new Error('Close some tabs before opening more');
-    const { url } = resolveInput(input, this.data.settings);
+    const { url } = this.resolve(input);
     const meta: BrowserTab = {
       connection: internalPage(url) ? 'internal' : 'pending',
       id: restore?.id ?? randomUUID(),
@@ -392,6 +401,7 @@ export class BrowserController implements SessionHost {
       audio: false,
       suspended: false,
       blockedPopups: 0,
+      blockedRequests: 0,
       error: null,
       processId: null,
       webContentsId: null,
@@ -424,6 +434,27 @@ export class BrowserController implements SessionHost {
     const name = internalPage(url) ?? 'newtab';
     return name === 'newtab' ? 'New tab' : name[0].toUpperCase() + name.slice(1);
   }
+  private resolve(input: string): { url: string; query?: string } {
+    if (
+      input === 'about:blank' ||
+      (!this.privateMode && allowedExtensionURL(input, this.browserSession.session))
+    )
+      return { url: input };
+    return resolveInput(input, this.data.settings);
+  }
+  blocked(contentsId: number) {
+    const tab = this.tabs.find((t) => t.view?.webContents.id === contentsId);
+    if (tab) {
+      tab.meta.blockedRequests = Math.min(1000000, tab.meta.blockedRequests + 1);
+      this.emit();
+    }
+  }
+  refreshBlocking() {
+    this.browserSession.configureBlocking();
+    for (const tab of this.tabs)
+      if (tab.view) void this.browserSession.applyCosmetics(tab.view.webContents);
+    this.emit();
+  }
   createView(tab: LiveTab) {
     if (tab.view || internalPage(tab.meta.url)) return;
     const view = new WebContentsView({
@@ -443,9 +474,21 @@ export class BrowserController implements SessionHost {
     this.window.contentView.addChildView(view);
     view.setVisible(false);
     const wc = view.webContents;
+    if (!this.privateMode) {
+      this.host.bridge.addTab(wc, this.window);
+      const selected = this.active()?.view?.webContents;
+      if (selected) this.host.bridge.selectTab(selected);
+    }
+    wc.on('did-start-navigation', (_event, _url, inPlace, mainFrame) => {
+      if (mainFrame && !inPlace) {
+        this.browserSession.resetBlocking(wc.id);
+        tab.meta.blockedRequests = 0;
+      }
+    });
     tab.pageTheme = new PageTheme(wc, (message) => this.host.storage.log('page-theme', message));
     tab.pageTheme.update(this.data.settings, tab.meta.url);
     wc.on('dom-ready', () => {
+      void this.browserSession.applyCosmetics(wc);
       tab.pageTheme?.invalidate();
       tab.pageTheme?.update(this.data.settings, tab.meta.url);
     });
@@ -510,6 +553,7 @@ export class BrowserController implements SessionHost {
     wc.on('media-started-playing', sync);
     wc.on('media-paused', sync);
     wc.on('focus', () => {
+      if (!this.privateMode) this.host.bridge.selectTab(wc);
       if (this.active()?.meta.id !== tab.meta.id) {
         this.tabCycle.reset();
         this.rememberRecentTab(tab.meta.id);
@@ -543,19 +587,31 @@ export class BrowserController implements SessionHost {
       this.layout();
     });
     wc.on('will-navigate', (event, url) => {
-      if (!isWebURL(url)) {
+      if (
+        !isWebURL(url) &&
+        !(
+          url === 'about:blank' ||
+          (!this.privateMode && allowedExtensionURL(url, this.browserSession.session))
+        )
+      ) {
         event.preventDefault();
         void this.external(url);
       }
     });
     wc.on('will-redirect', (event, url) => {
-      if (!isWebURL(url)) {
+      if (
+        !isWebURL(url) &&
+        !(!this.privateMode && allowedExtensionURL(url, this.browserSession.session))
+      ) {
         event.preventDefault();
         void this.external(url);
       }
     });
     wc.setWindowOpenHandler((details) => {
-      if (!isWebURL(details.url)) {
+      if (
+        !isWebURL(details.url) &&
+        !(!this.privateMode && allowedExtensionURL(details.url, this.browserSession.session))
+      ) {
         void this.external(details.url);
         return { action: 'deny' };
       }
@@ -602,7 +658,7 @@ export class BrowserController implements SessionHost {
     });
   }
   navigate(tab: LiveTab, input: string) {
-    const result = resolveInput(input, this.data.settings);
+    const result = this.resolve(input);
     if (result.query && !this.privateMode)
       this.data.searches = [
         result.query,
@@ -650,6 +706,7 @@ export class BrowserController implements SessionHost {
       if (g) g.collapsed = false;
     }
     this.createView(tab);
+    if (!this.privateMode && tab.view) this.host.bridge.selectTab(tab.view.webContents);
     this.pendingPageFocus = focusPage && this.layoutState.overlay && !!tab.view;
     this.layout();
     if (focusPage) tab.view?.webContents.focus();
@@ -658,11 +715,16 @@ export class BrowserController implements SessionHost {
   }
   destroyView(tab: LiveTab) {
     if (!tab.view) return;
-    this.cancelPermissions(tab.view.webContents.id);
-    this.browserSession.revokeContents(tab.view.webContents.id);
-    if (!this.window.isDestroyed()) this.window.contentView.removeChildView(tab.view);
-    if (!tab.view.webContents.isDestroyed()) tab.view.webContents.close();
+    const view = tab.view;
+    // Detach first: the bridge's removal callback must not close this tab again.
     tab.view = null;
+    if (!this.privateMode && !view.webContents.isDestroyed())
+      this.host.bridge.removeTab(view.webContents);
+    this.browserSession.resetBlocking(view.webContents.id);
+    this.cancelPermissions(view.webContents.id);
+    this.browserSession.revokeContents(view.webContents.id);
+    if (!this.window.isDestroyed()) this.window.contentView.removeChildView(view);
+    if (!view.webContents.isDestroyed()) view.webContents.close();
     tab.pageTheme = undefined;
   }
   close(tab: LiveTab) {
@@ -1401,6 +1463,14 @@ export class BrowserController implements SessionHost {
         if (c.patch.startupPages)
           for (const page of c.patch.startupPages) resolveInput(page, this.data.settings);
         Object.assign(this.data.settings, c.patch);
+        if (
+          c.patch.adblock !== undefined ||
+          c.patch.adblockExceptions ||
+          c.patch.protection !== undefined ||
+          c.patch.blockedDomains
+        )
+          for (const window of this.host.windows.values())
+            if (this.privateMode ? window === this : !window.privateMode) window.refreshBlocking();
         if (c.patch.siteZoom) this.applySiteZoom();
         break;
       }
@@ -1465,6 +1535,39 @@ export class BrowserController implements SessionHost {
         break;
       case 'extension.list':
         return { ok: true, extensions: this.host.extensions.list() };
+      case 'extension.store': {
+        if (this.privateMode) throw new Error('Eklentileri normal pencerede yönetin.');
+        const id = chromeStoreId(c.url);
+        if (!id) throw new Error('Invalid Chrome Web Store address');
+        const extensions = await this.host.extensions.installStore(id, async (name, manifest) => {
+          const grants = [
+            ...(Array.isArray(manifest.permissions) ? manifest.permissions : []),
+            ...(Array.isArray(manifest.host_permissions) ? manifest.host_permissions : []),
+          ];
+          for (const script of Array.isArray(manifest.content_scripts)
+            ? manifest.content_scripts
+            : [])
+            if (Array.isArray(script.matches)) grants.push(...script.matches);
+          const answer = await dialog.showMessageBox(this.window, {
+            type: 'question',
+            message: this.tr('Add {name}?', { name }),
+            detail: `${this.tr('Requested access')}\n${[...new Set(grants)].slice(0, 100).join('\n')}`,
+            buttons: [this.tr('Cancel'), this.tr('Add extension')],
+            defaultId: 0,
+            cancelId: 0,
+          });
+          return answer.response === 1;
+        });
+        this.host.broadcast();
+        return { ok: true, extensions };
+      }
+      case 'adblock.info':
+        return { ok: true, adblock: this.host.adblock.info() };
+      case 'adblock.update':
+        if (this.privateMode) throw new Error('Update filters in a normal window');
+        await this.host.adblock.update();
+        for (const window of this.host.windows.values()) window.refreshBlocking();
+        return { ok: true, adblock: this.host.adblock.info() };
       case 'extension.install': {
         if (this.privateMode) throw new Error('Eklentileri normal pencerede yönetin.');
         let path = '';
@@ -1992,6 +2095,21 @@ export class BrowserController implements SessionHost {
       { label: this.tr('View source'), click: () => this.run({ type: 'page', action: 'source' }) },
       { label: this.tr('Inspect element'), click: () => wc.inspectElement(params.x, params.y) },
     );
+    if (!this.privateMode) {
+      const extensionItems = this.host.bridge.getContextMenuItems(wc, params);
+      if (extensionItems.length)
+        items.push(
+          { type: 'separator' },
+          ...extensionItems.map((item): MenuItemConstructorOptions => ({
+            label: item.label,
+            enabled: item.enabled,
+            type: item.type,
+            checked: item.checked,
+            submenu: item.submenu,
+            click: (_menu, win, event) => item.click(item, win, event),
+          })),
+        );
+    }
     Menu.buildFromTemplate(items).popup({ window: this.window });
   }
   private finishTabCycle(input: Electron.InputEvent) {

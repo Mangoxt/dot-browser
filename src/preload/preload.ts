@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
+import { injectBrowserAction } from 'electron-chrome-extensions/browser-action';
 import type { BrowserAPI } from '../shared/ipc';
 import type { BrowserWindowState } from '../shared/models';
 // Only chrome receives this preload. Remote website views receive no bridge.
@@ -21,3 +22,4 @@ const api: BrowserAPI = {
   },
 };
 contextBridge.exposeInMainWorld('dot', api);
+injectBrowserAction();

@@ -80,8 +80,20 @@ try {
         createBox.x - (lastTab.x + lastTab.width) <= 8,
       'new-tab button follows the last visible tab without an unused gap',
     );
+    assert.ok(
+      Math.abs(createBox.y + createBox.height / 2 - (lastTab.y + lastTab.height / 2)) <= 1,
+      'new-tab button shares the tab vertical center',
+    );
+    assert.equal(
+      await create.evaluate((el) => getComputedStyle(el).borderColor),
+      'rgba(0, 0, 0, 0)',
+    );
   };
   await assertTrailingCreate();
+  await cmd({ type: 'settings', patch: { chromeStyle: 'soft' } });
+  await assertTrailingCreate();
+  await capture('test-results/chrome-soft.png');
+  await cmd({ type: 'settings', patch: { chromeStyle: 'classic' } });
   await create.click();
   await expect(page.getByRole('tab')).toHaveCount(2);
   await assertTrailingCreate();
@@ -103,6 +115,12 @@ try {
   await create.click();
   await expect(page.getByRole('tab')).toHaveCount(2);
   await assertTrailingCreate();
+  await expect(page.locator('.newtab-reading-empty')).toHaveCount(0);
+  await expect(page.locator('.newtab-orbit')).toHaveCount(0);
+  await capture('test-results/home-simple.png');
+  await cmd({ type: 'settings', patch: { showNewTabClock: false } });
+  await expect(page.locator('.newtab-clock')).toHaveCount(0);
+  await cmd({ type: 'settings', patch: { showNewTabClock: true, newTabLayout: 'dashboard' } });
   await expect(page.locator('.newtab-reading-empty')).toBeVisible();
   await cmd({ type: 'settings', patch: { language: 'tr-TR' } });
   await expect(page.locator('.newtab-hero h1')).toHaveText('Yeni sekme');

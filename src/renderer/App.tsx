@@ -259,7 +259,7 @@ export default function App() {
   };
   return (
     <div
-      className={`app ${dark ? 'dark' : 'light'} accent-${state.settings.accent} ${state.settings.compact ? 'compact' : ''} ${state.settings.animations ? '' : 'no-animation'}`}
+      className={`app ${dark ? 'dark' : 'light'} accent-${state.settings.accent} chrome-${state.settings.chromeStyle} ${state.settings.compact ? 'compact' : ''} ${state.settings.animations ? '' : 'no-animation'}`}
       style={
         {
           '--sidebar-width': `${sidebarWidth}px`,
