@@ -15,6 +15,7 @@ export function pageTheme(settings: BrowserSettings, url: string) {
 }
 
 export class PageTheme {
+  private attachedByTheme = false;
   private applied = '';
   private requested = '';
   private queue: Promise<void> = Promise.resolve();
@@ -24,6 +25,7 @@ export class PageTheme {
   ) {
     wc.debugger.on('detach', () => {
       this.applied = '';
+      this.attachedByTheme = false;
     });
   }
   update(settings: BrowserSettings, url: string) {
@@ -39,7 +41,10 @@ export class PageTheme {
           this.requested = '';
           return;
         }
-        if (!this.wc.debugger.isAttached()) this.wc.debugger.attach('1.3');
+        if (!this.wc.debugger.isAttached()) {
+          this.wc.debugger.attach('1.3');
+          this.attachedByTheme = true;
+        }
         // The bundled legacy night stylesheet also respects explicit light exceptions.
         // This boolean marker grants pages no bridge or privileged API.
         await this.wc.debugger
@@ -67,5 +72,11 @@ export class PageTheme {
   invalidate() {
     this.applied = '';
     this.requested = '';
+  }
+  ready() {
+    return this.queue;
+  }
+  ownsDebugger() {
+    return this.attachedByTheme && this.wc.debugger.isAttached();
   }
 }

@@ -26,7 +26,7 @@ npm run package
 npm run package:setup
 ```
 
-The Windows setup installer is `release/Dot-Browser-Setup-1.1.1.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
+The Windows setup installer is `release/Dot-Browser-Setup-1.2.0.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
 
 ### Automatic updates for installed copies
 
@@ -108,3 +108,5 @@ Memory saver skips pinned tabs and origins marked Never put this site to sleep i
 Copy clean link is an explicit Page tools action that removes common utm_, fbclid, gclid, dclid, msclkid and email-campaign query parameters. Other query keys and fragments remain intact. Ordinary Copy page link preserves the original address. No navigation is rewritten automatically.
 
 Each trusted interface and native webpage uses Electron 44 [isolated zoom mode](https://www.electronjs.org/docs/latest/api/web-contents#contentssetzoommodemode). Dot applies its own exact-origin preferences to normal windows, preventing one frame’s initial or changed zoom from affecting unrelated pages or the interface.
+
+Research-driven tools: Settings → Tabs & spaces can opt into recently used Ctrl+Tab order (default remains positional). Browser menu → Duplicate tabs reviews identical HTTP(S) URLs in the current workspace; select candidates before closing, with protected tabs kept. Page tools → Screenshot saves a PNG or copies an image, for the visible area or already-loaded full page. Capture does not resize or scroll the page; limits are 24,000 pixels per height and 40 million pixels per image.

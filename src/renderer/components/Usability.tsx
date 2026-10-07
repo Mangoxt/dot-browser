@@ -97,19 +97,22 @@ export function TabSearch() {
         aria-activedescendant={items[selected] ? `search-tab-${items[selected].id}` : undefined}
       />
       {mode === 'open' && (
-        <select
-          aria-label={tr('Filter tabs')}
-          value={filter}
-          onChange={(e) => {
-            setFilter(e.target.value);
-            setIndex(0);
-          }}
-        >
-          <option value="all">{tr('All tabs')}</option>
-          <option value="workspace">{tr('This workspace')}</option>
-          <option value="audio">{tr('Playing audio')}</option>
-          <option value="sleeping">{tr('Sleeping')}</option>
-        </select>
+        <>
+          <select
+            aria-label={tr('Filter tabs')}
+            value={filter}
+            onChange={(e) => {
+              setFilter(e.target.value);
+              setIndex(0);
+            }}
+          >
+            <option value="all">{tr('All tabs')}</option>
+            <option value="workspace">{tr('This workspace')}</option>
+            <option value="audio">{tr('Playing audio')}</option>
+            <option value="sleeping">{tr('Sleeping')}</option>
+          </select>
+          <button onClick={() => open('duplicates')}>{tr('Review duplicate tabs')}</button>
+        </>
       )}
       <div
         ref={results}

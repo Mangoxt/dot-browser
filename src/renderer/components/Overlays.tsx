@@ -30,6 +30,7 @@ import { ReadingView, TabSearch } from './Usability';
 import { WhatsNew } from './WhatsNew';
 import { BrowserMenu, Extensions } from './BrowserTools';
 import { SavedSessions } from './SavedSessions';
+import { DuplicateTabs, PageCapture } from './TabTools';
 import type { Bookmark, Shortcut, Workspace, TabGroup } from '../../shared/models';
 import type { SiteInfo } from '../../shared/ipc';
 import { isWebURL, resolveInput } from '../../shared/navigation';
@@ -106,6 +107,8 @@ export function Overlays() {
     browsermenu: 'Browser menu',
     extensions: 'Eklentiler',
     sessions: 'Saved sessions',
+    duplicates: 'Duplicate tabs',
+    capture: 'Screenshot',
   };
   return (
     <div
@@ -162,6 +165,8 @@ export function Overlays() {
         {overlay === 'browsermenu' && <BrowserMenu />}
         {overlay === 'extensions' && <Extensions />}
         {overlay === 'sessions' && <SavedSessions />}
+        {overlay === 'duplicates' && <DuplicateTabs />}
+        {overlay === 'capture' && <PageCapture />}
       </div>
     </div>
   );

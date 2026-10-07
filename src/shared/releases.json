@@ -1,5 +1,14 @@
 [
   {
+    "version": "1.2.0",
+    "date": "2026-10-07",
+    "changes": [
+      "Ctrl+Tab için isteğe bağlı son kullanım sırası eklendi. Ctrl basılı tutulduğunda sekmeler aynı sıra boyunca gezilir.",
+      "Yinelenen sekmeleri inceleyip seçerek kapatma eklendi. Aktif, sabitlenmiş, ses çalan, yüklenen ve bölünmüş görünümdeki sekmeler korunur.",
+      "Eklentisiz ekran görüntüsü eklendi: görünen alanı veya tam sayfayı PNG olarak kaydet ya da görüntüyü kopyala."
+    ]
+  },
+  {
     "version": "1.1.1",
     "date": "2026-10-07",
     "changes": [

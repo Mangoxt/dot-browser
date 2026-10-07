@@ -30,6 +30,21 @@ const settingsPatchSchema = z.object(
   ),
 ) as z.ZodType<Partial<BrowserSettings>>;
 export const commandSchema = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal('tab.cleanup'),
+    workspaceId: id,
+    tabs: z
+      .array(z.object({ id, url: z.string().max(8192) }))
+      .min(1)
+      .max(200),
+  }),
+  z.object({
+    type: z.literal('page.capture'),
+    mode: z.enum(['visible', 'full']),
+    destination: z.enum(['file', 'clipboard']),
+    id: id.optional(),
+    url: z.string().max(8192).optional(),
+  }),
   z.object({ type: z.literal('session.save'), name: z.string().trim().min(1).max(60) }),
   z.object({
     type: z.literal('session.action'),

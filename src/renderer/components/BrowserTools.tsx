@@ -21,6 +21,8 @@ import {
   Sparkles,
   Link,
   FolderClock,
+  Copy,
+  Camera,
   type LucideIcon,
 } from 'lucide-react';
 import type { ExtensionSummary } from '../../shared/extensions';
@@ -80,6 +82,7 @@ export function BrowserMenu() {
           'Ctrl Shift N',
         )}
         {item(Search, 'Search tabs', overlay('tabsearch'), 'Ctrl Shift A')}
+        {item(Copy, 'Duplicate tabs', overlay('duplicates'))}
       </div>
       <div className="menu-section">
         <p className="menu-section-label">{tr('Library')}</p>
@@ -126,6 +129,7 @@ export function BrowserMenu() {
       </div>
       <details className="menu-tools">
         <summary>{tr('Page tools')}</summary>
+        {item(Camera, 'Screenshot', overlay('capture'), undefined, !web)}
         {item(
           Link,
           'Copy page link',

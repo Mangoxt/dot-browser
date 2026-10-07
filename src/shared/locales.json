@@ -2660,10 +2660,175 @@
     "Die Schaltfläche Neuer Tab (+) steht jetzt direkt hinter dem letzten Tab. Sie bleibt auch bei überlaufenden Tabs sichtbar und erreichbar.",
     "Le bouton Nouvel onglet (+) se trouve désormais juste après le dernier onglet. Il reste visible et accessible quand les onglets débordent."
   ],
+  "Close the dialog before capturing this page.": [
+    "Close the dialog before capturing this page.",
+    "Görüntü almadan önce açık pencereyi kapat.",
+    "Vor der Aufnahme das Dialogfenster schließen.",
+    "Fermez la boîte de dialogue avant la capture."
+  ],
   "Tab no longer exists": [
     "Tab no longer exists",
     "Bu sekme artık yok.",
     "Dieser Tab existiert nicht mehr.",
     "Cet onglet n’existe plus."
+  ],
+  "Duplicate tabs": ["Duplicate tabs", "Yinelenen sekmeler", "Doppelte Tabs", "Onglets en double"],
+  "Review duplicate tabs": [
+    "Review duplicate tabs",
+    "Yinelenen sekmeleri incele",
+    "Doppelte Tabs prüfen",
+    "Examiner les doublons"
+  ],
+  "Identical addresses in {workspace}": [
+    "Identical addresses in {workspace}",
+    "{workspace} alanındaki aynı adresler",
+    "Identische Adressen in {workspace}",
+    "Adresses identiques dans {workspace}"
+  ],
+  "Current, pinned, playing, loading and split-view tabs are kept. Closing a selected tab discards its unsaved page state.": [
+    "Current, pinned, playing, loading and split-view tabs are kept. Closing a selected tab discards its unsaved page state.",
+    "Aktif, sabitlenmiş, ses çalan, yüklenen ve bölünmüş görünümdeki sekmeler korunur. Seçilen sekmeyi kapatınca kaydedilmemiş sayfa durumu kaybolur.",
+    "Aktive, angeheftete, abspielende, ladende und geteilte Tabs bleiben erhalten. Beim Schließen gehen ungespeicherte Seitenzustände verloren.",
+    "Les onglets actifs, épinglés, en lecture, en chargement et en vue partagée sont conservés. Fermer un onglet sélectionné supprime son état non enregistré."
+  ],
+  "No duplicate web tabs in this workspace.": [
+    "No duplicate web tabs in this workspace.",
+    "Bu çalışma alanında yinelenen web sekmesi yok.",
+    "Keine doppelten Web-Tabs in diesem Arbeitsbereich.",
+    "Aucun onglet web en double dans cet espace."
+  ],
+  "Select duplicates": [
+    "Select duplicates",
+    "Yinelenenleri seç",
+    "Duplikate auswählen",
+    "Sélectionner les doublons"
+  ],
+  "Select duplicate {title}": [
+    "Select duplicate {title}",
+    "Yinelenen {title} sekmesini seç",
+    "Duplikat {title} auswählen",
+    "Sélectionner le doublon {title}"
+  ],
+  "Keep": ["Keep", "Koru", "Behalten", "Conserver"],
+  "Close {count} selected tabs": [
+    "Close {count} selected tabs",
+    "Seçilen {count} sekmeyi kapat",
+    "{count} ausgewählte Tabs schließen",
+    "Fermer {count} onglets sélectionnés"
+  ],
+  "The tab list changed. Review duplicates again.": [
+    "The tab list changed. Review duplicates again.",
+    "Sekme listesi değişti. Yinelenenleri tekrar incele.",
+    "Die Tab-Liste hat sich geändert. Duplikate erneut prüfen.",
+    "La liste des onglets a changé. Vérifiez à nouveau les doublons."
+  ],
+  "Selected duplicate tabs closed": [
+    "Selected duplicate tabs closed",
+    "Seçilen yinelenen sekmeler kapatıldı",
+    "Ausgewählte doppelte Tabs geschlossen",
+    "Onglets en double sélectionnés fermés"
+  ],
+  "Switch tabs in recently used order": [
+    "Switch tabs in recently used order",
+    "Sekmeler arasında son kullanım sırasıyla geç",
+    "Tabs in zuletzt verwendeter Reihenfolge wechseln",
+    "Parcourir les onglets dans l’ordre d’utilisation récente"
+  ],
+  "Hold Ctrl and press Tab to cycle; release Ctrl to finish. Turn off to use tab order.": [
+    "Hold Ctrl and press Tab to cycle; release Ctrl to finish. Turn off to use tab order.",
+    "Ctrl basılıyken Tab ile geç; bitirmek için Ctrl tuşunu bırak. Kapalıyken sekme sırası kullanılır.",
+    "Strg halten und mit Tab wechseln; zum Beenden Strg loslassen. Ausgeschaltet gilt die Tab-Reihenfolge.",
+    "Maintenez Ctrl et appuyez sur Tab ; relâchez Ctrl pour terminer. Désactivez pour suivre l’ordre des onglets."
+  ],
+  "Screenshot": ["Screenshot", "Ekran görüntüsü", "Bildschirmfoto", "Capture d’écran"],
+  "Capture area": ["Capture area", "Görüntü alanı", "Aufnahmebereich", "Zone de capture"],
+  "Visible area": ["Visible area", "Görünen alan", "Sichtbarer Bereich", "Zone visible"],
+  "Full page": ["Full page", "Tam sayfa", "Ganze Seite", "Page entière"],
+  "Full page captures content already loaded. Images stay on this device.": [
+    "Full page captures content already loaded. Images stay on this device.",
+    "Tam sayfa, yüklenmiş içeriği alır. Görüntüler bu cihazda kalır.",
+    "Ganze Seite erfasst bereits geladene Inhalte. Bilder bleiben auf diesem Gerät.",
+    "Page entière capture le contenu déjà chargé. Les images restent sur cet appareil."
+  ],
+  "Copy image": ["Copy image", "Görüntüyü kopyala", "Bild kopieren", "Copier l’image"],
+  "Save PNG": ["Save PNG", "PNG kaydet", "PNG speichern", "Enregistrer le PNG"],
+  "PNG image": ["PNG image", "PNG görüntüsü", "PNG-Bild", "Image PNG"],
+  "Preparing screenshot…": [
+    "Preparing screenshot…",
+    "Ekran görüntüsü hazırlanıyor…",
+    "Bildschirmfoto wird vorbereitet…",
+    "Préparation de la capture…"
+  ],
+  "Screenshot saved": [
+    "Screenshot saved",
+    "Ekran görüntüsü kaydedildi",
+    "Bildschirmfoto gespeichert",
+    "Capture enregistrée"
+  ],
+  "Screenshot copied": [
+    "Screenshot copied",
+    "Ekran görüntüsü kopyalandı",
+    "Bildschirmfoto kopiert",
+    "Capture copiée"
+  ],
+  "A capture is already in progress.": [
+    "A capture is already in progress.",
+    "Bir görüntü alma işlemi zaten sürüyor.",
+    "Eine Aufnahme läuft bereits.",
+    "Une capture est déjà en cours."
+  ],
+  "The page changed. Capture it again.": [
+    "The page changed. Capture it again.",
+    "Sayfa değişti. Görüntüyü yeniden al.",
+    "Die Seite hat sich geändert. Erneut aufnehmen.",
+    "La page a changé. Capturez-la à nouveau."
+  ],
+  "Wait for a webpage to finish loading.": [
+    "Wait for a webpage to finish loading.",
+    "Web sayfasının yüklenmesini bekle.",
+    "Warten, bis die Webseite geladen ist.",
+    "Attendez la fin du chargement de la page."
+  ],
+  "Close developer tools before capturing this page.": [
+    "Close developer tools before capturing this page.",
+    "Görüntü almadan önce geliştirici araçlarını kapat.",
+    "Vor der Aufnahme die Entwicklerwerkzeuge schließen.",
+    "Fermez les outils de développement avant la capture."
+  ],
+  "This page is too large. Capture the visible area instead.": [
+    "This page is too large. Capture the visible area instead.",
+    "Bu sayfa çok büyük. Görünen alanın görüntüsünü al.",
+    "Diese Seite ist zu groß. Den sichtbaren Bereich aufnehmen.",
+    "Cette page est trop grande. Capturez la zone visible."
+  ],
+  "Could not capture this page. Try the visible area.": [
+    "Could not capture this page. Try the visible area.",
+    "Sayfanın görüntüsü alınamadı. Görünen alanı dene.",
+    "Seite konnte nicht aufgenommen werden. Sichtbaren Bereich versuchen.",
+    "Impossible de capturer la page. Essayez la zone visible."
+  ],
+  "Capture timed out. Try again.": [
+    "Capture timed out. Try again.",
+    "Görüntü alma süresi doldu. Tekrar dene.",
+    "Zeitüberschreitung bei der Aufnahme. Erneut versuchen.",
+    "La capture a expiré. Réessayez."
+  ],
+  "Ctrl+Tab için isteğe bağlı son kullanım sırası eklendi. Ctrl basılı tutulduğunda sekmeler aynı sıra boyunca gezilir.": [
+    "Optional recently used order for Ctrl+Tab. Holding Ctrl cycles through a fixed sequence of tabs.",
+    "Ctrl+Tab için isteğe bağlı son kullanım sırası eklendi. Ctrl basılı tutulduğunda sekmeler aynı sıra boyunca gezilir.",
+    "Optionale Reihenfolge nach letzter Nutzung für Strg+Tab. Bei gehaltenem Strg werden Tabs in einer festen Reihenfolge durchlaufen.",
+    "Ordre d’utilisation récente facultatif pour Ctrl+Tab. Maintenir Ctrl parcourt une séquence fixe d’onglets."
+  ],
+  "Yinelenen sekmeleri inceleyip seçerek kapatma eklendi. Aktif, sabitlenmiş, ses çalan, yüklenen ve bölünmüş görünümdeki sekmeler korunur.": [
+    "Review and selectively close duplicate tabs. Current, pinned, playing, loading and split-view tabs are kept.",
+    "Yinelenen sekmeleri inceleyip seçerek kapatma eklendi. Aktif, sabitlenmiş, ses çalan, yüklenen ve bölünmüş görünümdeki sekmeler korunur.",
+    "Doppelte Tabs prüfen und gezielt schließen. Aktive, angeheftete, abspielende, ladende und geteilte Tabs bleiben erhalten.",
+    "Examinez et fermez les doublons sélectionnés. Les onglets actifs, épinglés, en lecture, en chargement et en vue partagée sont conservés."
+  ],
+  "Eklentisiz ekran görüntüsü eklendi: görünen alanı veya tam sayfayı PNG olarak kaydet ya da görüntüyü kopyala.": [
+    "Built-in screenshots: save the visible area or full page as PNG, or copy the image.",
+    "Eklentisiz ekran görüntüsü eklendi: görünen alanı veya tam sayfayı PNG olarak kaydet ya da görüntüyü kopyala.",
+    "Integrierte Bildschirmfotos: sichtbaren Bereich oder ganze Seite als PNG speichern oder das Bild kopieren.",
+    "Captures intégrées : enregistrez la zone visible ou la page entière en PNG, ou copiez l’image."
   ]
 }

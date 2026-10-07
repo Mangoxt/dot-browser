@@ -58,6 +58,7 @@ export const settingsSchema = z.object({
   glass: z.number().min(0).max(1).default(0.8),
   radius: z.number().min(4).max(14).default(9),
   verticalTabs: z.boolean().default(false),
+  recentTabSwitching: z.boolean().default(false),
   sidebar: z.boolean().default(true),
   sidebarWidth: z.number().min(180).max(360).default(224),
   bookmarkBar: z.boolean().default(false),

@@ -132,6 +132,7 @@ export default function Settings() {
       | 'sidebar'
       | 'bookmarkBar'
       | 'verticalTabs'
+      | 'recentTabSwitching'
       | 'askDownload',
     label: string,
   ) => <Toggle label={tr(label)} checked={s[key]} onChange={(v) => patchSettings({ [key]: v })} />;
@@ -416,6 +417,12 @@ export default function Settings() {
         )}
         {section === 'tabs' && (
           <>
+            <Row
+              title="Switch tabs in recently used order"
+              detail="Hold Ctrl and press Tab to cycle; release Ctrl to finish. Turn off to use tab order."
+            >
+              {toggle('recentTabSwitching', 'Switch tabs in recently used order')}
+            </Row>
             <Row title={tr('Vertical tabs')} detail={tr('Show tabs in the sidebar.')}>
               {toggle('verticalTabs', 'Vertical tabs')}
             </Row>

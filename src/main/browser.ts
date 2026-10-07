@@ -4,6 +4,7 @@ import {
   WebContentsView,
   Menu,
   clipboard,
+  ClipboardItem,
   dialog,
   nativeTheme,
   shell,
@@ -38,6 +39,8 @@ import { readingSchema } from '../shared/reading';
 import { PageTheme } from './page-theme';
 import { translate } from '../shared/i18n';
 import { canAutoSleep, cleanLink, siteZoom, webOrigin } from '../shared/site-preferences';
+import { duplicateGroups, TabCycle } from '../shared/tab-tools';
+import { captureWebpage } from './page-capture';
 import { discoverProfiles } from './profile-discovery';
 import type { ImportSource, ImportReport } from '../shared/import';
 import {
@@ -96,6 +99,9 @@ export class BrowserController implements SessionHost {
   private findResult = { matches: 0, active: 0 };
   private pending = false;
   private pendingPageFocus = false;
+  private readonly tabCycle = new TabCycle();
+  private recentTabs: string[] = [];
+  private captureBusy = false;
   private memoryTimer: ReturnType<typeof setInterval>;
   private htmlFullscreen = false;
   private importSources = new Map<string, ImportSource>();
@@ -164,6 +170,7 @@ export class BrowserController implements SessionHost {
       },
     });
     this.window.setMenuBarVisibility(false);
+    this.window.on('blur', () => this.tabCycle.reset());
     this.window.webContents.setZoomMode('isolated');
     this.window.webContents.setZoomFactor(1);
     host.windows.set(this.id, this);
@@ -173,6 +180,7 @@ export class BrowserController implements SessionHost {
     this.window.webContents.on('before-input-event', (event, input) => {
       if (this.shortcut(input)) event.preventDefault();
     });
+    this.window.webContents.on('input-event', (_event, input) => this.finishTabCycle(input));
     this.window.webContents.on('render-process-gone', (_event, details) => {
       host.storage.log('chrome-crash', details.reason);
       this.window.webContents.reload();
@@ -400,6 +408,8 @@ export class BrowserController implements SessionHost {
       this.workspaceId = workspaceId;
       this.activeId = meta.id;
       this.split = null;
+      this.rememberRecentTab(meta.id);
+      this.tabCycle.reset();
     }
     if (!internalPage(url)) {
       if (restore && background) meta.suspended = true;
@@ -500,6 +510,10 @@ export class BrowserController implements SessionHost {
     wc.on('media-started-playing', sync);
     wc.on('media-paused', sync);
     wc.on('focus', () => {
+      if (this.active()?.meta.id !== tab.meta.id) {
+        this.tabCycle.reset();
+        this.rememberRecentTab(tab.meta.id);
+      }
       tab.lastUsed = Date.now();
       if (this.split) this.split.focused = tab.meta.id;
       else this.activeId = tab.meta.id;
@@ -508,6 +522,7 @@ export class BrowserController implements SessionHost {
     wc.on('before-input-event', (event, input) => {
       if (this.shortcut(input)) event.preventDefault();
     });
+    wc.on('input-event', (_event, input) => this.finishTabCycle(input));
     wc.on('before-mouse-event', (_event, input) => {
       if (input.type === 'mouseDown' && input.modifiers?.includes('shift'))
         tab.shiftClickAt = Date.now();
@@ -619,7 +634,12 @@ export class BrowserController implements SessionHost {
     this.layout();
     this.changed();
   }
-  select(tab: LiveTab, focusPage = true) {
+  private rememberRecentTab(id: string) {
+    this.recentTabs = [id, ...this.recentTabs.filter((other) => other !== id)].slice(0, 200);
+  }
+  select(tab: LiveTab, focusPage = true, cycling = false) {
+    if (!cycling) this.tabCycle.reset();
+    this.rememberRecentTab(tab.meta.id);
     this.workspaceId = tab.meta.workspaceId;
     this.activeId = tab.meta.id;
     tab.lastUsed = Date.now();
@@ -646,6 +666,8 @@ export class BrowserController implements SessionHost {
     tab.pageTheme = undefined;
   }
   close(tab: LiveTab) {
+    this.tabCycle.reset();
+    this.recentTabs = this.recentTabs.filter((id) => id !== tab.meta.id);
     const index = this.tabs.indexOf(tab);
     this.closedTabs.unshift({ tab: { ...tab.meta }, index });
     this.closedTabs.splice(30);
@@ -863,6 +885,28 @@ export class BrowserController implements SessionHost {
         break;
       case 'tab.new':
         this.addTab(c.url, c.background, c.workspaceId);
+        break;
+      case 'tab.cleanup': {
+        if (c.workspaceId !== this.workspaceId)
+          throw new Error('The tab list changed. Review duplicates again.');
+        const allowed = duplicateGroups(
+          this.tabs.map((t) => t.meta),
+          this.workspaceId,
+          this.activeId,
+          this.split,
+        ).flatMap((group) => group.removable);
+        const unique = new Map(c.tabs.map((tab) => [tab.id, tab.url]));
+        const closing = [...unique].map(([id, url]) => {
+          const tab = allowed.find((tab) => tab.id === id && tab.url === url);
+          if (!tab) throw new Error('The tab list changed. Review duplicates again.');
+          return this.tab(id);
+        });
+        for (const tab of closing) this.close(tab);
+        this.toast('Selected duplicate tabs closed');
+        break;
+      }
+      case 'page.capture':
+        await this.capturePage(c.mode, c.destination, c.id, c.url);
         break;
       case 'tab.navigate':
         this.navigate(this.tab(c.id), c.input);
@@ -1352,6 +1396,7 @@ export class BrowserController implements SessionHost {
         break;
       }
       case 'settings': {
+        if (c.patch.recentTabSwitching !== undefined) this.tabCycle.reset();
         if (c.patch.home) resolveInput(c.patch.home, this.data.settings);
         if (c.patch.startupPages)
           for (const page of c.patch.startupPages) resolveInput(page, this.data.settings);
@@ -1543,6 +1588,67 @@ export class BrowserController implements SessionHost {
     if (i < 0) return;
     const [item] = items.splice(i, 1);
     items.splice(Math.min(index, items.length), 0, item);
+  }
+  async capturePage(
+    mode: 'visible' | 'full',
+    destination: 'file' | 'clipboard',
+    id?: string,
+    expectedURL?: string,
+  ) {
+    if (this.captureBusy) throw new Error('A capture is already in progress.');
+    const tab = this.tab(id),
+      wc = tab.view?.webContents;
+    if (!wc || !isWebURL(tab.meta.url)) throw new Error('Open a webpage first');
+    this.captureBusy = true;
+    const url = wc.getURL();
+    let navigated = false;
+    const navigation = (
+      _event: Electron.Event,
+      _url: string,
+      _inPlace: boolean,
+      mainFrame: boolean,
+    ) => {
+      if (mainFrame) navigated = true;
+    };
+    wc.on('did-start-navigation', navigation);
+    try {
+      for (let attempt = 0; this.layoutState.overlay && attempt < 20; attempt++)
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      if (this.layoutState.overlay) throw new Error('Close the dialog before capturing this page.');
+      if (this.active() !== tab || (expectedURL && expectedURL !== url))
+        throw new Error('The page changed. Capture it again.');
+      let path: string | undefined;
+      if (destination === 'file') {
+        const selected = await dialog.showSaveDialog(this.window, {
+          defaultPath: `${tab.meta.title.replace(/[<>:"/\\|?*]/g, '_').slice(0, 80) || 'page'}.png`,
+          filters: [{ name: this.tr('PNG image'), extensions: ['png'] }],
+        });
+        if (selected.canceled || !selected.filePath) return;
+        path = selected.filePath;
+      }
+      if (navigated || wc.isDestroyed() || this.active() !== tab || wc.getURL() !== url)
+        throw new Error('The page changed. Capture it again.');
+      await tab.pageTheme?.ready();
+      const image = await captureWebpage(
+        wc,
+        mode,
+        tab.pageTheme?.ownsDebugger(),
+        screen.getDisplayMatching(this.window.getBounds()).scaleFactor,
+      );
+      if (navigated || wc.isDestroyed() || this.active() !== tab || wc.getURL() !== url)
+        throw new Error('The page changed. Capture it again.');
+      if (path) await writeFile(path, image.toPNG());
+      else
+        await clipboard.write([
+          new ClipboardItem({
+            'image/png': new Blob([Uint8Array.from(image.toPNG())], { type: 'image/png' }),
+          }),
+        ]);
+      this.toast(path ? 'Screenshot saved' : 'Screenshot copied');
+    } finally {
+      wc.removeListener('did-start-navigation', navigation);
+      this.captureBusy = false;
+    }
   }
   async pageAction(action: string) {
     const t = this.tab(),
@@ -1888,7 +1994,17 @@ export class BrowserController implements SessionHost {
     );
     Menu.buildFromTemplate(items).popup({ window: this.window });
   }
+  private finishTabCycle(input: Electron.InputEvent) {
+    if (
+      input.type === 'keyUp' &&
+      !input.modifiers?.some((modifier) => ['control', 'meta'].includes(modifier))
+    )
+      this.tabCycle.reset();
+  }
   shortcut(input: Electron.Input) {
+    if (!input.control && !input.meta) this.tabCycle.reset();
+    if (input.type === 'keyUp' && ['control', 'meta'].includes(input.key.toLowerCase()))
+      this.tabCycle.reset();
     if (input.type !== 'keyDown') return false;
     const key = input.key.toLowerCase(),
       ctrl = input.control || input.meta,
@@ -1905,7 +2021,16 @@ export class BrowserController implements SessionHost {
     else if (ctrl && key === 'tab') {
       const tabs = this.tabs.filter((t) => t.meta.workspaceId === this.workspaceId);
       const i = tabs.findIndex((t) => t.meta.id === this.activeId);
-      this.select(tabs[(i + (shift ? -1 : 1) + tabs.length) % tabs.length]);
+      if (this.data.settings.recentTabSwitching) {
+        const id = this.tabCycle.next(
+          tabs.map((t) => t.meta),
+          this.workspaceId,
+          this.activeId,
+          this.recentTabs,
+          shift,
+        );
+        if (id) this.select(this.tab(id), true, true);
+      } else if (tabs.length) this.select(tabs[(i + (shift ? -1 : 1) + tabs.length) % tabs.length]);
     } else if (ctrl && /^[1-9]$/.test(key)) {
       const tabs = this.tabs.filter((t) => t.meta.workspaceId === this.workspaceId);
       const t = tabs[key === '9' ? tabs.length - 1 : Number(key) - 1];

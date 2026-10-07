@@ -3179,6 +3179,81 @@ form > label select {
   }
 }
 /* Home page: a framed search area, quieter depth and a separate reading shelf. */
+.modal:has(.duplicate-tabs) {
+  width: 560px;
+}
+.duplicate-tabs,
+.page-capture {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.duplicate-tabs > p,
+.page-capture > p {
+  margin: 0;
+}
+.duplicate-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.duplicate-group {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  min-width: 0;
+}
+.duplicate-group > p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  font-size: calc(12px * var(--text-scale, 1));
+  margin: 0 0 10px;
+}
+.duplicate-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  min-width: 0;
+}
+.duplicate-row input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  margin: 0;
+  accent-color: var(--accent);
+}
+.duplicate-row > span,
+.capture-heading > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+.duplicate-row small {
+  color: var(--text-secondary);
+  flex: none;
+}
+.capture-heading,
+.capture-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.capture-heading svg {
+  color: var(--accent);
+  flex: none;
+}
+.capture-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.page-capture select {
+  width: 100%;
+}
 .tab-controls.tab-create {
   flex: none;
   padding-right: 0;

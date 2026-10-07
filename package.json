@@ -1,7 +1,7 @@
 {
   "name": "dot-browser",
   "productName": "Dot Browser",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Desktop web browser with tabs, workspaces and private windows.",
   "author": "Dot Browser",
   "repository": {
