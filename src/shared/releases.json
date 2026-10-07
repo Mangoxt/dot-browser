@@ -1,5 +1,14 @@
 [
   {
+    "version": "1.3.2",
+    "date": "2026-10-07",
+    "changes": [
+      "Yeni sekme sayfası yeniden tasarlandı: ortalanmış arama, arama motoru seçimi ve kompakt site kısayolları.",
+      "Yeni sekmede Özelleştir paneli eklendi: sade veya geniş düzen, üç arka plan ve saat, geçmiş, okuma listesi seçenekleri.",
+      "Kısayollar için düzenleme ve klavyeyle sıralama menüsü eklendi; boş kartlar kaldırıldı ve gizli yeni sekmede kişisel listeler gizlendi."
+    ]
+  },
+  {
     "version": "1.3.1",
     "date": "2026-10-07",
     "changes": [

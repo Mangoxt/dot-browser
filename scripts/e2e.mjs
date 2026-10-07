@@ -502,11 +502,13 @@ try {
     await page.getByRole('button', { name: 'Save', exact: true }).click();
     await expect(page.locator('.speed-dial')).toContainText('Local fixture');
     await page.locator('.speed-item').filter({ hasText: 'Local fixture' }).hover();
-    await page.getByRole('button', { name: 'Edit Local fixture' }).click();
+    await page.getByRole('button', { name: 'Options for Local fixture' }).click();
+    await page.getByRole('menuitem', { name: 'Edit Local fixture' }).click();
     await page.getByLabel('Shortcut name', { exact: true }).fill('Edited fixture');
     await page.getByRole('button', { name: 'Save', exact: true }).click();
     await page.locator('.speed-item').filter({ hasText: 'Edited fixture' }).hover();
-    await page.getByRole('button', { name: 'Remove Edited fixture' }).click();
+    await page.getByRole('button', { name: 'Options for Edited fixture' }).click();
+    await page.getByRole('menuitem', { name: 'Remove Edited fixture' }).click();
     assert.equal(
       (await snap()).shortcuts.some((s) => s.title === 'Edited fixture'),
       false,

@@ -53,14 +53,14 @@ try {
   const capture = async (path) => {
     if (!process.env.DOT_PACKAGED) return page.screenshot({ path, animations: 'disabled' });
     await win.evaluate(async (w) => {
-      await w.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true });
+      await w.webContents.capturePage(undefined, { stayHidden: false, stayAwake: true });
     });
     await page.evaluate(
       () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))),
     );
     const bytes = await win.evaluate(async (w) => {
       const image = await w.webContents.capturePage(undefined, {
-        stayHidden: true,
+        stayHidden: false,
         stayAwake: true,
       });
       if (image.isEmpty()) throw new Error('Empty hidden interface capture');
@@ -121,7 +121,8 @@ try {
   await cmd({ type: 'settings', patch: { showNewTabClock: false } });
   await expect(page.locator('.newtab-clock')).toHaveCount(0);
   await cmd({ type: 'settings', patch: { showNewTabClock: true, newTabLayout: 'dashboard' } });
-  await expect(page.locator('.newtab-reading-empty')).toBeVisible();
+  await expect(page.locator('.newtab-reading-empty')).toHaveCount(0);
+  await expect(page.locator('.newtab')).toHaveClass(/newtab-dashboard/);
   await cmd({ type: 'settings', patch: { language: 'tr-TR' } });
   await expect(page.locator('.newtab-hero h1')).toHaveText('Yeni sekme');
   await capture('test-results/home-empty-tr.png');
@@ -153,8 +154,8 @@ try {
   await expect(page.locator('.recent-sites')).toContainText('Owned home fixture');
   for (const background of ['plain', 'grid', 'orbital']) {
     await cmd({ type: 'settings', patch: { background } });
-    if (background === 'orbital') await expect(page.locator('.newtab-orbit')).toBeVisible();
-    else await expect(page.locator('.newtab-orbit')).toBeHidden();
+    await expect(page.locator('.newtab')).toHaveClass(new RegExp(`background-${background}`));
+    await expect(page.locator('.newtab-orbit')).toHaveCount(0);
   }
   for (let i = 0; i < 6; i++)
     await cmd({
@@ -169,7 +170,7 @@ try {
     await cmd({ type: 'settings', patch: { theme } });
     await win.evaluate(async (w) => {
       w.setSize(1280, 850);
-      await w.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true });
+      await w.webContents.capturePage(undefined, { stayHidden: false, stayAwake: true });
     });
     await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1280);
     await expect(page.locator('.newtab-library')).toBeVisible();
@@ -177,7 +178,7 @@ try {
   }
   await win.evaluate(async (w) => {
     w.setSize(760, 600);
-    await w.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true });
+    await w.webContents.capturePage(undefined, { stayHidden: false, stayAwake: true });
   });
   await expect.poll(() => page.evaluate(() => innerWidth)).toBe(760);
   await cmd({ type: 'settings', patch: { textScale: 1.3 } });
@@ -264,7 +265,7 @@ try {
   await cmd({ type: 'settings', patch: { sidebar: true, verticalTabs: true } });
   await win.evaluate(async (w) => {
     w.setSize(1280, 850);
-    await w.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true });
+    await w.webContents.capturePage(undefined, { stayHidden: false, stayAwake: true });
   });
   await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1280);
   await expect(page.locator('.tabs-container.vertical')).toHaveCount(1);
@@ -276,7 +277,7 @@ try {
   await expect(page.locator('[role="tab"]').nth(1)).toHaveAttribute('aria-selected', 'true');
   await win.evaluate(async (w) => {
     w.setSize(760, 600);
-    await w.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true });
+    await w.webContents.capturePage(undefined, { stayHidden: false, stayAwake: true });
   });
   await expect.poll(() => page.evaluate(() => innerWidth)).toBe(760);
   await expect(page.locator('.tabs-container.vertical')).toHaveCount(0);

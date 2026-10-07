@@ -173,6 +173,8 @@ export default function Settings() {
       | 'animations'
       | 'forceDarkPages'
       | 'showNewTabClock'
+      | 'showNewTabRecent'
+      | 'showNewTabReading'
       | 'sidebar'
       | 'bookmarkBar'
       | 'verticalTabs'
@@ -312,12 +314,16 @@ export default function Settings() {
             <Row title={tr('New tab layout')}>
               {select('newTabLayout', [
                 ['simple', 'Simple'],
-                ['dashboard', 'Dashboard'],
+                ['dashboard', 'Expanded'],
               ])}
             </Row>
             <Row title={tr('Clock on new tabs')}>
               {toggle('showNewTabClock', 'Clock on new tabs')}
             </Row>
+            <Row title={tr('Recently visited')}>
+              {toggle('showNewTabRecent', 'Recently visited')}
+            </Row>
+            <Row title={tr('Reading list')}>{toggle('showNewTabReading', 'Reading list')}</Row>
             {!!s.siteZoom.length && (
               <Row
                 title={tr('Remembered site zoom')}
@@ -345,7 +351,7 @@ export default function Settings() {
             <Row title={tr('Animations')}>{toggle('animations', 'Enable animations')}</Row>
             <Row title={tr('New tab background')}>
               {select('background', [
-                ['orbital', 'Orbital'],
+                ['orbital', 'Soft color'],
                 ['plain', 'Minimal'],
                 ['grid', 'Grid'],
               ])}

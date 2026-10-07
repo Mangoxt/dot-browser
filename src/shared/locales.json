@@ -807,7 +807,7 @@
   ],
   "Search or enter an address": [
     "Search or enter an address",
-    "Ara veya adres yaz",
+    "Adres gir veya ara",
     "Suchen oder Adresse eingeben",
     "Rechercher ou saisir une adresse"
   ],
@@ -3011,5 +3011,58 @@
     "Menü dar ekranlara ve büyütülmüş yazılara uyarlanır; sayfa araçları açık sekmeye göre etkinleştirilir.",
     "Das Menü passt sich kleinen Fenstern und größerem Text an; Seitenaktionen folgen dem aktuellen Tab.",
     "Le menu s’adapte aux petites fenêtres et au texte agrandi ; les actions suivent l’onglet actif."
+  ],
+  "Options for {name}": [
+    "Options for {name}",
+    "{name} için seçenekler",
+    "Optionen für {name}",
+    "Options pour {name}"
+  ],
+  "Shortcut options": [
+    "Shortcut options",
+    "Kısayol seçenekleri",
+    "Verknüpfungsoptionen",
+    "Options du raccourci"
+  ],
+  "Move earlier": ["Move earlier", "Öne taşı", "Nach vorne verschieben", "Déplacer avant"],
+  "Move later": ["Move later", "Arkaya taşı", "Nach hinten verschieben", "Déplacer après"],
+  "Recently visited": [
+    "Recently visited",
+    "Son ziyaret edilenler",
+    "Zuletzt besucht",
+    "Visités récemment"
+  ],
+  "Customize new tab": [
+    "Customize new tab",
+    "Yeni sekmeyi özelleştir",
+    "Neuen Tab anpassen",
+    "Personnaliser le nouvel onglet"
+  ],
+  "Expanded": ["Expanded", "Geniş", "Erweitert", "Étendue"],
+  "Soft color": ["Soft color", "Hafif renk", "Sanfte Farbe", "Couleur douce"],
+  "Visible sections": [
+    "Visible sections",
+    "Görünür bölümler",
+    "Sichtbare Bereiche",
+    "Sections visibles"
+  ],
+  "Search engine": ["Search engine", "Arama motoru", "Suchmaschine", "Moteur de recherche"],
+  "Yeni sekme sayfası yeniden tasarlandı: ortalanmış arama, arama motoru seçimi ve kompakt site kısayolları.": [
+    "The new tab page has been redesigned with centered search, an engine selector and compact site shortcuts.",
+    "Yeni sekme sayfası yeniden tasarlandı: ortalanmış arama, arama motoru seçimi ve kompakt site kısayolları.",
+    "Die neue Tab-Seite wurde mit zentraler Suche, Suchmaschinenauswahl und kompakten Website-Verknüpfungen neu gestaltet.",
+    "Le nouvel onglet a été repensé avec une recherche centrale, un choix de moteur et des raccourcis compacts."
+  ],
+  "Yeni sekmede Özelleştir paneli eklendi: sade veya geniş düzen, üç arka plan ve saat, geçmiş, okuma listesi seçenekleri.": [
+    "Customize the new tab page directly: choose simple or expanded layouts, three backgrounds and visible clock, history and reading-list sections.",
+    "Yeni sekmede Özelleştir paneli eklendi: sade veya geniş düzen, üç arka plan ve saat, geçmiş, okuma listesi seçenekleri.",
+    "Die neue Tab-Seite lässt sich direkt anpassen: einfache oder erweiterte Ansicht, drei Hintergründe und sichtbare Uhr-, Verlauf- und Leselistenbereiche.",
+    "Personnalisez directement le nouvel onglet : disposition simple ou étendue, trois arrière-plans et affichage de l’horloge, de l’historique et de la liste de lecture."
+  ],
+  "Kısayollar için düzenleme ve klavyeyle sıralama menüsü eklendi; boş kartlar kaldırıldı ve gizli yeni sekmede kişisel listeler gizlendi.": [
+    "Shortcuts now have edit and keyboard-reordering menus. Empty cards are removed, and personal lists stay hidden on private new tabs.",
+    "Kısayollar için düzenleme ve klavyeyle sıralama menüsü eklendi; boş kartlar kaldırıldı ve gizli yeni sekmede kişisel listeler gizlendi.",
+    "Verknüpfungen haben Menüs zum Bearbeiten und Sortieren per Tastatur. Leere Karten entfallen und persönliche Listen bleiben in privaten neuen Tabs verborgen.",
+    "Les raccourcis ont un menu de modification et de classement au clavier. Les cartes vides sont supprimées et les listes personnelles masquées dans les nouveaux onglets privés."
   ]
 }

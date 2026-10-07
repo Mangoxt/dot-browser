@@ -42,14 +42,14 @@ try {
     const path = `test-results/polish-${name}${process.env.DOT_PACKAGED ? '-packaged' : ''}.png`;
     if (!process.env.DOT_PACKAGED) return page.screenshot({ path, animations: 'disabled' });
     await win.evaluate(async (w) =>
-      w.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true }),
+      w.webContents.capturePage(undefined, { stayHidden: false, stayAwake: true }),
     );
     await page.evaluate(
       () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))),
     );
     const bytes = await win.evaluate(async (w) => {
       const image = await w.webContents.capturePage(undefined, {
-        stayHidden: true,
+        stayHidden: false,
         stayAwake: true,
       });
       if (image.isEmpty()) throw new Error('Empty hidden capture');
@@ -160,8 +160,10 @@ try {
   const address = page.getByRole('combobox', { name: 'Address and search', exact: true });
   await address.fill('Owned keyboard fixture');
   await expect(address).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.getByRole('option')).toHaveCount(9);
-  await expect(page.getByRole('option').filter({ hasText: 'Switch to tab' })).toHaveCount(2);
+  await expect(page.getByRole('listbox').getByRole('option')).toHaveCount(9);
+  await expect(
+    page.getByRole('listbox').getByRole('option').filter({ hasText: 'Switch to tab' }),
+  ).toHaveCount(2);
   assert.equal(
     await page.locator('.suggestion-kind').filter({ hasText: 'history' }).count(),
     0,
@@ -176,7 +178,7 @@ try {
     await cmd({ type: 'settings', patch: { compact, textScale: 1.3 } });
     await win.evaluate(async (w) => {
       w.setSize(760, 600);
-      await w.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true });
+      await w.webContents.capturePage(undefined, { stayHidden: false, stayAwake: true });
     });
     await expect.poll(() => page.evaluate(() => innerWidth)).toBe(760);
     const all = page.getByRole('button', { name: 'All bookmarks', exact: true });
@@ -201,7 +203,7 @@ try {
   await cmd({ type: 'settings', patch: { compact: false, textScale: 1, language: 'tr-TR' } });
   await win.evaluate(async (w) => {
     w.setSize(1360, 900);
-    await w.webContents.capturePage(undefined, { stayHidden: true, stayAwake: true });
+    await w.webContents.capturePage(undefined, { stayHidden: false, stayAwake: true });
   });
   await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1360);
   await capture('home');

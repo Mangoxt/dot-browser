@@ -1,7 +1,7 @@
-# Corresponding source for Dot Browser 1.3.1
+# Corresponding source for Dot Browser 1.3.2
 
-Dot Browser 1.3.1 is licensed GPL-3.0-only. The release provides
-`Dot-Browser-Source-1.3.1.zip` alongside its installer. It contains the tagged Dot
+Dot Browser 1.3.2 is licensed GPL-3.0-only. The release provides
+`Dot-Browser-Source-1.3.2.zip` alongside its installer. It contains the tagged Dot
 source (including build scripts, lockfile, assets and licenses) and unmodified
 source archives for the GPL extension bridge and MPL filtering engine.
 
@@ -36,5 +36,5 @@ workspace packages and build configuration. Upstream archives and their
 licenses are preserved without modification. Electron/Chromium notices and
 other dependency licenses also accompany the installed application.
 
-The public repository tag `v1.3.1` identifies the same Dot source as the archive:
-https://github.com/Mangoxt/dot-browser/tree/v1.3.1
+The public repository tag `v1.3.2` identifies the same Dot source as the archive:
+https://github.com/Mangoxt/dot-browser/tree/v1.3.2

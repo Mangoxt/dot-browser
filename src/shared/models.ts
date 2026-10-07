@@ -57,6 +57,8 @@ export const settingsSchema = z.object({
   chromeStyle: z.enum(['classic', 'soft']).default('classic'),
   newTabLayout: z.enum(['simple', 'dashboard']).default('simple'),
   showNewTabClock: z.boolean().default(true),
+  showNewTabRecent: z.boolean().default(true),
+  showNewTabReading: z.boolean().default(true),
   animations: z.boolean().default(true),
   glass: z.number().min(0).max(1).default(0.8),
   radius: z.number().min(4).max(14).default(9),
