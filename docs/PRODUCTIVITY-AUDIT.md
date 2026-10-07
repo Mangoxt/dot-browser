@@ -24,4 +24,6 @@ Source chrome/focus, motion, release-notice and language/theme integrations pass
 
 Installer: 115,327,064 bytes. SHA-256: `eadb0d877a7a2ab45f742e366f8f33f6d72b4e7d5d6b73af3e0277d0eaa29043`.
 
-Public assets and live update-feed verification pending.
+[Release v1.1.0](https://github.com/Mangoxt/dot-browser/releases/tag/v1.1.0) is public. [Windows setup](https://github.com/Mangoxt/dot-browser/releases/download/v1.1.0/Dot-Browser-Setup-1.1.0.exe), blockmap and `latest.yml` match local sizes and GitHub's SHA-256 digests. The stable setup link returns HTTP 200. Release source commit: `47afd51d6c921851984f16c7edbed29326c04c27`.
+
+The real updater in the final packaged application, using a separate hidden profile simulating installed version 1.0.10, detects 1.1.0 and the correct installer filename. Downloads and installation were disabled for this check. The user's installed browser was not restarted or modified.
