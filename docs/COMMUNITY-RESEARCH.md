@@ -28,4 +28,10 @@ Capture closes its chooser before taking the image. A native page capture flushe
 
 Four interface languages pass at 130% text scale and a 760-pixel window without horizontal dialog overflow. Turkish source/packaged screenshots were visually inspected. Physical modifier-key release, foreground focus, OS clipboard paste, real save dialogs, screen readers and multi-monitor/high-DPI behavior remain manual checks; no installer was executed or running user app restarted for verification.
 
-Public release and update-feed details are recorded after publication.
+## Published release
+
+[Release v1.2.0](https://github.com/Mangoxt/dot-browser/releases/tag/v1.2.0) is public. The [Windows setup](https://github.com/Mangoxt/dot-browser/releases/download/v1.2.0/Dot-Browser-Setup-1.2.0.exe), its blockmap and `latest.yml` match the checked local files by size and GitHub SHA-256 digest. The stable setup URL returns HTTP 200. Release source commit: `f34744fc6afb88ca6e71d1ffe0b3574dbc0713ca`.
+
+Installer size: 115,340,858 bytes. SHA-256: `ce1d6200f51206e6324c8b55e6e7350d88792dc11565262974433277950266e6`.
+
+The real packaged updater in a separate hidden temporary profile, simulating installed version 1.1.1, detects 1.2.0 and `Dot-Browser-Setup-1.2.0.exe` from the public feed. Downloads and installation were disabled for this check. The user's running app was not changed or restarted. The existing app behavior downloads updates automatically and installs them on quit; the existing once-per-version release popup lists all three changes in each interface language.
