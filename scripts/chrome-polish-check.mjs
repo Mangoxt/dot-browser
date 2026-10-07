@@ -70,16 +70,20 @@ try {
   await expect(page.locator('.menu-zoom')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Zoom in', exact: true })).toBeDisabled();
   const close = page.getByRole('button', { name: 'Close dialog', exact: true });
-  await close.focus();
+  const profile = page.getByRole('button', { name: 'Profile and import', exact: true });
+  await profile.focus();
   await page.keyboard.press('Shift+Tab');
   await expect(page.getByRole('button', { name: 'About Dot', exact: true })).toBeFocused();
   await page.keyboard.press('Tab');
-  await expect(close).toBeFocused();
-  await page.getByText('Page tools', { exact: true }).focus();
+  await expect(profile).toBeFocused();
+  await page.getByRole('button', { name: 'Page tools', exact: true }).focus();
   await page.keyboard.press('Enter');
-  await expect(page.locator('.menu-tools')).toHaveAttribute('open', '');
+  await expect(page.locator('[data-menu-view="page"]')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Back to menu', exact: true })).toBeFocused();
   await page.keyboard.press('Tab');
-  await expect(page.getByRole('button', { name: 'Split view', exact: true })).toBeFocused();
+  await expect(close).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: 'Page tools', exact: true })).toBeFocused();
   await page.getByRole('button', { name: 'Extensions', exact: true }).last().click();
   await expect(page.getByRole('dialog', { name: 'Extensions', exact: true })).toBeVisible();
   assert.ok(

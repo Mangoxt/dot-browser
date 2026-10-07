@@ -105,6 +105,7 @@ async function capture(name) {
 }
 async function openSessions(target = page) {
   await target.getByRole('button', { name: 'Browser menu', exact: true }).click();
+  await target.getByRole('button', { name: 'Tabs and windows', exact: true }).click();
   await target.getByRole('button', { name: 'Saved sessions', exact: true }).click();
   await expect(target.getByRole('dialog', { name: 'Saved sessions', exact: true })).toBeVisible();
 }

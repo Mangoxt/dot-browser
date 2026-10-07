@@ -527,7 +527,7 @@ try {
   });
   await step('Side panel sections and sidebar controls', async () => {
     await page.getByRole('button', { name: 'Browser menu', exact: true }).click();
-    await page.getByText('Page tools', { exact: true }).click();
+    await page.getByRole('button', { name: 'Tabs and windows', exact: true }).click();
     await page.getByRole('button', { name: 'Bookmarks side panel', exact: true }).click();
     await expect(page.getByRole('dialog', { name: 'Browser menu', exact: true })).toHaveCount(0);
     await expect(page.locator('.side-panel')).toBeVisible();

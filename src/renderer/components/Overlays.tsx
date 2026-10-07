@@ -28,7 +28,8 @@ import { DownloadList } from '../pages/Library';
 import { PasswordManager } from './PasswordManager';
 import { ReadingView, TabSearch } from './Usability';
 import { WhatsNew } from './WhatsNew';
-import { BrowserMenu, Extensions } from './BrowserTools';
+import { Extensions } from './BrowserTools';
+import { BrowserMenu } from './BrowserMenu';
 import { SavedSessions } from './SavedSessions';
 import { DuplicateTabs, PageCapture } from './TabTools';
 import type { Bookmark, Shortcut, Workspace, TabGroup } from '../../shared/models';
@@ -126,7 +127,7 @@ export function Overlays() {
         aria-label={tr(titles[overlay])}
         tabIndex={-1}
       >
-        {overlay !== 'palette' && (
+        {overlay !== 'palette' && overlay !== 'browsermenu' && (
           <div className="modal-heading">
             <h2>{tr(titles[overlay])}</h2>
             <IconButton icon={X} label={tr('Close dialog')} onClick={() => open(null)} />

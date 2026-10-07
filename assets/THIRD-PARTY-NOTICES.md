@@ -1,7 +1,7 @@
-Dot Browser 1.3.0 — third-party notices
+Dot Browser 1.3.1 — third-party notices
 
 Dot Browser is GPL-3.0-only. Complete corresponding source and build instructions:
-https://github.com/Mangoxt/dot-browser/tree/v1.3.0
+https://github.com/Mangoxt/dot-browser/tree/v1.3.1
 The release tag includes package-lock.json identifying exact dependencies. Obtain
 the source before rebuilding with npm ci, npm run build and npm run package:setup.
 

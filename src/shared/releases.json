@@ -1,5 +1,14 @@
 [
   {
+    "version": "1.3.1",
+    "date": "2026-10-07",
+    "changes": [
+      "Ana menü baştan tasarlandı: sık kullanılan işlemler, hızlı yeni pencere düğmeleri ve sabit ayarlar bölümü.",
+      "Sayfa araçları ile sekme işlemleri ayrı alt menülere taşındı; geri dönme ve klavyeyle gezinme eklendi.",
+      "Menü dar ekranlara ve büyütülmüş yazılara uyarlanır; sayfa araçları açık sekmeye göre etkinleştirilir."
+    ]
+  },
+  {
     "version": "1.3.0",
     "date": "2026-10-07",
     "changes": [

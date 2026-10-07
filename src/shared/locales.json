@@ -1,4 +1,5 @@
 {
+  "Back to menu": ["Back to menu", "Menüye dön", "Zurück zum Menü", "Retour au menu"],
   "Tabs and windows": [
     "Tabs and windows",
     "Sekmeler ve pencereler",
@@ -2992,5 +2993,23 @@
     "Collez un lien d’extension"
   ],
   "Add to Dot": ["Add to Dot", "Dot’a ekle", "Zu Dot hinzufügen", "Ajouter à Dot"],
-  "Loading…": ["Loading…", "Yükleniyor…", "Wird geladen…", "Chargement…"]
+  "Loading…": ["Loading…", "Yükleniyor…", "Wird geladen…", "Chargement…"],
+  "Ana menü baştan tasarlandı: sık kullanılan işlemler, hızlı yeni pencere düğmeleri ve sabit ayarlar bölümü.": [
+    "The main menu has been redesigned with common actions, quick window buttons and a fixed settings section.",
+    "Ana menü baştan tasarlandı: sık kullanılan işlemler, hızlı yeni pencere düğmeleri ve sabit ayarlar bölümü.",
+    "Das Hauptmenü wurde mit häufigen Aktionen, Fensterschaltflächen und einem festen Einstellungsbereich neu gestaltet.",
+    "Le menu principal a été repensé avec les actions courantes, les boutons de fenêtre et les paramètres toujours accessibles."
+  ],
+  "Sayfa araçları ile sekme işlemleri ayrı alt menülere taşındı; geri dönme ve klavyeyle gezinme eklendi.": [
+    "Page tools and tab actions now have separate submenus, with back navigation and keyboard controls.",
+    "Sayfa araçları ile sekme işlemleri ayrı alt menülere taşındı; geri dönme ve klavyeyle gezinme eklendi.",
+    "Seitenwerkzeuge und Tab-Aktionen haben eigene Untermenüs mit Zurück-Navigation und Tastatursteuerung.",
+    "Les outils de page et les actions des onglets ont leurs propres sous-menus, avec retour et navigation au clavier."
+  ],
+  "Menü dar ekranlara ve büyütülmüş yazılara uyarlanır; sayfa araçları açık sekmeye göre etkinleştirilir.": [
+    "The menu adapts to small windows and larger text; page actions follow the current tab.",
+    "Menü dar ekranlara ve büyütülmüş yazılara uyarlanır; sayfa araçları açık sekmeye göre etkinleştirilir.",
+    "Das Menü passt sich kleinen Fenstern und größerem Text an; Seitenaktionen folgen dem aktuellen Tab.",
+    "Le menu s’adapte aux petites fenêtres et au texte agrandi ; les actions suivent l’onglet actif."
+  ]
 }

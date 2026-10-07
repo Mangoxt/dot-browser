@@ -230,6 +230,7 @@ try {
   const token = await web(kept, 'window.ownedToken');
   const menu = page.getByRole('button', { name: 'Browser menu', exact: true });
   await menu.click();
+  await page.getByRole('button', { name: 'Tabs and windows', exact: true }).click();
   await page.getByRole('button', { name: 'Duplicate tabs', exact: true }).click();
   const row = (id) => page.locator(`.duplicate-row[data-tab-id="${id}"] input`);
   await expect(row(pinned)).toBeDisabled();
@@ -451,6 +452,17 @@ try {
           'de-DE': 'Browsermenü',
           'fr-FR': 'Menu du navigateur',
           'en-US': 'Browser menu',
+        }[language],
+        exact: true,
+      })
+      .click();
+    await page
+      .getByRole('button', {
+        name: {
+          'tr-TR': 'Sekmeler ve pencereler',
+          'de-DE': 'Tabs und Fenster',
+          'fr-FR': 'Onglets et fenêtres',
+          'en-US': 'Tabs and windows',
         }[language],
         exact: true,
       })
