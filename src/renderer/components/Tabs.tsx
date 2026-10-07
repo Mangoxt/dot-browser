@@ -161,15 +161,6 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
   );
   return (
     <div className={`tabs-container ${vertical ? 'vertical' : ''}`}>
-      {!vertical && (
-        <div className="tab-controls tab-create">
-          <IconButton
-            icon={Plus}
-            label={tr('New tab (Ctrl+T)')}
-            onClick={() => void command({ type: 'tab.new' })}
-          />
-        </div>
-      )}
       {!vertical && (edges.before || edges.after) && (
         <IconButton
           icon={ChevronLeft}
@@ -217,6 +208,15 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
             </div>
           ))}
       </div>
+      {!vertical && (
+        <div className="tab-controls tab-create">
+          <IconButton
+            icon={Plus}
+            label={tr('New tab (Ctrl+T)')}
+            onClick={() => void command({ type: 'tab.new' })}
+          />
+        </div>
+      )}
       {!vertical && (edges.before || edges.after) && (
         <IconButton
           icon={ChevronRight}

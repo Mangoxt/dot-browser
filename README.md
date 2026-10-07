@@ -26,7 +26,7 @@ npm run package
 npm run package:setup
 ```
 
-The Windows setup installer is `release/Dot-Browser-Setup-1.1.0.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
+The Windows setup installer is `release/Dot-Browser-Setup-1.1.1.exe`. Portable builds use `release/Dot-Browser-<version>-portable.exe`. The executables are unsigned unless you supply a signing certificate to electron-builder.
 
 ### Automatic updates for installed copies
 

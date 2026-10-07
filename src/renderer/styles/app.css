@@ -2905,6 +2905,20 @@ form > label select {
 .tab-scroll::-webkit-scrollbar {
   display: none;
 }
+.tabs-container:not(.vertical) {
+  -webkit-app-region: drag;
+}
+.tabs-container:not(.vertical) .tab-scroll {
+  flex: 0 1 auto;
+}
+.tabs-container:not(.vertical) > .icon-button,
+.tabs-container:not(.vertical) > .tab-controls {
+  -webkit-app-region: no-drag;
+  flex: none;
+}
+.tabs-container:not(.vertical) > .tab-controls:last-child {
+  margin-left: auto;
+}
 .tab-group .tab {
   flex: 0 0 172px;
 }

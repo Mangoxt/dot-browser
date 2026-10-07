@@ -2654,6 +2654,12 @@
     "Vor dem Öffnen weitere Tabs schließen.",
     "Fermez quelques onglets avant d’en ouvrir davantage."
   ],
+  "Yeni sekme (+) düğmesi son sekmenin hemen yanına taşındı. Sekmeler çoğaldığında da görünür ve erişilebilir kalır.": [
+    "The new tab (+) button now sits immediately after the last tab. It remains visible and accessible when tabs overflow.",
+    "Yeni sekme (+) düğmesi son sekmenin hemen yanına taşındı. Sekmeler çoğaldığında da görünür ve erişilebilir kalır.",
+    "Die Schaltfläche Neuer Tab (+) steht jetzt direkt hinter dem letzten Tab. Sie bleibt auch bei überlaufenden Tabs sichtbar und erreichbar.",
+    "Le bouton Nouvel onglet (+) se trouve désormais juste après le dernier onglet. Il reste visible et accessible quand les onglets débordent."
+  ],
   "Tab no longer exists": [
     "Tab no longer exists",
     "Bu sekme artık yok.",

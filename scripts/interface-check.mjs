@@ -69,6 +69,40 @@ try {
     await writeFile(path.replace('.png', '-packaged.png'), Buffer.from(bytes));
   };
   await cmd({ type: 'settings', patch: { animations: false, sidebar: false } });
+  const create = page.getByRole('button', { name: 'New tab (Ctrl+T)', exact: true });
+  const assertTrailingCreate = async () => {
+    await expect(create).toHaveCount(1);
+    await expect(create).toBeInViewport();
+    const createBox = await create.boundingBox();
+    const lastTab = await page.locator('.tab-scroll > :last-child').boundingBox();
+    assert.ok(
+      createBox.x >= lastTab.x + lastTab.width - 1 &&
+        createBox.x - (lastTab.x + lastTab.width) <= 8,
+      'new-tab button follows the last visible tab without an unused gap',
+    );
+  };
+  await assertTrailingCreate();
+  await create.click();
+  await expect(page.getByRole('tab')).toHaveCount(2);
+  await assertTrailingCreate();
+  await cmd({ type: 'settings', patch: { language: 'tr-TR' } });
+  await capture('test-results/tabs-trailing-tr.png');
+  await cmd({ type: 'settings', patch: { language: 'en-US' } });
+  const initial = await snap();
+  await cmd({ type: 'tab.action', action: 'pin', id: initial.tabs[0].id });
+  await cmd({ type: 'group.save', name: 'Owned group', color: '#a398ff', tabId: initial.activeId });
+  await assertTrailingCreate();
+  const groupId = (await snap()).groups[0].id;
+  await cmd({ type: 'group.action', id: groupId, action: 'collapse' });
+  await assertTrailingCreate();
+  await cmd({ type: 'group.action', id: groupId, action: 'delete' });
+  await cmd({ type: 'tab.action', action: 'pin', id: initial.tabs[0].id });
+  await cmd({ type: 'tab.action', action: 'close', id: initial.activeId });
+  await expect(page.getByRole('tab')).toHaveCount(1);
+  await assertTrailingCreate();
+  await create.click();
+  await expect(page.getByRole('tab')).toHaveCount(2);
+  await assertTrailingCreate();
   await expect(page.locator('.newtab-reading-empty')).toBeVisible();
   await cmd({ type: 'settings', patch: { language: 'tr-TR' } });
   await expect(page.locator('.newtab-hero h1')).toHaveText('Yeni sekme');
@@ -167,13 +201,13 @@ try {
   );
   await cmd({ type: 'settings', patch: { language: 'en-US', textScale: 1, theme: 'dark' } });
   for (let i = 0; i < 18; i++) await cmd({ type: 'tab.new', url: 'browser://newtab' });
-  const create = page.getByRole('button', { name: 'New tab (Ctrl+T)', exact: true });
   await expect(create).toHaveCount(1);
+  await expect(create).toBeInViewport();
   const createBox = await create.boundingBox();
   const scrollBox = await page.locator('.tab-scroll').boundingBox();
   assert.ok(
-    createBox.x + createBox.width <= scrollBox.x,
-    'new-tab button stays left of the tab strip',
+    createBox.x >= scrollBox.x + scrollBox.width - 1,
+    'new-tab button remains accessible after the overflowing tab strip',
   );
   const tabCount = (await snap()).tabs.length;
   await create.click();
@@ -199,6 +233,7 @@ try {
     .toBeLessThan(scrollBefore - 10);
   const manuallyScrolled = await page.locator('.tab-scroll').evaluate((e) => e.scrollLeft);
   await cmd({ type: 'settings', patch: { showHome: true } });
+  await expect(create).toBeInViewport();
   assert.equal(
     await page.locator('.tab-scroll').evaluate((e) => e.scrollLeft),
     manuallyScrolled,
@@ -235,7 +270,7 @@ try {
     ),
   );
   console.log(
-    'PASS: home reading list opens a real saved page, recent history, three background options, four languages at 130%, left new-tab button creates a tab and stays visible during overflow, site cards, light/dark captures, library access, settings search, keyboard navigation and responsive vertical tabs; every window hidden',
+    'PASS: new-tab button follows one/two tabs, pinned tabs and expanded/collapsed groups, follows tab closure, creates a tab and stays visible during overflow and manual scrolling; home reading list opens a real saved page, recent history, three background options, four languages at 130%, site cards, light/dark captures, library access, settings search, keyboard navigation and responsive vertical tabs; every window hidden',
   );
 } finally {
   await app.close().catch(() => {});
