@@ -33,3 +33,24 @@ test window is closed from the main-process test handle to avoid waiting for an
 IPC reply from a renderer that is already closed during cleanup. All UI and
 private-isolation assertions remain intact. The Turkish menu preview was
 captured directly from the test app's own WebContents; no desktop was captured.
+
+## Published asset verification
+
+Release: https://github.com/Mangoxt/dot-browser/releases/tag/v1.3.1.
+Source tag commit: `2eeb28076017d87caec14d6a38a9061e126d3b08`.
+The exact tag's automatic workflow was canceled to publish the tested local
+build; no unrelated run was canceled.
+
+| Asset                                |     Bytes | SHA-256                                                          |
+| ------------------------------------ | --------: | ---------------------------------------------------------------- |
+| Dot-Browser-Setup-1.3.1.exe          | 117199593 | 1557792796e049b40cf5ee37003417a57ef61d9dc3fc1b13497bbafa5102540d |
+| Dot-Browser-Setup-1.3.1.exe.blockmap |    122520 | be210b65dab3c05fb42dade8d759744dcc9be9ae70cbba6e76472b72631c2ca5 |
+| latest.yml                           |       351 | 715da76220c46b7bef3df164eac111df592e3ae383dd56ef7f9cf58f42a7c661 |
+| Dot-Browser-Source-1.3.1.zip         |  16966297 | 028426f4917edc73c51a195dba6b0d62d40df1e350baffbb8e62a13910be44fc |
+
+Authenticated upload and anonymous latest-release metadata matched every size
+and digest. The stable installer URL returned HTTP 200. The real packaged
+updater, in a fresh hidden profile simulating 1.3.0, found 1.3.1 through the
+embedded public feed. Download/install were disabled for this probe and no
+installer was run. Corresponding source includes the tagged Dot archive and
+hash-verified unchanged GPL extension-bridge/MPL filtering-engine archives.
