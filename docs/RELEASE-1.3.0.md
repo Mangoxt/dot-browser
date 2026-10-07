@@ -85,3 +85,27 @@ after the installer is built and published.
 - `npm audit --omit=dev` reported zero vulnerabilities.
 - Corresponding source includes exact upstream source archives; see
   [CORRESPONDING-SOURCE.md](CORRESPONDING-SOURCE.md).
+
+## Published release audit
+
+Published at https://github.com/Mangoxt/dot-browser/releases/tag/v1.3.0.
+Tag source: `85e38ce7c8d5890c12be2dd6183ff0f0c4847f04`.
+The exact tag's automatic Windows build was canceled to publish the locally
+validated installer. No unrelated workflow was canceled.
+
+| Asset                                |     Bytes | SHA-256                                                          |
+| ------------------------------------ | --------: | ---------------------------------------------------------------- |
+| Dot-Browser-Setup-1.3.0.exe          | 117197267 | ed9ca3c749a16a8149482fed0633fc9f4e478bd0e51b34b7c7a7f39fe2edc9b9 |
+| Dot-Browser-Setup-1.3.0.exe.blockmap |    122508 | 4b541dda040465f4d9a49627c5cc553ea8b52622d19d68875ff298b6a869b5c1 |
+| latest.yml                           |       351 | f51e8293a45f57ad8bb1dadf01b0d2b7687b61f3b0a90f2b0f191c2fc8d5c1ed |
+| Dot-Browser-Source-1.3.0.zip         |  16958575 | 83713a2c27233d34e5898d872a6ff2f020dba59f6433deed910523c5ec46a8b7 |
+
+Authenticated asset metadata and anonymous latest-release metadata matched every
+size and digest. The stable public installer URL returned HTTP 200. The public
+latest.yml points to 1.3.0 and matches the installer's SHA-512.
+
+A real packaged updater in a fresh hidden test profile, simulating 1.2.0, found
+1.3.0 using the embedded public GitHub feed. `autoDownload` and
+`autoInstallOnAppQuit` were disabled in that probe; no installer was downloaded
+or run, and all windows remained hidden. An initial request shortly after
+publication saw cached 1.2.0 metadata; the next probe saw the new release.
