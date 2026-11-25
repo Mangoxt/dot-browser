@@ -259,7 +259,7 @@ export default function App() {
   };
   return (
     <div
-      className={`app ${dark ? 'dark' : 'light'} accent-${state.settings.accent} chrome-${state.settings.chromeStyle} ${state.settings.compact ? 'compact' : ''} ${state.settings.animations ? '' : 'no-animation'}`}
+      className={`app ${dark ? 'dark' : 'light'} accent-${state.settings.accent} chrome-${state.settings.chromeStyle} ${state.settings.compact ? 'compact' : ''} ${showSidebar ? 'has-sidebar' : ''} ${state.settings.animations ? '' : 'no-animation'}`}
       style={
         {
           '--sidebar-width': `${sidebarWidth}px`,
@@ -322,6 +322,50 @@ export default function App() {
           </div>
         )}
       </header>
+      {state.split && (
+        <div className="split-toolbar">
+          <span>{tr('Split view')}</span>
+          <button
+            onClick={() => void command({ type: 'split', otherId: state.split!.right, swap: true })}
+          >
+            {tr('Swap')}
+          </button>
+          <select
+            aria-label={tr('Split layout')}
+            value={state.split.direction}
+            onChange={(e) =>
+              void command({
+                type: 'split',
+                otherId: state.split!.right,
+                direction: e.target.value as 'vertical' | 'horizontal',
+              })
+            }
+          >
+            <option value="vertical">{tr('Side by side')}</option>
+            <option value="horizontal">{tr('Stacked')}</option>
+          </select>
+          <select
+            aria-label={tr('Split ratio')}
+            value={state.split.ratio}
+            onChange={(e) =>
+              void command({
+                type: 'split',
+                otherId: state.split!.right,
+                ratio: Number(e.target.value),
+              })
+            }
+          >
+            <option value={0.4}>40 / 60</option>
+            <option value={0.5}>50 / 50</option>
+            <option value={0.6}>60 / 40</option>
+          </select>
+          <IconButton
+            icon={X}
+            label={tr('Exit split view')}
+            onClick={() => void command({ type: 'split', otherId: null })}
+          />
+        </div>
+      )}
       <div className="browser-body">
         {showSidebar && <Sidebar />}
         <main

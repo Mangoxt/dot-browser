@@ -97,6 +97,14 @@ export async function command(c: Command) {
 export function openPage(page: string) {
   void command({ type: 'tab.new', url: `browser://${page}` });
 }
+export function openLink(
+  url: string,
+  event: { button?: number; ctrlKey?: boolean; metaKey?: boolean },
+) {
+  if (event.button !== 1 && !event.ctrlKey && !event.metaKey) return false;
+  void command({ type: 'tab.new', url, background: true });
+  return true;
+}
 export function patchSettings(patch: Extract<Command, { type: 'settings' }>['patch']) {
   void command({ type: 'settings', patch });
 }

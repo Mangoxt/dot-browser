@@ -19,7 +19,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { command, openPage, patchSettings, useBrowser } from '../stores/browser';
-import { IconButton, Toggle } from '../components/common';
+import { IconButton, SearchClear, Toggle } from '../components/common';
 import type { BrowserSettings, SearchEngine } from '../../shared/models';
 import { AboutContent } from './About';
 const sections: [string, string, LucideIcon][] = [
@@ -196,6 +196,7 @@ export default function Settings() {
             placeholder={tr('Search sections')}
             onChange={(e) => setSectionQuery(e.target.value)}
           />
+          <SearchClear value={sectionQuery} onClear={() => setSectionQuery('')} />
         </label>
         {sections
           .filter(([, label]) =>
@@ -259,7 +260,7 @@ export default function Settings() {
             </Row>
             <Row title={tr('Accent color')}>
               <div className="accent-picker">
-                {(['violet', 'blue', 'green', 'rose', 'amber'] as const).map((color) => (
+                {(['lime', 'ember', 'violet', 'blue', 'green', 'rose', 'amber'] as const).map((color) => (
                   <button
                     key={color}
                     className={`swatch ${color} ${s.accent === color ? 'selected' : ''}`}

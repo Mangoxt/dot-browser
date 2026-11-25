@@ -1,5 +1,5 @@
 import { tr } from '../i18n';
-import { Globe, LoaderCircle, type LucideIcon } from 'lucide-react';
+import { Globe, LoaderCircle, X, type LucideIcon } from 'lucide-react';
 import { useEffect, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
 export function IconButton({
   icon: Icon,
@@ -49,6 +49,21 @@ export function Favicon({
     <Globe size={size} />
   );
 }
+export function SearchClear({ value, onClear }: { value: string; onClear: () => void }) {
+  if (!value) return null;
+  return (
+    <button
+      type="button"
+      className="search-clear"
+      title={tr('Clear search')}
+      aria-label={tr('Clear search')}
+      onClick={onClear}
+    >
+      <X size={13} />
+    </button>
+  );
+}
+
 export function Empty({
   icon: Icon,
   title,

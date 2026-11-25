@@ -2,7 +2,7 @@ import { tr } from '../i18n';
 import { Search, Star, History, Download, Layers, X } from 'lucide-react';
 import { useState } from 'react';
 import { command, useBrowser } from '../stores/browser';
-import { Favicon, IconButton } from './common';
+import { Favicon, IconButton, SearchClear } from './common';
 import { DownloadList } from '../pages/Library';
 export function SidePanel() {
   const { state, panel, panelWidth, set } = useBrowser();
@@ -55,6 +55,7 @@ export function SidePanel() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
+            <SearchClear value={q} onClear={() => setQ('')} />
           </label>
           <div className="panel-items">
             {items
@@ -70,7 +71,7 @@ export function SidePanel() {
                 >
                   <Favicon url={i.favicon} />
                   <span>
-                    {i.title}
+                    <strong>{i.title}</strong>
                     <small>{i.url}</small>
                   </span>
                 </button>

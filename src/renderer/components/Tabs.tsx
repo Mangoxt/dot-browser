@@ -20,6 +20,9 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
   const scroll = useRef<HTMLDivElement>(null);
   const revealed = useRef('');
   const [edges, setEdges] = useState({ before: false, after: false });
+  const [closingId, setClosingId] = useState<string | null>(null);
+  const closingTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(closingTimer.current), []);
   useEffect(() => {
     const element = scroll.current;
     if (!element) return;
@@ -66,10 +69,25 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
   const focusId = visibleTabs.some((t) => t.id === state.activeId)
     ? state.activeId
     : visibleTabs[0]?.id;
+  const closeTab = (id: string) => {
+    const animated =
+      state.settings.animations !== false &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!animated) {
+      void command({ type: 'tab.action', action: 'close', id });
+      return;
+    }
+    clearTimeout(closingTimer.current);
+    setClosingId(id);
+    closingTimer.current = setTimeout(() => {
+      setClosingId(null);
+      void command({ type: 'tab.action', action: 'close', id });
+    }, 150);
+  };
   const renderTab = (tab: BrowserTab) => (
     <div
       key={tab.id}
-      className={`tab ${tab.id === state.activeId ? 'selected' : ''} ${tab.pinned ? 'pinned' : ''} ${tab.suspended ? 'suspended' : ''}`}
+      className={`tab ${tab.id === state.activeId ? 'selected' : ''} ${tab.pinned ? 'pinned' : ''} ${tab.suspended ? 'suspended' : ''} ${closingId === tab.id ? 'closing' : ''}`}
       role="tab"
       aria-selected={tab.id === state.activeId}
       tabIndex={tab.id === focusId ? 0 : -1}
@@ -118,7 +136,7 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
       onAuxClick={(e) => {
         if (e.button === 1) {
           e.preventDefault();
-          void command({ type: 'tab.action', action: 'close', id: tab.id });
+          closeTab(tab.id);
         }
       }}
       onContextMenu={(e) => {
@@ -151,7 +169,7 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
           aria-label={tr('Close {name}', { name: tab.title })}
           onClick={(e) => {
             e.stopPropagation();
-            void command({ type: 'tab.action', action: 'close', id: tab.id });
+            closeTab(tab.id);
           }}
         >
           <X size={13} />
@@ -175,6 +193,11 @@ export function Tabs({ vertical = false }: { vertical?: boolean }) {
         role="tablist"
         aria-label={tr('Browser tabs')}
         aria-orientation={vertical ? 'vertical' : 'horizontal'}
+        onWheel={(e) => {
+          if (vertical || !scroll.current) return;
+          const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+          if (delta) scroll.current.scrollLeft += delta;
+        }}
         onDoubleClick={(e) => {
           if (e.target === e.currentTarget) void command({ type: 'tab.new' });
         }}

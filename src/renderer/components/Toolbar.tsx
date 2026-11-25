@@ -19,12 +19,12 @@ import {
   CornerDownLeft,
   ExternalLink,
 } from 'lucide-react';
-import { bookmarkCurrent, command, openPage, patchSettings, useBrowser } from '../stores/browser';
+import { bookmarkCurrent, command, openLink, openPage, patchSettings, useBrowser } from '../stores/browser';
 import { Favicon, IconButton } from './common';
 import { domainOf, isWebURL } from '../../shared/navigation';
 import { chromeStoreId } from '../../shared/extensions';
 export function Toolbar() {
-  const { state, omnibox, set, open } = useBrowser();
+  const { state, omnibox, overlay, set, open } = useBrowser();
   const tab = state?.tabs.find((t) => t.id === state.activeId);
   const [input, setInput] = useState('');
   const [index, setIndex] = useState(0);
@@ -235,7 +235,9 @@ export function Toolbar() {
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => submit()}
             >
-              <Search size={17} />
+              <span className="suggestion-icon">
+                <Search size={15} />
+              </span>
               <span>
                 <strong>{input || tr('Search or enter an address')}</strong>
                 <small>
@@ -257,7 +259,9 @@ export function Toolbar() {
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => submit(s.url, s.kind === 'tab' ? s.id : undefined)}
               >
-                {s.kind === 'search' ? <History size={17} /> : <Favicon url={s.favicon} />}
+                <span className="suggestion-icon">
+                  {s.kind === 'search' ? <History size={15} /> : <Favicon url={s.favicon} />}
+                </span>
                 <span>
                   <strong>{highlight(s.title)}</strong>
                   <small>
@@ -288,6 +292,15 @@ export function Toolbar() {
           </div>
         )}
       </div>
+      <button
+        type="button"
+        className="command-hint"
+        title={tr('Quick command')}
+        aria-label={tr('Quick command')}
+        onClick={() => open('palette')}
+      >
+        <kbd>{tr('Ctrl K')}</kbd>
+      </button>
       <div className="download-indicator">
         <IconButton
           icon={Download}
@@ -329,59 +342,15 @@ export function Toolbar() {
       <IconButton
         icon={MoreHorizontal}
         label={tr('Browser menu')}
-        active={useBrowser.getState().overlay === 'browsermenu'}
-        onClick={() => open(useBrowser.getState().overlay === 'browsermenu' ? null : 'browsermenu')}
+        active={overlay === 'browsermenu'}
+        onClick={() => open(overlay === 'browsermenu' ? null : 'browsermenu')}
       />
-      {state.split && (
-        <div className="split-toolbar">
-          <span>{tr('Split view')}</span>
-          <button
-            onClick={() => void command({ type: 'split', otherId: state.split!.right, swap: true })}
-          >
-            {tr('Swap')}
-          </button>
-          <select
-            aria-label={tr('Split layout')}
-            value={state.split.direction}
-            onChange={(e) =>
-              void command({
-                type: 'split',
-                otherId: state.split!.right,
-                direction: e.target.value as 'vertical' | 'horizontal',
-              })
-            }
-          >
-            <option value="vertical">{tr('Side by side')}</option>
-            <option value="horizontal">{tr('Stacked')}</option>
-          </select>
-          <select
-            aria-label={tr('Split ratio')}
-            value={state.split.ratio}
-            onChange={(e) =>
-              void command({
-                type: 'split',
-                otherId: state.split!.right,
-                ratio: Number(e.target.value),
-              })
-            }
-          >
-            <option value={0.4}>40 / 60</option>
-            <option value={0.5}>50 / 50</option>
-            <option value={0.6}>60 / 40</option>
-          </select>
-          <IconButton
-            icon={X}
-            label={tr('Exit split view')}
-            onClick={() => void command({ type: 'split', otherId: null })}
-          />
-        </div>
-      )}
     </div>
   );
 }
 export function BookmarkBar() {
   const { state } = useBrowser();
-  if (!state?.settings.bookmarkBar) return null;
+  if (!state?.settings.bookmarkBar || !state.bookmarks.length) return null;
   return (
     <div className="bookmark-bar">
       <div className="bookmark-links">
@@ -389,7 +358,13 @@ export function BookmarkBar() {
           <button
             key={b.id}
             title={b.url}
-            onClick={() => void command({ type: 'tab.navigate', input: b.url })}
+            onClick={(e) => {
+              if (openLink(b.url, e)) return;
+              void command({ type: 'tab.navigate', input: b.url });
+            }}
+            onAuxClick={(e) => {
+              if (openLink(b.url, e)) e.preventDefault();
+            }}
           >
             <Favicon url={b.favicon} />
             <span>{b.title}</span>

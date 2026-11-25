@@ -17,7 +17,7 @@ import {
   Check,
   Shield,
 } from 'lucide-react';
-import { command, openPage, patchSettings, useBrowser } from '../stores/browser';
+import { command, openLink, openPage, patchSettings, useBrowser } from '../stores/browser';
 import { Favicon } from '../components/common';
 import { domainOf } from '../../shared/navigation';
 import '../styles/newtab.css';
@@ -41,7 +41,7 @@ export default function NewTab() {
     requestAnimationFrame(() => optionOpener.current?.focus());
   };
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 30000);
+    const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
   useEffect(() => {
@@ -139,6 +139,7 @@ export default function NewTab() {
   return (
     <div className={`newtab background-${s.background} newtab-${s.newTabLayout}`}>
       <div className="newtab-surface" inert={customize}>
+        <div className="newtab-scroll">
         <header className="newtab-top">
           <span className="newtab-workspace">
             {state.private ? <Shield size={15} /> : <Layers size={15} />}
@@ -170,6 +171,7 @@ export default function NewTab() {
                     minute: '2-digit',
                     hour12: false,
                   })}
+                  <em aria-hidden="true">{String(now.getSeconds()).padStart(2, '0')}</em>
                 </strong>
                 <small>
                   {now.toLocaleDateString(s.language, {
@@ -219,6 +221,11 @@ export default function NewTab() {
                 <ArrowRight size={19} />
               </button>
             </form>
+            <div className="newtab-hint">
+              <kbd>Ctrl</kbd>
+              <kbd>K</kbd>
+              <span>{tr('Quick command')}</span>
+            </div>
           </section>
           <section className="newtab-shortcuts" aria-labelledby="shortcuts-title">
             <h2 id="shortcuts-title" className="sr-only">
@@ -247,7 +254,13 @@ export default function NewTab() {
                     <button
                       className="speed-open"
                       title={shortcut.url}
-                      onClick={() => void command({ type: 'tab.navigate', input: shortcut.url })}
+                      onClick={(e) => {
+                        if (openLink(shortcut.url, e)) return;
+                        void command({ type: 'tab.navigate', input: shortcut.url });
+                      }}
+                      onAuxClick={(e) => {
+                        if (openLink(shortcut.url, e)) e.preventDefault();
+                      }}
                     >
                       <span className="speed-icon">
                         {shortcut.favicon ? (
@@ -358,7 +371,13 @@ export default function NewTab() {
                       <button
                         key={entry.id}
                         title={entry.url}
-                        onClick={() => void command({ type: 'tab.navigate', input: entry.url })}
+                        onClick={(e) => {
+                          if (openLink(entry.url, e)) return;
+                          void command({ type: 'tab.navigate', input: entry.url });
+                        }}
+                        onAuxClick={(e) => {
+                          if (openLink(entry.url, e)) e.preventDefault();
+                        }}
                       >
                         <Favicon url={entry.favicon} size={18} />
                         <span>
@@ -382,7 +401,13 @@ export default function NewTab() {
                       <button
                         key={entry.id}
                         title={entry.url}
-                        onClick={() => void command({ type: 'tab.navigate', input: entry.url })}
+                        onClick={(e) => {
+                          if (openLink(entry.url, e)) return;
+                          void command({ type: 'tab.navigate', input: entry.url });
+                        }}
+                        onAuxClick={(e) => {
+                          if (openLink(entry.url, e)) e.preventDefault();
+                        }}
                       >
                         <Favicon url={entry.favicon} size={18} />
                         <span>
@@ -397,27 +422,28 @@ export default function NewTab() {
               )}
             </div>
           )}
-          <nav className="newtab-library" aria-label={tr('Library')}>
-            <button onClick={() => openPage('bookmarks')}>
-              <Star size={15} />
-              {tr('Bookmarks')}
-            </button>
-            <button onClick={() => openPage('history')}>
-              <History size={15} />
-              {tr('History')}
-            </button>
-            <button onClick={() => open('downloads')}>
-              <Download size={15} />
-              {tr('Downloads')}
-            </button>
-            {!state.private && (
-              <button onClick={() => open('sessions')}>
-                <FolderClock size={15} />
-                {tr('Saved sessions')}
-              </button>
-            )}
-          </nav>
         </main>
+        </div>
+        <nav className="newtab-library" aria-label={tr('Library')}>
+          <button onClick={() => openPage('bookmarks')}>
+            <Star size={15} />
+            {tr('Bookmarks')}
+          </button>
+          <button onClick={() => openPage('history')}>
+            <History size={15} />
+            {tr('History')}
+          </button>
+          <button onClick={() => open('downloads')}>
+            <Download size={15} />
+            {tr('Downloads')}
+          </button>
+          {!state.private && (
+            <button onClick={() => open('sessions')}>
+              <FolderClock size={15} />
+              {tr('Saved sessions')}
+            </button>
+          )}
+        </nav>
       </div>
       {customize && (
         <div className="newtab-custom-layer">

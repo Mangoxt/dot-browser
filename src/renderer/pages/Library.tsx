@@ -20,8 +20,8 @@ import {
   File,
   ArrowDownToLine,
 } from 'lucide-react';
-import { command, openPage, useBrowser } from '../stores/browser';
-import { bytes, Empty, Favicon, IconButton, PageHeading } from '../components/common';
+import { command, openLink, openPage, useBrowser } from '../stores/browser';
+import { bytes, Empty, Favicon, IconButton, PageHeading, SearchClear } from '../components/common';
 import { domainOf, historyGroup } from '../../shared/navigation';
 
 export function HistoryPage() {
@@ -49,8 +49,13 @@ export function HistoryPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
+          <SearchClear value={q} onClear={() => setQ('')} />
         </label>
-        <span>{tr('{count} history entries', { count: history.length })}</span>
+        <span>
+          {history.length === 1
+            ? tr('1 history entry')
+            : tr('{count} history entries', { count: history.length })}
+        </span>
         {!!selected.length && (
           <button
             className="danger-text"
@@ -94,11 +99,20 @@ export function HistoryPage() {
                 <Favicon url={h.favicon} />
                 <button
                   className="row-content"
-                  onClick={() => void command({ type: 'tab.navigate', input: h.url })}
+                  onClick={(e) => {
+                    if (openLink(h.url, e)) return;
+                    void command({ type: 'tab.navigate', input: h.url });
+                  }}
+                  onAuxClick={(e) => {
+                    if (openLink(h.url, e)) e.preventDefault();
+                  }}
                 >
                   <strong>{h.title}</strong>
                   <small>
-                    {domainOf(h.url)} · {tr('{count} visits', { count: h.visitCount })}
+                    {domainOf(h.url)} ·{' '}
+                    {h.visitCount === 1
+                      ? tr('1 visit')
+                      : tr('{count} visits', { count: h.visitCount })}
                   </small>
                 </button>
                 <time>
@@ -183,6 +197,7 @@ export function BookmarksPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
+          <SearchClear value={q} onClear={() => setQ('')} />
         </label>
         <select
           aria-label={tr('Bookmark folder')}
@@ -257,7 +272,13 @@ export function BookmarksPage() {
             <Favicon url={b.favicon} />
             <button
               className="row-content"
-              onClick={() => void command({ type: 'tab.navigate', input: b.url })}
+              onClick={(e) => {
+                if (openLink(b.url, e)) return;
+                void command({ type: 'tab.navigate', input: b.url });
+              }}
+              onAuxClick={(e) => {
+                if (openLink(b.url, e)) e.preventDefault();
+              }}
             >
               <strong>{b.title}</strong>
               <small>

@@ -226,7 +226,7 @@ try {
         animations: 'disabled',
         timeout: 10000,
       });
-    await dialog.locator('.modal-heading button').click();
+    await dialog.locator('.browser-menu-header .icon-button').last().click();
     await expect(dialog).toHaveCount(0);
     if (!process.env.DOT_PACKAGED && language === 'tr-TR')
       await page.screenshot({

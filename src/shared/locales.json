@@ -53,7 +53,38 @@
   ],
   "Search tabs": ["Search tabs", "Sekmelerde ara", "Tabs durchsuchen", "Rechercher des onglets"],
   "History": ["History", "Geçmiş", "Verlauf", "Historique"],
+  "1 history entry": [
+    "1 history entry",
+    "1 geçmiş kaydı",
+    "1 Verlaufseintrag",
+    "1 entrée d’historique"
+  ],
+  "1 visit": ["1 visit", "1 ziyaret", "1 Aufruf", "1 visite"],
   "Bookmarks": ["Bookmarks", "Yer imleri", "Lesezeichen", "Favoris"],
+  "Bookmark saved": [
+    "Bookmark saved",
+    "Yer imi kaydedildi",
+    "Lesezeichen gespeichert",
+    "Favori enregistré"
+  ],
+  "Bookmarks saved": [
+    "Bookmarks saved",
+    "Yer imleri kaydedildi",
+    "Lesezeichen gespeichert",
+    "Favoris enregistrés"
+  ],
+  "Bookmark all tabs": [
+    "Bookmark all tabs",
+    "Tüm sekmeleri yer imlerine ekle",
+    "Alle Tabs als Lesezeichen",
+    "Ajouter tous les onglets aux favoris"
+  ],
+  "Clear search": [
+    "Clear search",
+    "Aramayı temizle",
+    "Suche leeren",
+    "Effacer la recherche"
+  ],
   "Saved passwords": [
     "Saved passwords",
     "Kayıtlı parolalar",
@@ -1881,6 +1912,8 @@
   "interrupted": ["interrupted", "kesildi", "unterbrochen", "interrompu"],
   "completed": ["completed", "tamamlandı", "abgeschlossen", "terminé"],
   "of {total}": ["of {total}", "/ {total}", "von {total}", "sur {total}"],
+  "lime": ["lime", "asit yeşili", "Limette", "citron vert"],
+  "ember": ["ember", "kor", "Glut", "braise"],
   "violet": ["violet", "mor", "Violett", "violet"],
   "blue": ["blue", "mavi", "Blau", "bleu"],
   "green": ["green", "yeşil", "Grün", "vert"],

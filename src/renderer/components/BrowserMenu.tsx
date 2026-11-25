@@ -30,7 +30,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { tr } from '../i18n';
-import { command, openPage, useBrowser, type Overlay } from '../stores/browser';
+import { command, notify, openPage, useBrowser, type Overlay } from '../stores/browser';
 import { IconButton } from './common';
 import type { Command } from '../../shared/ipc';
 import { isWebURL } from '../../shared/navigation';
@@ -272,6 +272,30 @@ export function BrowserMenu() {
                 !state.closedTabs.length,
               )}
               {item(Copy, 'Duplicate tabs', overlay('duplicates'))}
+              {item(
+                Star,
+                'Bookmark all tabs',
+                () => {
+                  open(null);
+                  const known = new Set(state.bookmarks.map((b) => b.url));
+                  const pages = state.tabs.filter((t) => isWebURL(t.url) && !known.has(t.url));
+                  for (const t of pages)
+                    void command({
+                      type: 'bookmark.save',
+                      bookmark: {
+                        id: crypto.randomUUID(),
+                        title: t.title,
+                        url: t.url,
+                        favicon: t.favicon,
+                        folder: 'Favorites',
+                        createdAt: Date.now(),
+                      },
+                    });
+                  if (pages.length) notify('Bookmarks saved');
+                },
+                undefined,
+                !state.tabs.some((t) => isWebURL(t.url)),
+              )}
               {item(FolderClock, 'Saved sessions', overlay('sessions'), undefined, state.private)}
             </div>
             <div className="menu-group">
